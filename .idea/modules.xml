@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/dzTraficoBackend/.idea/dzTraficoBackend.iml" filepath="$PROJECT_DIR$/dzTraficoBackend/.idea/dzTraficoBackend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dzTraficoWebClient/.idea/dzTraficoWebClient.iml" filepath="$PROJECT_DIR$/dzTraficoWebClient/.idea/dzTraficoWebClient.iml" />
     </modules>
   </component>
 </project>
