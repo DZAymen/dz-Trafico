@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://F:\PFE\Realisation\Angular_test\.idea\Angular_test.iml" filepath="F:\PFE\Realisation\Angular_test\.idea\Angular_test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/dzTraficoBackend.iml" filepath="$PROJECT_DIR$/.idea/dzTraficoBackend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../dzTraficoWebClient/.idea/dzTraficoWebClient.iml" filepath="$PROJECT_DIR$/../dzTraficoWebClient/.idea/dzTraficoWebClient.iml" />
+    </modules>
+  </component>
+</project>
