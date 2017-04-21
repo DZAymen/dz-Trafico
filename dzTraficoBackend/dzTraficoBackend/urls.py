@@ -1,21 +1,22 @@
 """dzTraficoBackend URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/1.10/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  url(r'^$', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.conf.urls import url, include
-    2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+
+from django.conf.urls import url, include
 from django.contrib import admin
+from dzTrafico.ServiceLayer import SimulationCreationService
+
+import dzTrafico.views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^$', dzTrafico.views.home),
+
+    #Simulation Creation Routes _________________________________________________________________
+    url(r'^api/creation/map$', SimulationCreationService.set_map),
+    url(r'^api/creation/sensors$', SimulationCreationService.add_sensors),
+    url(r'^api/creation/trafficflow$', SimulationCreationService.set_traffic_flow),
+    url(r'^api/creation/incident$', SimulationCreationService.add_incidents),
+    url(r'^api/creation/state$', SimulationCreationService.update_configuration_state),
+
+    #Simulation Creation Routes _________________________________________________________________
 ]
