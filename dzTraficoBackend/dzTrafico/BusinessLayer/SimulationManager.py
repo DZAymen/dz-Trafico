@@ -1,10 +1,12 @@
 from dzTrafico.BusinessLayer.SimulationCreation.SimulationCreator import SimulationCreator
+from dzTrafico.BusinessEntities.Simulation import Simulation
 
 class SimulationManager:
 
+    __simulation = Simulation()
     __simulationCreator = SimulationCreator()
 
-    #Define a singleton SimulationManager
+    #Define a singleton SimulationManager class
     __simulationManager = None
     @staticmethod
     def get_instance():
@@ -13,8 +15,8 @@ class SimulationManager:
         return SimulationManager.__simulationManager
 
     #Call SimulationCreator.set_map method to create the map
-    def set_map(self, leftbottom, righttop):
-        SimulationManager.__simulationCreator.set_map(leftbottom, righttop)
+    def set_map(self, map_box):
+        SimulationManager.__simulationCreator.set_map(map_box)
 
     # Call SimulationCreator.set_map method to create the map
     def add_sensors(self, sensors):
