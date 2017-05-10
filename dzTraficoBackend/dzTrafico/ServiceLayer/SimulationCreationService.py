@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from dzTrafico.BusinessLayer.SimulationManager import SimulationManager
-from dzTrafico.BusinessEntities.MapBox import MapBox
+from dzTrafico.BusinessEntities.MapBox import MapBox, MapBoxSerializer
 
 simulationManager = SimulationManager.get_instance()
 
@@ -11,7 +11,10 @@ simulationManager = SimulationManager.get_instance()
 @api_view(['POST'])
 def set_map(request):
     #request.data validation
-    simulationManager.set_map(MapBox(request.data["left"], request.data["bottom"], request.data["right"], request.data["top"]))
+    mapBoxSerializer = MapBoxSerializer(data=request.data)
+    mapBoxSerializer.is_valid(raise_exception=True)
+    #Call SimulationManager to pass the mapBox to the simulationCreator
+    simulationManager.set_map(mapBoxSerializer.data)
     return Response(status.HTTP_201_CREATED)
 
 #Post sensors list

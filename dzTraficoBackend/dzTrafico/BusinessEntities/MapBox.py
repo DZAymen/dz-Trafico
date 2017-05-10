@@ -1,12 +1,15 @@
+from rest_framework import serializers
 
-class MapBox:
-    left = 0
-    bottom = 0
-    right = 0
-    top = 0
+class MapBox(object):
 
     def __init__(self, left, bottom, right, top):
-        MapBox.left = left
-        MapBox.bottom = bottom
-        MapBox.right = right
-        MapBox.top = top
+        self.left = left
+        self.bottom = bottom
+        self.right = right
+        self.top = top
+
+class MapBoxSerializer(serializers.Serializer):
+    left = serializers.FloatField()
+    bottom = serializers.FloatField()
+    right = serializers.FloatField()
+    top = serializers.FloatField()
