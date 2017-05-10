@@ -3,13 +3,13 @@
 
 from django.conf.urls import url, include
 from django.contrib import admin
-from dzTrafico.ServiceLayer import SimulationCreationService
+from dzTrafico.views import home
 
-import dzTrafico.views
+from dzTrafico.ServiceLayer import SimulationCreationService
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', dzTrafico.views.home),
+    #url(r'^$', dzTrafico.views.home),
 
     #Simulation Creation Routes _________________________________________________________________
     url(r'^api/creation/map$', SimulationCreationService.set_map),

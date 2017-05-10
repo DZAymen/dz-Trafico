@@ -32,4 +32,4 @@ class SimulationManager:
 
     # Call SimulationCreator.set_map method to create the map
     def createSimulation(self):
-        SimulationManager.__simulationCreator.createSimulation()
+        SimulationManager.__simulation = SimulationManager.__simulationCreator.createSimulation()
