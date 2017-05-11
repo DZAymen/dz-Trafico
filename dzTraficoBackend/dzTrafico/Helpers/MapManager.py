@@ -19,4 +19,4 @@ class MapManager:
         #Get the osm file
         osmGet.get(["-b", ",".join(map(str, map_box.get_coords())), "-p", self.osm_file_path])
 
-        return self.osm_file_path
+        return self.osm_file_path + "_bbox.osm.xml"

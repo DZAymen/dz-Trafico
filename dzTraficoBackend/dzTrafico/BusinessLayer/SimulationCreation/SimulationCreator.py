@@ -1,13 +1,14 @@
-from dzTrafico.Helpers.MapManager import MapManager
 from dzTrafico.BusinessEntities.Simulation import Simulation
+from NetworkManager import NetworkManager
 
 class SimulationCreator:
 
-    __map_manager = MapManager()
+    __networkManager = NetworkManager()
     __simulation = Simulation()
 
-    def set_map(self, map_box):
-        SimulationCreator.__simulation.set_osm_file(SimulationCreator.__map_manager.download_map(map_box))
+    def create_network_file(self, map_box):
+        self.network_file_path = SimulationCreator.__networkManager.get_network_file(map_box)
+        SimulationCreator.__simulation.set_network_file(self.network_file_path)
 
     def createSimulation(self):
         return SimulationCreator.__simulation
