@@ -9,7 +9,7 @@ simulationManager = SimulationManager.get_instance()
 
 #Post the selected map
 @api_view(['POST'])
-def set_map(request):
+def set_simulation_map(request):
     #request.data validation
     mapBoxSerializer = MapBoxSerializer(data=request.data)
     mapBoxSerializer.is_valid(raise_exception=True)
