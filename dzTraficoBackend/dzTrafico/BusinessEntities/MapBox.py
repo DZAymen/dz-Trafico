@@ -8,6 +8,9 @@ class MapBox(object):
         self.right = right
         self.top = top
 
+    def get_coords(self):
+        return [self.left, self.bottom, self.right, self.top]
+
 class MapBoxSerializer(serializers.Serializer):
     left = serializers.FloatField()
     bottom = serializers.FloatField()
