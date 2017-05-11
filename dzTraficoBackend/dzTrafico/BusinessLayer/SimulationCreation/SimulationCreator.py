@@ -11,4 +11,5 @@ class SimulationCreator:
         SimulationCreator.__simulation.set_network_file(self.network_file_path)
 
     def createSimulation(self):
+        SimulationCreator.__simulation.create_sumo_config_file()
         return SimulationCreator.__simulation

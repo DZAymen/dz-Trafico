@@ -45,7 +45,7 @@ def add_incidents(request):
 def update_configuration_state(request):
     # request.data validation
     if request.data["configCompleted"]:
-        simulationManager.createSimulation()
+        simulationManager.create_simulation()
         return Response(status.HTTP_202_ACCEPTED)
     else:
         return Response(status.HTTP_400_BAD_REQUEST)

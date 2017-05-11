@@ -31,5 +31,6 @@ class SimulationManager:
         return None
 
     # Call SimulationCreator.set_map method to create the map
-    def createSimulation(self):
+    def create_simulation(self):
         SimulationManager.__simulation = SimulationManager.__simulationCreator.createSimulation()
+        SimulationManager.__simulation.start_simulation()
