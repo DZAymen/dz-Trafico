@@ -14,7 +14,8 @@ def set_simulation_map(request):
     mapBoxSerializer = MapBoxSerializer(data=request.data)
     mapBoxSerializer.is_valid(raise_exception=True)
     #Call SimulationManager to pass the mapBox to the simulationCreator
-    simulationManager.set_map(mapBoxSerializer.data)
+    map_box = MapBox(request.data["left"], request.data["bottom"], request.data["right"], request.data["top"])
+    simulationManager.set_map(map_box)
     return Response(status.HTTP_201_CREATED)
 
 #Post sensors list

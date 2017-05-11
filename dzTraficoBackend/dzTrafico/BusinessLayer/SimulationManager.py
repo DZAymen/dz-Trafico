@@ -16,7 +16,7 @@ class SimulationManager:
 
     #Call SimulationCreator.set_map method to create the map
     def set_map(self, map_box):
-        SimulationManager.__simulationCreator.set_map(map_box)
+        SimulationManager.__simulationCreator.create_network_file(map_box)
 
     # Call SimulationCreator.set_map method to create the map
     def add_sensors(self, sensors):
