@@ -2,7 +2,7 @@
 class Sensor(object):
 
     __id = 0
-    __lane = 0
+    __lane = ""
     __position = 0
     __measures_list = []
     __critical_speed = 50
@@ -15,10 +15,10 @@ class Sensor(object):
 
     def add_measure(self, speed):
         self.__check_measure(speed)
-        Sensor.__measures_list.append(Measure(speed))
+        self.__measures_list.append(Measure(speed))
 
     def __check_measure(self, speed):
-        if speed < Sensor.__critical_speed:
+        if speed < self.__critical_speed:
             #Notify TrafficAnalyzer
             pass
 
@@ -27,4 +27,4 @@ class Measure(object):
     __speed = 0
 
     def __init__(self, speed):
-        Measure.__speed = speed
+        self.__speed = speed

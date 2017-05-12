@@ -20,7 +20,7 @@ class SimulationManager:
 
     # Call SimulationCreator.set_map method to create the map
     def add_sensors(self, sensors):
-        return None
+        SimulationManager.__simulationCreator.create_sensors()
 
     # Call SimulationCreator.set_map method to create the map
     def set_traffic_flow(self, traffic_flow):

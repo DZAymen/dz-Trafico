@@ -49,3 +49,7 @@ class Simulation:
     def start_simulation(self):
         sumogui = sumolib.checkBinary("sumo-gui")
         subprocess.Popen([sumogui, "-c", Simulation.__project_directory + Simulation.__sumocfg_file])
+
+    def add_sensors(self, sensors):
+        for sensor in sensors:
+            self.__sensors_list.append(sensor)
