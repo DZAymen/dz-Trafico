@@ -1,8 +1,6 @@
 import os
 import osmapi
-from dicttoxml import dicttoxml
 from datetime import datetime
-from dzTrafico.BusinessEntities.MapBox import MapBox
 import osmGet
 
 class MapManager:

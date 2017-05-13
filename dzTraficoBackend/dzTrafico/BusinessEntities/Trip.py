@@ -1,5 +1,5 @@
 
-class Trip:
+class Trip(object):
     flow = 0
     minGap = 0
     speedFactor = 0

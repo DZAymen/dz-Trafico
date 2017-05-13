@@ -1,6 +1,5 @@
-import os
-import sumolib
-import subprocess
+import os, sumolib, subprocess
+import traci
 
 class Simulation:
     __project_directory = ""
@@ -46,10 +45,15 @@ class Simulation:
             Simulation.__project_directory = simulations_directory + "\\" + [directory for directory in os.listdir(simulations_directory)][-1]
             Simulation.__project_directory += "\\"
 
+    def add_sensors(self, sensors):
+        self.__sensors_list.append(sensors)
+
     def start_simulation(self):
         sumogui = sumolib.checkBinary("sumo-gui")
-        subprocess.Popen([sumogui, "-c", Simulation.__project_directory + Simulation.__sumocfg_file])
-
-    def add_sensors(self, sensors):
-        for sensor in sensors:
-            self.__sensors_list.append(sensor)
+        #subprocess.Popen([sumogui, "-c", Simulation.__project_directory + Simulation.__sumocfg_file])
+        traci.start([sumogui, "-c", Simulation.__project_directory + Simulation.__sumocfg_file])
+        for step in range(2000):
+            traci.simulationStep()
+            #print self.__sensors_list[0].get_sensor_id()
+            for sensor in self.__sensors_list:
+                sensor.add_measure(traci.inductionloop.getLastStepMeanSpeed(str(sensor.get_sensor_id())))

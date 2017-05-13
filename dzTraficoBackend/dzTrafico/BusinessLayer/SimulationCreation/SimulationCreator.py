@@ -1,6 +1,7 @@
 from dzTrafico.BusinessEntities.Simulation import Simulation
 from NetworkManager import NetworkManager
 from dzTrafico.BusinessEntities.Sensor import Sensor
+from dzTrafico.BusinessLayer.TrafficAnalysis.TrafficAnalyzer import TrafficAnalyzer
 
 class SimulationCreator:
 
@@ -14,7 +15,10 @@ class SimulationCreator:
 
     #
     def create_sensors(self):
+        Sensor.traffic_analyzer = TrafficAnalyzer()
         SimulationCreator.__simulation.add_sensors(Sensor("196547668#0_0", -1, 50))
+        SimulationCreator.__simulation.add_sensors(Sensor("196547668#0_1", -1, 50))
+        SimulationCreator.__simulation.add_sensors(Sensor("196547668#0_2", -1, 50))
 
     #Create Simulation Config file 'map.sumocfg'
     def createSimulation(self):
