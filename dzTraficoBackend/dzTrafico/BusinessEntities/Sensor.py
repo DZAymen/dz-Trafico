@@ -1,7 +1,7 @@
 
 class Sensor(object):
 
-    traffic_analyzer = None
+    trafficAnalyzer = None
 
     __id = 1
     __lane = ""
@@ -21,11 +21,9 @@ class Sensor(object):
         self.__measures_list.append(Measure(speed))
 
     def __check_measure(self, speed):
-        Sensor.traffic_analyzer.notify(self.__id)
-        print speed
         if speed < self.__critical_speed:
             #Notify TrafficAnalyzer
-            pass
+            Sensor.trafficAnalyzer.notify_congestion_detected(self.__lane)
 
     def get_sensor_id(self):
         return self.__id

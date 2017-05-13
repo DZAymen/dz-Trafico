@@ -12,12 +12,21 @@ class Simulation:
     __incidents_list = []
     __traffic_flows = []
 
+    def __init__(self):
+        simulations_directory = os.path.join(os.path.normpath(os.getcwd()), "dzTrafico\\SimulationFiles")
+        Simulation.__project_directory = simulations_directory + "\\" + \
+                                         [directory for directory in os.listdir(simulations_directory)][-1]
+        Simulation.__project_directory += "\\"
+
     def set_osm_file(self, file_path):
         Simulation.__osm_file = file_path
 
     def set_network_file(self, file_path):
         Simulation.__project_directory = os.path.dirname(file_path) + "\\"
         Simulation.__network_file = os.path.basename(file_path)
+
+    def get_network_file_path(self):
+        return Simulation.__project_directory + Simulation.__network_file
 
     def create_sumo_config_file(self):
         if Simulation.__project_directory:
@@ -40,10 +49,6 @@ class Simulation:
                         
                     </configuration>'''
                 )
-        else:
-            simulations_directory = os.path.join(os.path.normpath(os.getcwd()), "dzTrafico\\SimulationFiles")
-            Simulation.__project_directory = simulations_directory + "\\" + [directory for directory in os.listdir(simulations_directory)][-1]
-            Simulation.__project_directory += "\\"
 
     def add_sensors(self, sensors):
         self.__sensors_list.append(sensors)

@@ -1,10 +1,13 @@
 from dzTrafico.BusinessLayer.SimulationCreation.SimulationCreator import SimulationCreator
 from dzTrafico.BusinessEntities.Simulation import Simulation
+from dzTrafico.BusinessEntities.Sensor import Sensor
+from dzTrafico.BusinessLayer.TrafficAnalysis.TrafficAnalyzer import TrafficAnalyzer
 
 class SimulationManager:
 
     __simulation = Simulation()
     __simulationCreator = SimulationCreator()
+    __trafficAnalyzer = TrafficAnalyzer(__simulation)
 
     #Define a singleton SimulationManager class
     __simulationManager = None
@@ -20,6 +23,7 @@ class SimulationManager:
 
     # Call SimulationCreator.set_map method to create the map
     def add_sensors(self, sensors):
+        Sensor.trafficAnalyzer = SimulationManager.__trafficAnalyzer
         SimulationManager.__simulationCreator.create_sensors()
 
     # Call SimulationCreator.set_map method to create the map
