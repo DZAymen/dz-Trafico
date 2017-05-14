@@ -1,6 +1,6 @@
 import { browser, element, by } from 'protractor';
 
-export class DzTraficoWebClientPage {
+export class PrimeNgAppPage {
   navigateTo() {
     return browser.get('/');
   }

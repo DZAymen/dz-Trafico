@@ -1,3 +1,44 @@
-<h1>
-  {{title}}
-</h1>
+<ng-sidebar-container>
+     <ng-sidebar
+       [(opened)]="opened"
+       [mode]="'push'"
+       [position]="'left'"
+       [sidebarClass]="'demo-sidebar'"
+       [animate]="true">
+       <div class="mySidebar">
+         <!-- Sidebar components -->
+             <span class="logo-layout">
+               <a href="#" class="logo-image">
+                 <img src="../assets/images/logo.png" alt="logo">
+               </a>
+             </span>
+             <a routerLink="/" class="menu-item">
+               <span class="menu-item-icon fa fa-list-ul"></span>
+               <p>Liste des simulations</p>
+             </a>
+             <a routerLink="/map" class="menu-item">
+               <span class="menu-item-icon fa fa-car"></span>
+               <p>Lancer une simulation</p>
+             </a>
+             <a routerLink="/real-time" class="menu-item">
+               <span class="menu-item-icon fa fa-clock-o"></span>
+               <p>Simulation en temps réel</p>
+             </a>
+             <a routerLink="/result" class="menu-item">
+               <span class="menu-item-icon fa fa-line-chart"></span>
+               <p>Résultat simulations</p>
+             </a>
+       </div>
+     </ng-sidebar>
+
+     <header class="demo-header">
+       <button (click)="toggleOpened()" class="demo-header__toggle">Toggle sidebar</button>
+       <!-- <span (click)="_toggleOpened()"class="fa fa-bars"></span> -->
+       <span>Traffic Simulator</span>
+     </header>
+
+     <!-- Components router -->
+     <router-outlet></router-outlet>
+
+
+</ng-sidebar-container>
