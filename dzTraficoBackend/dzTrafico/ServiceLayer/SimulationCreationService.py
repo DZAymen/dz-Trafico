@@ -4,6 +4,7 @@ from rest_framework.response import Response
 
 from dzTrafico.BusinessLayer.SimulationManager import SimulationManager
 from dzTrafico.BusinessEntities.MapBox import MapBox, MapBoxSerializer
+from dzTrafico.BusinessEntities.Flow import FlowPointSerializer,FlowPoint
 
 simulationManager = SimulationManager.get_instance()
 
@@ -29,7 +30,14 @@ def add_sensors(request):
 @api_view(['POST'])
 def set_traffic_flow(request):
     # request.data validation
-    simulationManager.set_traffic_flow(request.data)
+    flowPointSerializer = FlowPointSerializer(data=request.data, many=True)
+    flowPointSerializer.is_valid(raise_exception=True)
+
+    flowPoints = []
+    for data in request.data:
+        flowPoints.append(FlowPoint(data["lon"], data["lat"], data["type"], data["value"]))
+
+    simulationManager.set_traffic_flow(flowPoints)
     return Response(status.HTTP_202_ACCEPTED)
 
 #Post incidents list
