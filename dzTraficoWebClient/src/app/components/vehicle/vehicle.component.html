@@ -1,0 +1,46 @@
+<p-growl [value]="msgs"></p-growl>
+<app-header
+  [title]='"Tyde de vehicule "'
+  [description]='"Choisir les types de véhicule et leur pourcentage..."'
+ ></app-header>
+
+<div class="content-block">
+  <app-steps [activeIndex]='2'></app-steps>
+  <p-dialog showEffect="fade" [(visible)]="dialogVisible" header="Nv Type">
+      <div class="ui-grid ui-grid-pad ui-fluid">
+          <div class="ui-grid-row">
+              <div class="ui-grid-col-4"><label for="accel">Acceleratin</label></div>
+              <div class="ui-grid-col-8"><input type="text" pInputText id="accel" [(ngModel)]="accel"></div>
+          </div>
+          <div class="ui-grid-row">
+              <div class="ui-grid-col-4"><label for="decel">Declaration</label></div>
+              <div class="ui-grid-col-8"><input id="decel" type="text" pInputText [(ngModel)]="decel"></div>
+          </div>
+          <div class="ui-grid-row">
+              <div class="ui-grid-col-4"><label for="impat">Impatience</label></div>
+              <div class="ui-grid-col-8"><input id="impat" type="text" pInputText [(ngModel)]="impatience"></div>
+          </div>
+
+      </div>
+      <p-footer>
+          <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+              <button type="button" pButton label="Ajouter" icon="fa-plus" (click)="addVehicleType()"></button>
+          </div>
+      </p-footer>
+  </p-dialog>
+
+  <button type="text" (click)="showDialog()" pButton icon="fa-plus" label="Nouveau Type"></button>
+
+  <p-dataTable [value]="vehicleTypes" [editable]="true" dataKey="id">
+
+      <p-column *ngFor="let col of cols" [field]="col.field" [header]="col.header"></p-column>
+
+      <p-column field="id" header="% Pourcentage" [editable]="false">
+          <ng-template let-col let-type="rowData" pTemplate="body">
+              <p-slider [style]="{'width':'100px'}"></p-slider>
+          </ng-template>
+      </p-column>
+
+  </p-dataTable>
+
+</div>

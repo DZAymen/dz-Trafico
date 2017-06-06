@@ -1,0 +1,6 @@
+[
+        {"id": 1, "accel": 2012, "decel": 20, "impatience": 0.4},
+        {"id": 2, "accel": 2012, "decel": 40, "impatience": 0.6},
+        {"id": 3, "accel": 2012, "decel": 60, "impatience": 0.8},
+        {"id": 4, "accel": 2012, "decel": 80, "impatience": 0.1}
+]

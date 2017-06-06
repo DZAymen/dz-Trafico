@@ -10,7 +10,8 @@
 }
 .demo-header {
   align-items: center;
-  background: #0273d4;
+  background:  #3C4252; /*#0273d4*/
+  height: 40px;
   color: #fff;
   padding: 1em;
 }
