@@ -21,7 +21,9 @@ class SimulationCreator:
         SimulationCreator.__simulation.add_sensors(Sensor("196547668#0_2", -1, 50))
 
     def define_traffic_flows(self, flowPoints):
-        SimulationCreator.__tripManager.get_flows_file(flowPoints)
+        self.flows_file_path = SimulationCreator.__tripManager.generate_flows_file(flowPoints)
+        self.route_file = SimulationCreator.__tripManager.generate_route_file(self.flows_file_path)
+        SimulationCreator.__simulation.set_route_file(self.route_file)
 
     #Create Simulation Config file 'map.sumocfg'
     def createSimulation(self):
