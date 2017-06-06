@@ -1,10 +1,10 @@
-import { DzTraficoWebClientPage } from './app.po';
+import { PrimeNgAppPage } from './app.po';
 
-describe('dz-trafico-web-client App', () => {
-  let page: DzTraficoWebClientPage;
+describe('prime-ng-app App', () => {
+  let page: PrimeNgAppPage;
 
   beforeEach(() => {
-    page = new DzTraficoWebClientPage();
+    page = new PrimeNgAppPage();
   });
 
   it('should display message saying app works', () => {

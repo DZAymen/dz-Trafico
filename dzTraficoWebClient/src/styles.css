@@ -1,1 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+  font-family: 'Roboto', "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-weight: normal;
+  color: #404C51;
+  -webkit-font-smoothing: antialiased;
+  font-size: 1em;
+}
+
+a {
+    text-decoration: none;
+    color: #25AAE1;
+}
+
+.content-block{
+  display: block;
+  padding: 30px;
+  background-color: white;
+}
