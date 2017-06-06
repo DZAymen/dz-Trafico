@@ -44,7 +44,15 @@ class TripManager:
         return flows
 
     def generate_route_file(self, flows_file_path):
-        subprocess.call("netconvert --osm-files " + flows_file_path + " -o " + flows_file_path)
+        network_file = "map.net.xml"
+        route_file = "map.rou.xml"
+
+        subprocess.call(
+            "duarouter -n " + Simulation.project_directory + "\\" + network_file
+            + " -f " + flows_file_path
+            + " -o " + Simulation.project_directory + "\\" + route_file
+        )
+        return route_file
 
     def save_flows_xml_file(self, flows):
         root = etree.Element("flowdefs")
