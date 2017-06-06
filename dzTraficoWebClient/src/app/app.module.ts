@@ -9,8 +9,8 @@ import { GMapModule, InputTextModule, ButtonModule, GrowlModule, DropdownModule,
        }  from 'primeng/primeng';
 
 // Imports for loading & configuring the in-memory web api
-import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService }  from './in-memory-data-service';
+/*import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryDataService }  from './in-memory-data-service';*/
 
 // Feature Components
 import { AppComponent } from './app.component';
@@ -40,7 +40,7 @@ import { SimulationComponent } from './components/simulation/simulation.componen
     BrowserAnimationsModule,
     FormsModule,
     HttpModule,
-    InMemoryWebApiModule.forRoot(InMemoryDataService),
+  //  InMemoryWebApiModule.forRoot(InMemoryDataService),
 
     SharedModule, CoreModule,
     routing,

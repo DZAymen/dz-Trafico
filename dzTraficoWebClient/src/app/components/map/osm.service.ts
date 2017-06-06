@@ -1,8 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers } from '@angular/http';
+
+import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class OsmService {
+
+  private mapURL="http://127.0.0.1:8000/api/creation/map";
+  private headers = new Headers({'Content-Type': 'application/json'});
+
 
   constructor(private http: Http) {}
 
@@ -20,7 +26,19 @@ export class OsmService {
 
  // Call the backend to build .osm file
   buildOsmFile(northEast: any, southWest: any){
+        this.http.post(this.mapURL, JSON.stringify({
+            left: southWest.lng(),
+            bottom: southWest.lat(),
+            right: northEast.lng(),
+            top: northEast.lat()
+         }), {headers: this.headers})
+        .toPromise().catch(this.handleError);
 
   }
+  private handleError(error : any){
+    console.error('Erreur ', error);
+    return Promise.reject(error.message || error);
+  }
+
 
 }
