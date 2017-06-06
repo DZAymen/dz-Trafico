@@ -58,7 +58,9 @@ class TripManager:
         root = etree.Element("flowdefs")
         i = 0
         for flow in flows:
-            root.append(etree.Element("flow", id=str(i), fromm=str(flow.start_edge), to=str(flow.end_edge), vehsPerHour=str(flow.vehicles_per_hour)))
+            flow_node = etree.Element("flow", id=str(i), to=str(flow.end_edge), vehsPerHour=str(flow.vehicles_per_hour))
+            flow_node.set("from",str(flow.start_edge))
+            root.append(flow_node)
             i += 1
         et = etree.ElementTree(root)
         et.write(Simulation.project_directory + "\\" + self.flows_filename, pretty_print=True)
