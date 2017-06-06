@@ -17,8 +17,8 @@ class Sensor(object):
         self.__critical_speed = critical_speed
 
     def add_measure(self, speed):
-        self.__check_measure(speed)
         self.__measures_list.append(Measure(speed))
+        self.__check_measure(speed)
 
     def __check_measure(self, speed):
         if speed < self.__critical_speed:
@@ -32,6 +32,7 @@ class Sensor(object):
 class Measure(object):
 
     __speed = 0
+    #__time_step
 
     def __init__(self, speed):
         self.__speed = speed
