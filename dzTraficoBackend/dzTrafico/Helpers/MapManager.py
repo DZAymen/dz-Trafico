@@ -1,10 +1,8 @@
 import os
-import osmapi
 from datetime import datetime
 import osmGet
 
 class MapManager:
-    __osmApi = osmapi.OsmApi()
 
     def download_map(self, map_box):
         #Create the directory for the new simulation
