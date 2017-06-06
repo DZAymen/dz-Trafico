@@ -32,6 +32,12 @@ class TripManager:
 
     def define_flow_combinations(self, inflowPoints, outflowPoints):
         flows = []
+        outflows_sum = 0
+
+        #Calculate outflow sum
+        for outflowPoint in outflowPoints:
+            outflows_sum += outflowPoint.value
+
         for inflowPoint in inflowPoints:
             for outflowPoint in outflowPoints:
                 # set the start and end edges for a new flow
@@ -39,7 +45,7 @@ class TripManager:
                     Flow(
                         self.__networkManager.get_edgeId_from_geoCoord(inflowPoint.lon, inflowPoint.lat),
                         self.__networkManager.get_edgeId_from_geoCoord(outflowPoint.lon, outflowPoint.lat),
-                        200
+                        inflowPoint.value * outflowPoint.value / outflows_sum
                     ))
         return flows
 
