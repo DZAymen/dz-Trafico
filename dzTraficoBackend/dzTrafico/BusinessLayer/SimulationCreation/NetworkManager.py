@@ -23,7 +23,12 @@ class NetworkManager:
             self.net = sumolib.net.readNet(self.__network_file_path)
 
     def get_edgeId_from_geoCoord(self, lon, lat):
-        #self.initialize_net()
-        #x, y = self.net.convertLonLat2XY(lon, lat)
-        #self.net.getNeighboringEdges(x,y,0.1, False)
-        return str(lon)
+        self.initialize_net()
+        radius = 1000
+        x, y = self.net.convertLonLat2XY(lon, lat)
+        edges = self.net.getNeighboringEdges(x,y,radius, False)
+        if len(edges)>0:
+            distancesAndEdges = sorted([(dist, edge) for edge, dist in edges])
+            dist, closestEdge = distancesAndEdges[0]
+            return closestEdge.getID()
+        return 0
