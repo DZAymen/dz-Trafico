@@ -25,3 +25,31 @@ class FlowPointSerializer(serializers.Serializer):
     lat = serializers.FloatField()
     type = serializers.CharField()
     value = serializers.FloatField()
+
+class InFlowPoint(object):
+
+    def __init__(self, lon, lat, departTime, value):
+        self.lon = lon
+        self.lat = lat
+        self.departTime = departTime
+        self.value = value
+
+class InFlowPointSerializer(serializers.Serializer):
+
+    lon = serializers.FloatField()
+    lat = serializers.FloatField()
+    departTime = serializers.CharField()
+    value = serializers.FloatField()
+
+class OutFlowPoint(object):
+
+    def __init__(self, lon, lat, value):
+        self.lon = lon
+        self.lat = lat
+        self.value = value
+
+class OutFlowPointSerializer(serializers.Serializer):
+
+    lon = serializers.FloatField()
+    lat = serializers.FloatField()
+    value = serializers.FloatField()
