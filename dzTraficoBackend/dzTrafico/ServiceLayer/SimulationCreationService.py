@@ -4,7 +4,7 @@ from rest_framework.response import Response
 
 from dzTrafico.BusinessLayer.SimulationManager import SimulationManager
 from dzTrafico.BusinessEntities.MapBox import MapBox, MapBoxSerializer
-from dzTrafico.BusinessEntities.Flow import FlowPointSerializer,FlowPoint
+from dzTrafico.BusinessEntities.Flow import FlowPointSerializer,FlowPoint, InFlowPoint, InFlowPointSerializer, OutFlowPoint, OutFlowPointSerializer
 
 simulationManager = SimulationManager.get_instance()
 
@@ -30,14 +30,23 @@ def add_sensors(request):
 @api_view(['POST'])
 def set_traffic_flow(request):
     # request.data validation
-    flowPointSerializer = FlowPointSerializer(data=request.data, many=True)
-    flowPointSerializer.is_valid(raise_exception=True)
+    #flowPointSerializer = FlowPointSerializer(data=request.data, many=True)
+    #flowPointSerializer.is_valid(raise_exception=True)
 
-    flowPoints = []
-    for data in request.data:
-        flowPoints.append(FlowPoint(data["lon"], data["lat"], data["type"], data["value"]))
+    inflowPointSerializer = InFlowPointSerializer(data=request.data["inFlow"], many=True)
+    inflowPointSerializer.is_valid(raise_exception=True)
 
-    simulationManager.set_traffic_flow(flowPoints)
+    outflowPointSerializer = OutFlowPointSerializer(data=request.data["outFlow"], many=True)
+    outflowPointSerializer.is_valid(raise_exception=True)
+
+    inFlowPoints = []
+    outFlowPoints = []
+    for data in request.data["inFlow"],:
+        inFlowPoints.append(InFlowPoint(data["lon"], data["lat"], data["departTime"], data["value"]))
+    for data in request.data["outFlow"],:
+        outFlowPoints.append(OutFlowPoint(data["lon"], data["lat"], data["value"]))
+
+    #simulationManager.set_traffic_flow(flowPoints)
     return Response(status.HTTP_202_ACCEPTED)
 
 #Post incidents list
