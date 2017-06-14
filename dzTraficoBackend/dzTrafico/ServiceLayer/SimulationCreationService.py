@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from dzTrafico.BusinessLayer.SimulationManager import SimulationManager
 from dzTrafico.BusinessEntities.MapBox import MapBox, MapBoxSerializer
 from dzTrafico.BusinessEntities.Flow import InFlowPoint, InFlowPointSerializer, OutFlowPoint, OutFlowPointSerializer
+from dzTrafico.BusinessEntities.VehicleType import VehicleType, VehicleTypeSerializer
 
 simulationManager = SimulationManager.get_instance()
 
@@ -43,7 +44,25 @@ def set_traffic_flow(request):
 #Post vehicle types
 @api_view(['POST'])
 def add_vehicle_types(request):
-    return Response(status.HTTP_202_ACCEPTED)
+    vehicleTypes = []
+    vehicleTypeSerializer = VehicleTypeSerializer(data=request, many=True)
+    vehicleTypeSerializer.is_valid(raise_exception=True)
+
+    for data in request:
+        vehicleTypes.append(
+            VehicleType(
+                data["flow"],
+                data["minGap"],
+                data["speedFactor"],
+                data["speedDev"],
+                data["acceleration"],
+                data["deceleration"],
+                data["sigma"],
+                data["tau"]
+            ))
+
+    simulationManager.add_vehicule_types(vehicleTypes)
+    return Response(status.HTTP_201_CREATED)
 
 #Post incidents list
 @api_view(['POST'])
