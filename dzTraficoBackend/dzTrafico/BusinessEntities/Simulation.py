@@ -67,3 +67,12 @@ class Simulation:
             #print self.__sensors_list[0].get_sensor_id()
             for sensor in self.__sensors_list:
                 sensor.add_measure(traci.inductionloop.getLastStepMeanSpeed(str(sensor.get_sensor_id())))
+
+    def set_flows(self, flows):
+        self.__traffic_flows = flows
+
+    def get_flows(self):
+        return self.__traffic_flows
+
+    def set_sensors_file(self, file_path):
+        Simulation.__sensors_file = file_path
