@@ -40,6 +40,11 @@ def set_traffic_flow(request):
     simulationManager.set_traffic_flow(inFlowPoints, outFlowPoints)
     return Response(status.HTTP_202_ACCEPTED)
 
+#Post vehicle types
+@api_view(['POST'])
+def add_vehicle_types(request):
+    return Response(status.HTTP_202_ACCEPTED)
+
 #Post incidents list
 @api_view(['POST'])
 def add_incidents(request):

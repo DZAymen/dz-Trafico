@@ -34,6 +34,9 @@ class SimulationManager:
     def add_incidents(self, incidents):
         return None
 
+    def add_vehicule_types(self, vehicle_types):
+        SimulationManager.__simulationCreator.define_vehicle_types(vehicle_types)
+
     # Call SimulationCreator.set_map method to create the map
     def create_simulation(self):
         SimulationManager.__simulation = SimulationManager.__simulationCreator.createSimulation()
