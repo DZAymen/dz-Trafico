@@ -19,13 +19,6 @@ def set_simulation_map(request):
     simulationManager.set_map(map_box)
     return Response(status.HTTP_201_CREATED)
 
-#Post sensors list
-@api_view(['POST'])
-def add_sensors(request):
-    # request.data validation
-    simulationManager.add_sensors(request.data)
-    return Response(status.HTTP_202_ACCEPTED)
-
 #Post traffic flow
 @api_view(['POST'])
 def set_traffic_flow(request):
@@ -59,6 +52,7 @@ def add_incidents(request):
 @api_view(['POST'])
 def update_configuration_state(request):
     # request.data validation
+    simulationManager.add_sensors(request.data["sensors_distance"])
     if request.data["configCompleted"]:
         simulationManager.create_simulation()
         return Response(status.HTTP_202_ACCEPTED)
