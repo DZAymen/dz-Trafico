@@ -32,3 +32,7 @@ class NetworkManager:
             dist, closestEdge = distancesAndEdges[0]
             return closestEdge.getID()
         return 0
+
+    def get_edge(self, edge_id):
+        self.initialize_net()
+        return self.net.getEdge(edge_id)
