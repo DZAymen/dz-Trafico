@@ -27,8 +27,8 @@ class SimulationManager:
         SimulationManager.__simulationCreator.create_sensors()
 
     # Call SimulationCreator.set_map method to create the map
-    def set_traffic_flow(self, flowPoints):
-        SimulationManager.__simulationCreator.define_traffic_flows(flowPoints)
+    def set_traffic_flow(self, inFlowPoints, outFlowPoints):
+        SimulationManager.__simulationCreator.define_traffic_flows(inFlowPoints, outFlowPoints)
 
     # Call SimulationCreator.set_map method to create the map
     def add_incidents(self, incidents):

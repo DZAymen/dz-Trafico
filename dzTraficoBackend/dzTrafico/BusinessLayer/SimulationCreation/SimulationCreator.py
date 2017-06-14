@@ -20,8 +20,8 @@ class SimulationCreator:
         SimulationCreator.__simulation.add_sensors(Sensor("196547668#0_1", -1, 50))
         SimulationCreator.__simulation.add_sensors(Sensor("196547668#0_2", -1, 50))
 
-    def define_traffic_flows(self, flowPoints):
-        self.flows_file_path = SimulationCreator.__tripManager.generate_flows_file(flowPoints)
+    def define_traffic_flows(self, inFlowPoints, outFlowPoints):
+        self.flows_file_path = SimulationCreator.__tripManager.generate_flows_file(inFlowPoints, outFlowPoints)
         self.route_file = SimulationCreator.__tripManager.generate_route_file(self.flows_file_path)
         SimulationCreator.__simulation.set_route_file(self.route_file)
 
