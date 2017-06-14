@@ -1,6 +1,6 @@
 from dzTrafico.BusinessEntities.Flow import Flow
 from dzTrafico.BusinessEntities.Simulation import Simulation
-import os, subprocess
+import subprocess
 import lxml.etree as etree
 
 class TripManager:
@@ -17,7 +17,7 @@ class TripManager:
     # the simulation config file
     def generate_flows_file(self, inFlowPoints, outFlowPoints):
         self.flows = self.generate_flows(inFlowPoints, outFlowPoints)
-        return self.save_flows_xml_file(self.flows)
+        return self.save_flows_xml_file(self.flows), self.flows
 
     #Define Flows from FlowPoints
     def generate_flows(self, inFlowPoints, outFlowPoints):
@@ -68,3 +68,7 @@ class TripManager:
         et = etree.ElementTree(root)
         et.write(Simulation.project_directory + "\\" + self.flows_filename, pretty_print=True)
         return Simulation.project_directory + "\\" + self.flows_filename
+
+    def add_vehicle_types(self, vehicle_types):
+        pass
+
