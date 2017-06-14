@@ -28,6 +28,9 @@ class SimulationCreator:
         SimulationCreator.__simulation.set_flows(self.flows)
         SimulationCreator.__simulation.set_route_file(self.route_file)
 
+    def define_vehicle_types(self, vehicle_types):
+        SimulationCreator.__tripManager.add_vehicle_types(vehicle_types)
+
     #Create Simulation Config file 'map.sumocfg'
     def createSimulation(self):
         SimulationCreator.__simulation.create_sumo_config_file()
