@@ -51,6 +51,8 @@ def add_vehicle_types(request):
     for data in request:
         vehicleTypes.append(
             VehicleType(
+                data["max_speed"],
+                data["length"],
                 data["flow"],
                 data["minGap"],
                 data["speedFactor"],
