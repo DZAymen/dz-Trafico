@@ -1,5 +1,6 @@
 from dzTrafico.BusinessEntities.Flow import Flow
 from dzTrafico.BusinessEntities.Simulation import Simulation
+from dzTrafico.BusinessEntities.VehicleType import VehicleType
 import subprocess
 import lxml.etree as etree
 
@@ -8,6 +9,7 @@ class TripManager:
     __inflowPoints = []
     __outflowPoints = []
     flows_filename = "flows.xml"
+    vehicle_types_filename = "vehicle.types.xml"
 
     def __init__(self, networkManager):
         self.__networkManager = networkManager
@@ -70,5 +72,24 @@ class TripManager:
         return Simulation.project_directory + "\\" + self.flows_filename
 
     def add_vehicle_types(self, vehicle_types):
-        pass
-
+        #load vehicle.types.xml file
+        root = None
+        #if it is already created, we append the new vehicle types
+        #else, we create a new file and we append the vehicle types
+        for vehicle_type in vehicle_types:
+            type_node = etree.Element("vType",
+                                      id=str(vehicle_type.type_id),
+                                      accel=str(vehicle_type.acceleration),
+                                      decel=str(vehicle_type.deceleration),
+                                      length=str(vehicle_type.length),
+                                      maxSpeed=str(vehicle_type.max_speed),
+                                      minGap=str(vehicle_type.min_gap),
+                                      speedFactor=str(vehicle_type.speed_factor),
+                                      speedDev=str(vehicle_type.speed_dev),
+                                      sigma=str(vehicle_type.sigma),
+                                      tau=str(vehicle_type.tau)
+                                      )
+            root.append(type_node)
+        et = etree.ElementTree(root)
+        et.write(Simulation.project_directory + "\\..\\" + self.vehicle_types_filename, pretty_print=True)
+        return self.vehicle_types_filename
