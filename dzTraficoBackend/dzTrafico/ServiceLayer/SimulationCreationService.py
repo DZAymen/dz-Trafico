@@ -53,7 +53,6 @@ def add_vehicle_types(request):
             VehicleType(
                 data["max_speed"],
                 data["length"],
-                data["flow"],
                 data["minGap"],
                 data["speedFactor"],
                 data["speedDev"],
