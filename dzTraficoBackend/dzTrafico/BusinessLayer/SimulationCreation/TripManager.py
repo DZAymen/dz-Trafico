@@ -127,19 +127,17 @@ class TripManager:
 
     def set_vehicle_types_in_route_file(self, route_filename):
         #load vehicle.types.xml file
-        if os.path.isfile(Simulation.project_directory + "\\..\\" + self.vehicle_types_filename):
+        if os.path.isfile(Simulation.project_directory + "\\..\\" + self.vehicle_types_filename) and os.path.isfile(Simulation.project_directory + "\\" + route_filename):
             # load vehicle.types.xml file
             tree = etree.parse(Simulation.project_directory + "\\..\\" + self.vehicle_types_filename)
             vtypesdist = tree.getroot()
             vtypesdist_id = vtypesdist.get("id")
             #load map.route.xml file
-            if os.path.isfile(Simulation.project_directory + "\\" + route_filename):
-                # load vehicle.types.xml file
-                tree = etree.parse(Simulation.project_directory + "\\" + route_filename)
-                root = tree.getroot()
-                root.append(vtypesdist)
-                vehicles = root.findall("vehicle")
-                for vehicle in vehicles:
-                    vehicle.set("type", vtypesdist_id)
-                et = etree.ElementTree(root)
-                et.write(Simulation.project_directory + "\\" + route_filename, pretty_print=True)
+            tree = etree.parse(Simulation.project_directory + "\\" + route_filename)
+            root = tree.getroot()
+            root.append(vtypesdist)
+            vehicles = root.findall("vehicle")
+            for vehicle in vehicles:
+                vehicle.set("type", vtypesdist_id)
+            et = etree.ElementTree(root)
+            et.write(Simulation.project_directory + "\\" + route_filename, pretty_print=True)
