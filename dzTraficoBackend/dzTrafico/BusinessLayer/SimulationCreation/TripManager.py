@@ -13,6 +13,7 @@ class TripManager:
 
     def __init__(self, networkManager):
         self.__networkManager = networkManager
+        self.vehicle_types_file_path = Simulation.project_directory + "\\..\\..\\data\\" + self.vehicle_types_filename
 
     # The goal of this method is to define flows from flowPoints
     # and then generate the flow file which will be included in
@@ -74,9 +75,9 @@ class TripManager:
     def add_vehicle_types(self, vehicle_types):
 
         #if it is already created, we append the new vehicle types
-        if os.path.isfile(Simulation.project_directory + "\\..\\" + self.vehicle_types_filename):
+        if os.path.isfile(self.vehicle_types_file_path):
             # load vehicle.types.xml file
-            tree = etree.parse(Simulation.project_directory + "\\..\\" + self.vehicle_types_filename)
+            tree = etree.parse(self.vehicle_types_file_path)
             root = tree.getroot()
         else:
             #else, we create a new root and we append the vehicle types
@@ -97,24 +98,25 @@ class TripManager:
                                       )
             root.append(type_node)
         et = etree.ElementTree(root)
-        et.write(Simulation.project_directory + "\\..\\" + self.vehicle_types_filename, pretty_print=True)
+        et.write(self.vehicle_types_file_path, pretty_print=True)
         return self.vehicle_types_filename
 
     def set_vehicle_types_percentages(self, vehicle_types_percentages):
-        if os.path.isfile(Simulation.project_directory + "\\..\\" + self.vehicle_types_filename):
+        if os.path.isfile(self.vehicle_types_file_path):
             # load vehicle.types.xml file
-            tree = etree.parse(Simulation.project_directory + "\\..\\" + self.vehicle_types_filename)
+            tree = etree.parse(self.vehicle_types_file_path)
             root = tree.getroot()
             for vtype_percentage in vehicle_types_percentages:
-                vtype = root.findall("*[@id='"+ str(vtype_percentage.type_id) +"']")
-                vtype.set("probability", str(vtype_percentage.value))
+                vtype = root.findall("*[@id='"+ vtype_percentage["type_id"] +"']")
+                if len(vtype) > 0:
+                    vtype[0].set("probability", str(vtype_percentage["percentage"]))
             et = etree.ElementTree(root)
-            et.write(Simulation.project_directory + "\\..\\" + self.vehicle_types_filename, pretty_print=True)
+            et.write(self.vehicle_types_file_path, pretty_print=True)
 
     def get_vehicle_types(self):
-        if os.path.isfile(Simulation.project_directory + "\\..\\" + self.vehicle_types_filename):
+        if os.path.isfile(self.vehicle_types_file_path):
             # load vehicle.types.xml file
-            tree = etree.parse(Simulation.project_directory + "\\..\\" + self.vehicle_types_filename)
+            tree = etree.parse(self.vehicle_types_file_path)
             root = tree.getroot()
             vtypes = root.getchildren()
             vehicle_types = []
@@ -138,17 +140,33 @@ class TripManager:
 
     def set_vehicle_types_in_route_file(self, route_filename):
         #load vehicle.types.xml file
-        if os.path.isfile(Simulation.project_directory + "\\..\\" + self.vehicle_types_filename) and os.path.isfile(Simulation.project_directory + "\\" + route_filename):
+        if os.path.isfile(self.vehicle_types_file_path) and os.path.isfile(Simulation.project_directory + "\\" + route_filename):
             # load vehicle.types.xml file
-            tree = etree.parse(Simulation.project_directory + "\\..\\" + self.vehicle_types_filename)
+            tree = etree.parse(self.vehicle_types_file_path)
             vtypesdist = tree.getroot()
             vtypesdist_id = vtypesdist.get("id")
             #load map.route.xml file
             tree = etree.parse(Simulation.project_directory + "\\" + route_filename)
             root = tree.getroot()
-            root.insert(0,vtypesdist)
+            vtypesdistribution_node = root.findall("vTypeDistribution")
+            if len(vtypesdistribution_node) > 0:
+                for vtypes in vtypesdist.getchildren():
+                    vtypesdistribution_node[0].append(vtypes)
+            else:
+                root.insert(0,vtypesdist)
             vehicles = root.findall("vehicle")
             for vehicle in vehicles:
                 vehicle.set("type", vtypesdist_id)
             et = etree.ElementTree(root)
             et.write(Simulation.project_directory + "\\" + route_filename, pretty_print=True)
+
+#            vtypesdistribution_node = root.findall("vTypeDistribution")
+#            if len(vtypesdistribution_node) > 0:
+#                for vtypeschild in vtypesdist.getchildren():
+#                    vtype = root.findall("*[@id='" + vtypeschild.get("id") + "']")
+#                    if len(vtype) > 0:
+#                        vtype[0].set("probability", str())
+#                    else:
+#                        vtypesdistribution_node[0].append(vtypeschild)
+#            else:
+#                root.insert(0, vtypesdist)

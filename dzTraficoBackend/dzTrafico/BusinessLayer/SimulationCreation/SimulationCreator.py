@@ -6,10 +6,10 @@ from dzTrafico.BusinessLayer.SimulationCreation.SensorsManager import SensorsMan
 
 class SimulationCreator:
 
+    __simulation = Simulation()
     __networkManager = NetworkManager()
     __sensorsManager = SensorsManager(__networkManager)
     __tripManager = TripManager(__networkManager)
-    __simulation = Simulation()
 
     #Call NetworkManager to create map.net.xml
     def create_network_file(self, mapBox):
@@ -32,7 +32,8 @@ class SimulationCreator:
         SimulationCreator.__tripManager.add_vehicle_types(vehicle_types)
 
     def set_vehicle_types_percentages(self, vehicle_types_percentages):
-        pass
+        SimulationCreator.__tripManager.set_vehicle_types_percentages(vehicle_types_percentages)
+        SimulationCreator.__tripManager.set_vehicle_types_in_route_file(SimulationCreator.__simulation.get_route_file())
 
     #Create Simulation Config file 'map.sumocfg'
     def createSimulation(self):
