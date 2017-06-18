@@ -32,3 +32,7 @@ class VehicleTypeSerializer(serializers.Serializer):
     deceleration = serializers.FloatField()
     sigma = serializers.FloatField()
     tau = serializers.FloatField()
+
+class VehicleTypesPercentagesSerializer(serializers.Serializer):
+    type_id = serializers.CharField()
+    percentage = serializers.FloatField()
