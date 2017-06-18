@@ -146,7 +146,7 @@ class TripManager:
             #load map.route.xml file
             tree = etree.parse(Simulation.project_directory + "\\" + route_filename)
             root = tree.getroot()
-            root.append(vtypesdist)
+            root.insert(0,vtypesdist)
             vehicles = root.findall("vehicle")
             for vehicle in vehicles:
                 vehicle.set("type", vtypesdist_id)
