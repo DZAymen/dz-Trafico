@@ -65,6 +65,11 @@ def add_vehicle_types(request):
     simulationManager.add_vehicule_types(vehicleTypes)
     return Response(status.HTTP_201_CREATED)
 
+@api_view(['POST'])
+def add_vehicle_types_percentages(request):
+    simulationManager.set_vehicle_types_percentages(request)
+    return Response(status.HTTP_201_CREATED)
+
 #Post incidents list
 @api_view(['POST'])
 def add_incidents(request):

@@ -37,6 +37,9 @@ class SimulationManager:
     def add_vehicule_types(self, vehicle_types):
         SimulationManager.__simulationCreator.add_vehicle_types(vehicle_types)
 
+    def set_vehicle_types_percentages(self, vehicle_types_percentages):
+        SimulationManager.__simulationCreator.set_vehicle_types_percentages(vehicle_types_percentages)
+
     # Call SimulationCreator.set_map method to create the map
     def create_simulation(self):
         SimulationManager.__simulation = SimulationManager.__simulationCreator.createSimulation()
