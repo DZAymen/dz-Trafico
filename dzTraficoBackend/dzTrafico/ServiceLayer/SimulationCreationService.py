@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from dzTrafico.BusinessLayer.SimulationManager import SimulationManager
 from dzTrafico.BusinessEntities.MapBox import MapBox, MapBoxSerializer
 from dzTrafico.BusinessEntities.Flow import InFlowPoint, InFlowPointSerializer, OutFlowPoint, OutFlowPointSerializer
-from dzTrafico.BusinessEntities.VehicleType import VehicleType, VehicleTypeSerializer
+from dzTrafico.BusinessEntities.VehicleType import VehicleType, VehicleTypeSerializer, VehicleTypesPercentagesSerializer
 
 simulationManager = SimulationManager.get_instance()
 
@@ -45,17 +45,17 @@ def set_traffic_flow(request):
 @api_view(['POST'])
 def add_vehicle_types(request):
     vehicleTypes = []
-    vehicleTypeSerializer = VehicleTypeSerializer(data=request, many=True)
+    vehicleTypeSerializer = VehicleTypeSerializer(data=request.data, many=True)
     vehicleTypeSerializer.is_valid(raise_exception=True)
 
-    for data in request:
+    for data in request.data:
         vehicleTypes.append(
             VehicleType(
                 data["max_speed"],
                 data["length"],
-                data["minGap"],
-                data["speedFactor"],
-                data["speedDev"],
+                data["min_gap"],
+                data["speed_factor"],
+                data["speed_dev"],
                 data["acceleration"],
                 data["deceleration"],
                 data["sigma"],
@@ -67,7 +67,11 @@ def add_vehicle_types(request):
 
 @api_view(['POST'])
 def add_vehicle_types_percentages(request):
-    simulationManager.set_vehicle_types_percentages(request)
+    #Vehicle types percentages validation
+    vehicleTypesPercentagesSerializer = VehicleTypesPercentagesSerializer(data=request.data, many=True)
+    vehicleTypesPercentagesSerializer.is_valid(raise_exception=True)
+
+    simulationManager.set_vehicle_types_percentages(request.data)
     return Response(status.HTTP_201_CREATED)
 
 #Post incidents list
