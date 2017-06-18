@@ -6,6 +6,7 @@ from dzTrafico.BusinessLayer.SimulationManager import SimulationManager
 from dzTrafico.BusinessEntities.MapBox import MapBox, MapBoxSerializer
 from dzTrafico.BusinessEntities.Flow import InFlowPoint, InFlowPointSerializer, OutFlowPoint, OutFlowPointSerializer
 from dzTrafico.BusinessEntities.VehicleType import VehicleType, VehicleTypeSerializer, VehicleTypesPercentagesSerializer
+from dzTrafico.BusinessEntities.Incident import Incident, IncidentSerializer
 
 simulationManager = SimulationManager.get_instance()
 
@@ -78,7 +79,18 @@ def add_vehicle_types_percentages(request):
 @api_view(['POST'])
 def add_incidents(request):
     # request.data validation
-    simulationManager.add_incidents(request.data)
+    incidentSerializer = IncidentSerializer(data=request.data, many=True)
+    incidentSerializer.is_valid(raise_exception=True)
+    #Create incidents objects
+    incidents = []
+    for incident in request.data:
+        incidents.append(
+            Incident(incident["lon"],
+                     incident["lat"],
+                     incident["time"]
+                     )
+        )
+    simulationManager.add_incidents(incidents)
     return Response(status.HTTP_202_ACCEPTED)
 
 #Post configuration state
