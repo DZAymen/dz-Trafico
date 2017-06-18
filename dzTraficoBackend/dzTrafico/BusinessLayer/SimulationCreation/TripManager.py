@@ -100,6 +100,17 @@ class TripManager:
         et.write(Simulation.project_directory + "\\..\\" + self.vehicle_types_filename, pretty_print=True)
         return self.vehicle_types_filename
 
+    def set_vehicle_types_percentages(self, vehicle_types_percentages):
+        if os.path.isfile(Simulation.project_directory + "\\..\\" + self.vehicle_types_filename):
+            # load vehicle.types.xml file
+            tree = etree.parse(Simulation.project_directory + "\\..\\" + self.vehicle_types_filename)
+            root = tree.getroot()
+            for vtype_percentage in vehicle_types_percentages:
+                vtype = root.findall("*[@id='"+ str(vtype_percentage.type_id) +"']")
+                vtype.set("probability", str(vtype_percentage.value))
+            et = etree.ElementTree(root)
+            et.write(Simulation.project_directory + "\\..\\" + self.vehicle_types_filename, pretty_print=True)
+
     def get_vehicle_types(self):
         if os.path.isfile(Simulation.project_directory + "\\..\\" + self.vehicle_types_filename):
             # load vehicle.types.xml file
