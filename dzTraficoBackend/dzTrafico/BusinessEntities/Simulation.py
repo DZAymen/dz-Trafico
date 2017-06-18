@@ -30,6 +30,9 @@ class Simulation:
     def set_route_file(self, route_file_path):
         Simulation.__route_file = route_file_path
 
+    def get_route_file(self):
+        return Simulation.__route_file
+
     def get_network_file_path(self):
         return Simulation.project_directory + Simulation.__network_file
 
