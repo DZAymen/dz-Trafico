@@ -39,3 +39,6 @@ class SimulationCreator:
     def createSimulation(self):
         SimulationCreator.__simulation.create_sumo_config_file()
         return SimulationCreator.__simulation
+
+    def add_incidents(self, incidents):
+        SimulationCreator.__tripManager.define_incidents(incidents)
