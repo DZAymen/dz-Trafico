@@ -1,8 +1,9 @@
 
 export const SIDEBAR_ROUTES: SidebarRoute[] = [
-    { path: '', title: 'Dashboard',  icon: 'fa fa-dashboard', class: '' },
+    { path: '', title: 'Tableau de Bord',  icon: 'fa fa-dashboard', class: '' },
     { path: 'map', title: 'Lancer simulation',  icon:'fa fa-car', class: '' },
-    { path: '', title: 'Table List',  icon:'fa fa-bars', class: '' }
+    { path: '', title: 'Simulation en Temps Réel',  icon:'fa fa-clock-o', class: '' },
+    { path: 'result', title: 'Résultat Simulation',  icon:'fa fa-line-chart', class: '' }
 ];
 
  interface SidebarRoute {

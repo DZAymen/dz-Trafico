@@ -2,19 +2,21 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { StepsModule } from 'primeng/primeng';
 
-import { HeaderComponent } from './header/header.component';
+import { OsmService } from './osm.service';
 import { StepsComponent } from './steps/steps.component';
+
+
 
 @NgModule({
   imports: [
     CommonModule,
     StepsModule
   ],
-  declarations: [HeaderComponent, StepsComponent],
+  declarations: [StepsComponent],
   exports:[
     CommonModule,
-    HeaderComponent,
     StepsComponent
-  ]
+  ],
+  providers: [OsmService]
 })
 export class SharedModule { }

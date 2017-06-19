@@ -1,7 +1,6 @@
-export interface VehicleType {
+export class VehicleType {
 
-  // id: number;
-
+  id: number;
   accel: number;
   decel: number;
   sigma: number;

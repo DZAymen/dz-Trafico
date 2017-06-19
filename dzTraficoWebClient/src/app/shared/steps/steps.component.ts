@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
-import { Router } from '@angular/router'
+import { Router } from '@angular/router';
 import {MenuItem} from  'primeng/primeng';
 
 @Component({
@@ -12,12 +12,10 @@ import {MenuItem} from  'primeng/primeng';
         .ui-steps .ui-steps-item {
             width: 25%;
         }
-
         .ui-steps .ui-state-highlight {
             background: #999999;
             color: #FFFFFF;
         }
-
     `],
     encapsulation: ViewEncapsulation.None
 })

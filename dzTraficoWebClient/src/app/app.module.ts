@@ -5,18 +5,20 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { SidebarModule } from 'ng-sidebar';
 import { GMapModule, InputTextModule, ButtonModule, GrowlModule, DropdownModule, DialogModule,
-         SpinnerModule, SliderModule, DataTableModule, ChartModule
+         SpinnerModule, SliderModule, DataTableModule, ChartModule, PanelModule, ConfirmDialogModule
        }  from 'primeng/primeng';
 
 // Imports for loading & configuring the in-memory web api
-/*import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService }  from './in-memory-data-service';*/
+import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { TrafficFlowData }  from './data/trafficflow-data';
+
 
 // Feature Components
 import { AppComponent } from './app.component';
-import { MapComponent } from './components/map/map.component';
-import { TrafficComponent } from './components/traffic/traffic.component';
-import { VehicleComponent } from './components/vehicle/vehicle.component';
+import { MapComponent } from './components/creation/map/map.component';
+import { TrafficComponent } from './components/creation/traffic/traffic.component';
+import { VehicleComponent } from './components/creation/vehicle/vehicle.component';
+import { SimulationComponent } from './components/creation/simulation/simulation.component';
 
 // Other Modules
 import { SharedModule } from './shared/shared.module';
@@ -24,7 +26,8 @@ import { CoreModule } from './core/core.module';
 
 // Routing
 import {routing} from './app.routing';
-import { SimulationComponent } from './components/simulation/simulation.component';
+import { StatisticsComponent } from './components/result/statistics/statistics.component';
+
 
 
 @NgModule({
@@ -33,20 +36,22 @@ import { SimulationComponent } from './components/simulation/simulation.componen
     MapComponent,
     TrafficComponent,
     VehicleComponent,
-    SimulationComponent
+    SimulationComponent,
+    StatisticsComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
     HttpModule,
-  //  InMemoryWebApiModule.forRoot(InMemoryDataService),
+    InMemoryWebApiModule.forRoot(TrafficFlowData),
+
 
     SharedModule, CoreModule,
     routing,
     SidebarModule.forRoot(),
     GMapModule, InputTextModule, ButtonModule, GrowlModule, DropdownModule, DialogModule,
-    SpinnerModule, SliderModule, DataTableModule, ChartModule
+    SpinnerModule, SliderModule, DataTableModule, ChartModule, PanelModule, ConfirmDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,9 +1,11 @@
 
 export class Location {
 
-  constructor(
-    private lat: number,
-    private lng: number,
-  ){}
-  
+    lat: number;
+    lng: number;
+
+    setLocation(lat: number, lng: number){
+      this.lat= lat;
+      this.lng=lng;
+    }
 }
