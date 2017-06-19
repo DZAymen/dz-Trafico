@@ -22,17 +22,23 @@ class SimulationManager:
         SimulationManager.__simulationCreator.create_network_file(map_box)
 
     # Call SimulationCreator.set_map method to create the map
-    def add_sensors(self, sensors):
+    def add_sensors(self, sensors_distance):
         Sensor.trafficAnalyzer = SimulationManager.__trafficAnalyzer
-        SimulationManager.__simulationCreator.create_sensors()
+        SimulationManager.__simulationCreator.create_sensors(sensors_distance)
 
     # Call SimulationCreator.set_map method to create the map
-    def set_traffic_flow(self, flowPoints):
-        SimulationManager.__simulationCreator.define_traffic_flows(flowPoints)
+    def set_traffic_flow(self, inFlowPoints, outFlowPoints):
+        SimulationManager.__simulationCreator.define_traffic_flows(inFlowPoints, outFlowPoints)
 
     # Call SimulationCreator.set_map method to create the map
     def add_incidents(self, incidents):
         return None
+
+    def add_vehicule_types(self, vehicle_types):
+        SimulationManager.__simulationCreator.add_vehicle_types(vehicle_types)
+
+    def set_vehicle_types_percentages(self, vehicle_types_percentages):
+        SimulationManager.__simulationCreator.set_vehicle_types_percentages(vehicle_types_percentages)
 
     # Call SimulationCreator.set_map method to create the map
     def create_simulation(self):

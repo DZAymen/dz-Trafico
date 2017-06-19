@@ -28,6 +28,11 @@ class Sensor(object):
     def get_sensor_id(self):
         return self.__id
 
+    def get_sensor_lane(self):
+        return self.__lane
+
+    def get_sensor_position(self):
+        return self.__position
 
 class Measure(object):
 
