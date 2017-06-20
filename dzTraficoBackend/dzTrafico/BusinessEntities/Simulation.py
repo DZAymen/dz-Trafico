@@ -2,6 +2,10 @@ import os, sumolib, subprocess
 import traci
 
 class Simulation:
+
+    inFlowPoints = []
+    outFlowPoints = []
+
     project_directory = ""
     __sumocfg_file = "map.sumocfg"
     __osm_file = ""
@@ -92,3 +96,9 @@ class Simulation:
                     if len(vehicles)>0:
                         traci.vehicle.setSpeed(vehicles[0], 0)
                         break
+
+    def add_inflows(self, inFlowPoints):
+        self.inFlowPoints.append(inFlowPoints)
+
+    def add_outflows(self, outFlowPoints):
+        self.outFlowPoints.append(outFlowPoints)
