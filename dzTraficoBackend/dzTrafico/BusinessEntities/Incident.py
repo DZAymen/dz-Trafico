@@ -2,15 +2,15 @@ from rest_framework import serializers
 
 class Incident(object):
 
-    edge_id = ""
+    lanes = []
 
     def __init__(self, lon, lat, time):
         self.lon = lon
         self.lat = lat
         self.time = time
 
-    def set_edge_id(self, edge_id):
-        self.edge_id = edge_id
+    def set_lanes(self, lanes):
+        self.lanes = lanes
 
 class IncidentSerializer(serializers.Serializer):
 
