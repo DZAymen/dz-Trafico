@@ -45,7 +45,7 @@ def add_traffic_inflow(request):
         return Response(data=inflowPointSerializer.data,status=status.HTTP_202_ACCEPTED)
 
     elif request.method == 'GET':
-        return Response(data={}, status=status.HTTP_200_OK)
+        return Response(data=[], status=status.HTTP_200_OK)
 
 @api_view(['POST', 'GET'])
 def add_traffic_outflow(request):
@@ -64,7 +64,7 @@ def add_traffic_outflow(request):
         return Response(data=outflowPointSerializer.data,status=status.HTTP_202_ACCEPTED)
 
     elif request.method == 'GET':
-        return Response(data={}, status=status.HTTP_200_OK)
+        return Response(data=[], status=status.HTTP_200_OK)
 
 
 #Post vehicle types
@@ -90,7 +90,7 @@ def add_vehicle_types(request):
         return Response(data=vehicleTypeSerializer.data,status=status.HTTP_201_CREATED)
 
     elif request.method == 'GET':
-        return Response(data={}, status=status.HTTP_200_OK)
+        return Response(data=[], status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def add_vehicle_types_percentages(request):
@@ -123,7 +123,7 @@ def add_incidents(request):
         return Response(data=incidentSerializer.data,status=status.HTTP_202_ACCEPTED)
 
     elif request.method == 'GET':
-        return Response(data={},status=status.HTTP_200_OK)
+        return Response(data=[],status=status.HTTP_200_OK)
 
 
 #Post configuration state
