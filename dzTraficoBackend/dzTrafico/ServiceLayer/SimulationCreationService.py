@@ -35,9 +35,11 @@ def set_traffic_flow(request):
     inFlowPoints = []
     outFlowPoints = []
     for data in request.data["inFlows"]:
-        inFlowPoints.append(InFlowPoint(data["lon"], data["lat"], data["depart_time"], data["value"]))
+        inFlowPoints.append(InFlowPoint(data["location"]["lng"], data["location"]["lat"], data["departTime"], data["flow"]))
+        print inFlowPoints
     for data in request.data["outFlows"]:
-        outFlowPoints.append(OutFlowPoint(data["lon"], data["lat"], data["value"]))
+        outFlowPoints.append(OutFlowPoint(data["location"]["lng"], data["location"]["lat"], data["flow"]))
+        print outFlowPoints
 
     simulationManager.set_traffic_flow(inFlowPoints, outFlowPoints)
     return Response(status.HTTP_202_ACCEPTED)
@@ -85,8 +87,8 @@ def add_incidents(request):
     incidents = []
     for incident in request.data:
         incidents.append(
-            Incident(incident["lon"],
-                     incident["lat"],
+            Incident(incident["location"]["lng"],
+                     incident["location"]["lat"],
                      incident["time"]
                      )
         )

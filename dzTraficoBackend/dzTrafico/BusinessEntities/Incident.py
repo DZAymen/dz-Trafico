@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from Location import Location, LocationSerializer
 
 class Incident(object):
 
@@ -13,7 +14,5 @@ class Incident(object):
         self.lanes = lanes
 
 class IncidentSerializer(serializers.Serializer):
-
-    lon = serializers.FloatField()
-    lat = serializers.FloatField()
+    location = LocationSerializer()
     time = serializers.CharField()

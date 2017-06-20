@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from Location import Location, LocationSerializer
 
 class Flow(object):
     end_depart_time = 10000
@@ -18,10 +19,9 @@ class InFlowPoint(object):
 
 class InFlowPointSerializer(serializers.Serializer):
 
-    lon = serializers.FloatField()
-    lat = serializers.FloatField()
-    depart_time = serializers.FloatField()
-    value = serializers.FloatField()
+    location = LocationSerializer()
+    departTime = serializers.FloatField()
+    flow = serializers.FloatField()
 
 class OutFlowPoint(object):
 
@@ -32,6 +32,5 @@ class OutFlowPoint(object):
 
 class OutFlowPointSerializer(serializers.Serializer):
 
-    lon = serializers.FloatField()
-    lat = serializers.FloatField()
-    value = serializers.FloatField()
+    location = LocationSerializer()
+    flow = serializers.FloatField()
