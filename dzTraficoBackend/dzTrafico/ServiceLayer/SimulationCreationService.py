@@ -25,23 +25,44 @@ def set_simulation_map(request):
 @api_view(['POST'])
 def set_traffic_flow(request):
     # request.data validation
+    simulationManager.set_traffic_flow()
+    return Response(status.HTTP_202_ACCEPTED)
 
-    inflowPointSerializer = InFlowPointSerializer(data=request.data["inFlows"], many=True)
+@api_view(['POST'])
+def add_traffic_inflow(request):
+    # request.data validation
+    inflowPointSerializer = InFlowPointSerializer(data=request.data, many=True)
     inflowPointSerializer.is_valid(raise_exception=True)
 
-    outflowPointSerializer = OutFlowPointSerializer(data=request.data["outFlows"], many=True)
+    inFlowPoints = []
+    for data in request.data:
+        inFlowPoints.append(
+            InFlowPoint(
+                data["location"]["lng"],
+                data["location"]["lat"],
+                data["departTime"],
+                data["flow"])
+        )
+
+    simulationManager.add_inflows(inFlowPoints)
+    return Response(status.HTTP_202_ACCEPTED)
+
+@api_view(['POST'])
+def add_traffic_outflow(request):
+    # request.data validation
+    outflowPointSerializer = OutFlowPointSerializer(data=request.data, many=True)
     outflowPointSerializer.is_valid(raise_exception=True)
 
-    inFlowPoints = []
     outFlowPoints = []
-    for data in request.data["inFlows"]:
-        inFlowPoints.append(InFlowPoint(data["location"]["lng"], data["location"]["lat"], data["departTime"], data["flow"]))
-        print inFlowPoints
-    for data in request.data["outFlows"]:
-        outFlowPoints.append(OutFlowPoint(data["location"]["lng"], data["location"]["lat"], data["flow"]))
-        print outFlowPoints
+    for data in request.data:
+        outFlowPoints.append(
+            OutFlowPoint(
+                data["location"]["lng"],
+                data["location"]["lat"],
+                data["flow"])
+        )
 
-    simulationManager.set_traffic_flow(inFlowPoints, outFlowPoints)
+    simulationManager.add_outflows(outFlowPoints)
     return Response(status.HTTP_202_ACCEPTED)
 
 #Post vehicle types
@@ -87,10 +108,11 @@ def add_incidents(request):
     incidents = []
     for incident in request.data:
         incidents.append(
-            Incident(incident["location"]["lng"],
-                     incident["location"]["lat"],
-                     incident["time"]
-                     )
+            Incident(
+                incident["location"]["lng"],
+                incident["location"]["lat"],
+                incident["time"]
+            )
         )
     simulationManager.add_incidents(incidents)
     return Response(status.HTTP_202_ACCEPTED)
