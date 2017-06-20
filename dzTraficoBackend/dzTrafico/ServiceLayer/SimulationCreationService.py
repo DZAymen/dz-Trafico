@@ -43,6 +43,10 @@ def add_traffic_inflow(request):
         )
     )
     return Response(data=inflowPointSerializer.data,status=status.HTTP_202_ACCEPTED)
+@api_view(['GET'])
+def add_traffic_inflow(request):
+    return Response(data={},status=status.HTTP_200_OK)
+
 
 @api_view(['POST'])
 def add_traffic_outflow(request):
@@ -58,6 +62,10 @@ def add_traffic_outflow(request):
         )
     )
     return Response(data=outflowPointSerializer.data,status=status.HTTP_202_ACCEPTED)
+@api_view(['GET'])
+def add_traffic_outflow(request):
+    return Response(data={},status=status.HTTP_200_OK)
+
 
 #Post vehicle types
 @api_view(['POST'])
@@ -80,6 +88,10 @@ def add_vehicle_types(request):
             )
     )
     return Response(data=vehicleTypeSerializer.data,status=status.HTTP_201_CREATED)
+@api_view(['GET'])
+def add_vehicle_types(request):
+    return Response(data={},status=status.HTTP_200_OK)
+
 
 @api_view(['POST'])
 def add_vehicle_types_percentages(request):
@@ -109,6 +121,10 @@ def add_incidents(request):
     #response = Response(status.HTTP_202_ACCEPTED)
     #response = JSon
     return Response(data=incidentSerializer.data,status=status.HTTP_202_ACCEPTED)
+@api_view(['GET'])
+def add_incidents(request):
+    return Response(data={},status=status.HTTP_200_OK)
+
 
 #Post configuration state
 # :true means to launch the simulation creation
