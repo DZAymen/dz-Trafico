@@ -47,8 +47,8 @@ class SimulationManager:
     def add_incidents(self, incident):
         SimulationManager.__simulationCreator.add_incidents(incident)
 
-    def add_vehicule_types(self, vehicle_types):
-        SimulationManager.__simulationCreator.add_vehicle_types(vehicle_types)
+    def add_vehicule_types(self, vehicle_type):
+        SimulationManager.__simulationCreator.add_vehicle_types(vehicle_type)
 
     def set_vehicle_types_percentages(self, vehicle_types_percentages):
         SimulationManager.__simulationCreator.set_vehicle_types_percentages(vehicle_types_percentages)

@@ -28,8 +28,8 @@ class SimulationCreator:
         SimulationCreator.__simulation.set_flows(self.flows)
         SimulationCreator.__simulation.set_route_file(self.route_file)
 
-    def add_vehicle_types(self, vehicle_types):
-        SimulationCreator.__tripManager.add_vehicle_types(vehicle_types)
+    def add_vehicle_types(self, vehicle_type):
+        SimulationCreator.__tripManager.add_vehicle_types(vehicle_type)
 
     def set_vehicle_types_percentages(self, vehicle_types_percentages):
         SimulationCreator.__tripManager.set_vehicle_types_percentages(vehicle_types_percentages)

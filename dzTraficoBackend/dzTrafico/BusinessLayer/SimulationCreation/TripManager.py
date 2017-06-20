@@ -72,7 +72,7 @@ class TripManager:
         et.write(Simulation.project_directory + "\\" + self.flows_filename, pretty_print=True)
         return Simulation.project_directory + "\\" + self.flows_filename
 
-    def add_vehicle_types(self, vehicle_types):
+    def add_vehicle_types(self, vehicle_type):
 
         #if it is already created, we append the new vehicle types
         if os.path.isfile(self.vehicle_types_file_path):
@@ -83,20 +83,19 @@ class TripManager:
             #else, we create a new root and we append the vehicle types
             root = etree.Element("vTypeDistribution", id="vtypedist")
 
-        for vehicle_type in vehicle_types:
-            type_node = etree.Element("vType",
-                                      id=str(vehicle_type.type_id),
-                                      accel=str(vehicle_type.acceleration),
-                                      decel=str(vehicle_type.deceleration),
-                                      length=str(vehicle_type.length),
-                                      maxSpeed=str(vehicle_type.max_speed),
-                                      minGap=str(vehicle_type.min_gap),
-                                      speedFactor=str(vehicle_type.speed_factor),
-                                      speedDev=str(vehicle_type.speed_dev),
-                                      sigma=str(vehicle_type.sigma),
-                                      tau=str(vehicle_type.tau)
-                                      )
-            root.append(type_node)
+        type_node = etree.Element("vType",
+                                  id=str(vehicle_type.type_id),
+                                  accel=str(vehicle_type.acceleration),
+                                  decel=str(vehicle_type.deceleration),
+                                  length=str(vehicle_type.length),
+                                  maxSpeed=str(vehicle_type.max_speed),
+                                  minGap=str(vehicle_type.min_gap),
+                                  speedFactor=str(vehicle_type.speed_factor),
+                                  speedDev=str(vehicle_type.speed_dev),
+                                  sigma=str(vehicle_type.sigma),
+                                  tau=str(vehicle_type.tau)
+                                  )
+        root.append(type_node)
         et = etree.ElementTree(root)
         et.write(self.vehicle_types_file_path, pretty_print=True)
         return self.vehicle_types_filename

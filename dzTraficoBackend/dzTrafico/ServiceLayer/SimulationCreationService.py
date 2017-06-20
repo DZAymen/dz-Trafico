@@ -63,24 +63,22 @@ def add_traffic_outflow(request):
 @api_view(['POST'])
 def add_vehicle_types(request):
     vehicleTypes = []
-    vehicleTypeSerializer = VehicleTypeSerializer(data=request.data, many=True)
+    vehicleTypeSerializer = VehicleTypeSerializer(data=request.data)
     vehicleTypeSerializer.is_valid(raise_exception=True)
 
-    for data in request.data:
-        vehicleTypes.append(
-            VehicleType(
-                data["max_speed"],
-                data["length"],
-                data["min_gap"],
-                data["speed_factor"],
-                data["speed_dev"],
-                data["acceleration"],
-                data["deceleration"],
-                data["sigma"],
-                data["tau"]
-            ))
-
-    simulationManager.add_vehicule_types(vehicleTypes)
+    simulationManager.add_vehicule_types(
+        VehicleType(
+                request.data["max_speed"],
+                request.data["length"],
+                request.data["min_gap"],
+                request.data["speed_factor"],
+                request.data["speed_dev"],
+                request.data["acceleration"],
+                request.data["deceleration"],
+                request.data["sigma"],
+                request.data["tau"]
+            )
+    )
     return Response(status.HTTP_201_CREATED)
 
 @api_view(['POST'])
@@ -95,17 +93,21 @@ def add_vehicle_types_percentages(request):
 #Post incidents list
 @api_view(['POST'])
 def add_incidents(request):
+
     # request.data validation
     incidentSerializer = IncidentSerializer(data=request.data)
     incidentSerializer.is_valid(raise_exception=True)
 
     simulationManager.add_incidents(
         Incident(
-                request.incident["location"]["lng"],
-                request.incident["location"]["lat"],
-                request.incident["time"]
+                request.data["location"]["lng"],
+                request.data["location"]["lat"],
+                request.data["time"],
+                request.data["duration"]
             )
     )
+    #response = Response(status.HTTP_202_ACCEPTED)
+    #response = JSon
     return Response(status.HTTP_202_ACCEPTED)
 
 #Post configuration state
