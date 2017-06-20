@@ -39,3 +39,8 @@ class SimulationCreator:
     def createSimulation(self):
         SimulationCreator.__simulation.create_sumo_config_file()
         return SimulationCreator.__simulation
+
+    def add_incidents(self, incidents):
+        #Calculate each incident edge_id before setting them in simulation instance
+        incident_list = SimulationCreator.__tripManager.set_incidents_lanes(incidents)
+        SimulationCreator.__simulation.set_incidents(incident_list)
