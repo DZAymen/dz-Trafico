@@ -19,7 +19,7 @@ class InFlowPoint(object):
 
 class InFlowPointSerializer(serializers.Serializer):
 
-    location = LocationSerializer()
+    position = LocationSerializer()
     departTime = serializers.FloatField()
     flow = serializers.FloatField()
 
@@ -31,6 +31,5 @@ class OutFlowPoint(object):
         self.value = value
 
 class OutFlowPointSerializer(serializers.Serializer):
-
-    location = LocationSerializer()
-    flow = serializers.FloatField()
+    position = LocationSerializer()
+    flow = serializers.FloatField(required=False)

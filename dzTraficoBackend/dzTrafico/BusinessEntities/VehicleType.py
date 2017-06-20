@@ -23,15 +23,16 @@ class VehicleType(object):
 
 class VehicleTypeSerializer(serializers.Serializer):
 
-    max_speed = serializers.FloatField()
-    length = serializers.FloatField()
-    min_gap = serializers.FloatField()
-    speed_factor = serializers.FloatField()
-    speed_dev = serializers.FloatField()
-    acceleration = serializers.FloatField()
-    deceleration = serializers.FloatField()
+    maxSpeed = serializers.FloatField()
+    length = serializers.FloatField(required=False)
+    minGap = serializers.FloatField()
+    speed_factor = serializers.FloatField(required=False)
+    speed_dev = serializers.FloatField(required=False)
+    accel = serializers.FloatField()
+    decel = serializers.FloatField()
     sigma = serializers.FloatField()
     tau = serializers.FloatField()
+    #Impatience
 
 class VehicleTypesPercentagesSerializer(serializers.Serializer):
     type_id = serializers.CharField()

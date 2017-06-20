@@ -36,8 +36,8 @@ def add_traffic_inflow(request):
 
         simulationManager.add_inflows(
             InFlowPoint(
-                request.data["location"]["lng"],
-                request.data["location"]["lat"],
+                request.data["position"]["lng"],
+                request.data["position"]["lat"],
                 request.data["departTime"],
                 request.data["flow"]
             )
@@ -56,8 +56,8 @@ def add_traffic_outflow(request):
 
         simulationManager.add_outflows(
             OutFlowPoint(
-                    request.data["location"]["lng"],
-                    request.data["location"]["lat"],
+                    request.data["position"]["lng"],
+                    request.data["position"]["lat"],
                     request.data["flow"]
             )
         )
@@ -76,13 +76,13 @@ def add_vehicle_types(request):
 
         simulationManager.add_vehicule_types(
             VehicleType(
-                    request.data["max_speed"],
+                    request.data["maxSpeed"],
                     request.data["length"],
-                    request.data["min_gap"],
+                    request.data["minGap"],
                     request.data["speed_factor"],
                     request.data["speed_dev"],
-                    request.data["acceleration"],
-                    request.data["deceleration"],
+                    request.data["accel"],
+                    request.data["decel"],
                     request.data["sigma"],
                     request.data["tau"]
                 )
@@ -112,10 +112,10 @@ def add_incidents(request):
 
         simulationManager.add_incidents(
             Incident(
-                    request.data["location"]["lng"],
-                    request.data["location"]["lat"],
-                    request.data["time"],
-                    request.data["duration"]
+                    request.data["position"]["lng"],
+                    request.data["position"]["lat"],
+                    request.data["accidentTime"],
+                    request.data["accidentDuration"]
                 )
         )
         #response = Response(status.HTTP_202_ACCEPTED)
@@ -131,7 +131,10 @@ def add_incidents(request):
 @api_view(['POST'])
 def update_configuration_state(request):
     # request.data validation
-    simulationManager.add_sensors(request.data["sensors_distance"])
+
+    #timeMeasure
+    #startTime
+    simulationManager.add_sensors(request.data["distance"])
     if request.data["configCompleted"]:
         simulationManager.create_simulation()
         return Response(status.HTTP_202_ACCEPTED)

@@ -5,14 +5,16 @@ class Incident(object):
 
     lanes = []
 
-    def __init__(self, lon, lat, time):
+    def __init__(self, lon, lat, time, duration):
         self.lon = lon
         self.lat = lat
         self.time = time
+        self.duration = duration
 
     def set_lanes(self, lanes):
         self.lanes = lanes
 
 class IncidentSerializer(serializers.Serializer):
-    location = LocationSerializer()
-    time = serializers.CharField()
+    position = LocationSerializer()
+    accidentTime = serializers.FloatField()
+    accidentDuration = serializers.FloatField()
