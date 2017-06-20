@@ -11,7 +11,7 @@ class Simulation:
     __sensors_file = ""
 
     __sensors_list = []
-    __incidents_list = []
+    __incidents = []
     __traffic_flows = []
 
     def __init__(self):
@@ -79,3 +79,6 @@ class Simulation:
 
     def set_sensors_file(self, file_path):
         Simulation.__sensors_file = file_path
+
+    def set_incidents(self, incidents):
+        self.__incidents = incidents
