@@ -34,15 +34,17 @@ def add_traffic_inflow(request):
         inflowPointSerializer = InFlowPointSerializer(data=request.data)
         inflowPointSerializer.is_valid(raise_exception=True)
 
-        simulationManager.add_inflows(
-            InFlowPoint(
-                request.data["position"]["lng"],
-                request.data["position"]["lat"],
-                request.data["departTime"],
-                request.data["flow"]
-            )
+        inFlowPoint = InFlowPoint(
+            request.data["position"]["lng"],
+            request.data["position"]["lat"],
+            request.data["departTime"],
+            request.data["flow"]
         )
-        return Response(data=inflowPointSerializer.data,status=status.HTTP_202_ACCEPTED)
+        simulationManager.add_inflows(inFlowPoint)
+        data = inflowPointSerializer.data
+        data["id"] = inFlowPoint.id
+
+        return Response(data=data,status=status.HTTP_202_ACCEPTED)
 
     elif request.method == 'GET':
         return Response(data=[], status=status.HTTP_200_OK)

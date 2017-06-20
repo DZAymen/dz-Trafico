@@ -11,7 +11,10 @@ class Flow(object):
 
 class InFlowPoint(object):
 
+    id = 0
     def __init__(self, lon, lat, depart_time, value):
+        self.id = InFlowPoint.id
+        InFlowPoint.id += 1
         self.lon = lon
         self.lat = lat
         self.depart_time = depart_time
@@ -19,6 +22,7 @@ class InFlowPoint(object):
 
 class InFlowPointSerializer(serializers.Serializer):
 
+    id = serializers.CharField(required=False)
     position = LocationSerializer()
     departTime = serializers.FloatField()
     flow = serializers.FloatField()
