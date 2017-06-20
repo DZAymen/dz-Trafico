@@ -28,9 +28,17 @@ class SimulationManager:
 
     def add_inflows(self, inFlowPoints):
         SimulationManager.__simulation.add_inflows(inFlowPoints)
+        SimulationManager.__simulationCreator.define_traffic_flows(
+            SimulationManager.__simulation.inFlowPoints,
+            SimulationManager.__simulation.outFlowPoints
+        )
 
     def add_outflows(self, outFlowPoints):
         SimulationManager.__simulation.add_outflows(outFlowPoints)
+        SimulationManager.__simulationCreator.define_traffic_flows(
+            SimulationManager.__simulation.inFlowPoints,
+            SimulationManager.__simulation.outFlowPoints
+        )
 
     def set_traffic_flow(self):
         SimulationManager.__simulationCreator.define_traffic_flows(SimulationManager.__simulation.inFlowPoints, SimulationManager.__simulation.outFlowPoints)

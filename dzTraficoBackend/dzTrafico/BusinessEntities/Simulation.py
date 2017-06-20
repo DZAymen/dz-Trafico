@@ -28,6 +28,9 @@ class Simulation:
         Simulation.__osm_file = file_path
 
     def set_network_file(self, file_path):
+        self.inFlowPoints = []
+        self.outFlowPoints = []
+        self.__incidents = []
         Simulation.project_directory = os.path.dirname(file_path) + "\\"
         Simulation.__network_file = os.path.basename(file_path)
 
