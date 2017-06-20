@@ -1,0 +1,130 @@
+ <p-confirmDialog width="425"></p-confirmDialog>
+
+<div class="content-block">
+   <div class="card card-stats">
+       <div class="card-header card-header-icon" data-background-color="red">
+           <i class="material-icons fa fa-map-marker"></i>
+       </div>
+       <div class="card-content">
+           <h4 class="card-title">Définir les points de départ, d'arrivé et les points d'accident</h4>
+           <app-steps [activeIndex]='1'></app-steps>
+
+           <app-toolbar (dialogToShow)="showDialog($event)"
+                        (removeMarker)="deletePoint($event)"></app-toolbar>
+
+           <p-gmap #gmap [style]="{'width':'100%','height':'500px'}"
+                         [options]="options"
+                         [overlays]="overlays"
+                         (onMapReady)="setMap($event)"
+                         (onMapClick)="handleMapClick($event)"
+                         (onOverlayClick)="handleOverlayClick($event)"></p-gmap>
+
+          <div class="card-footer">
+                <div style="float:right">
+                    <button type="button" pButton label="suivant" icon="fa-arrow-right" (click)="next()"></button>
+                </div>
+                <div>
+                    <button type="button" pButton label="précédent" icon="fa-arrow-left" (click)="prev()"></button>
+                </div>
+          </div>
+           <p-dialog showEffect="fade" [(visible)]="dialogVisible" header="Ajout Point">
+               <div class="ui-grid ui-grid-pad ui-fluid" *ngIf="selectedPosition">
+                   <div class="ui-grid-row">
+                       <div class="ui-grid-col-2"><label for="name">Nom</label></div>
+                       <div class="ui-grid-col-10"><input #name type="text" pInputText [(ngModel)]="markerName"></div>
+                   </div>
+                   <div class="ui-grid-row">
+                       <div class="ui-grid-col-2"><label for="lat">Lat</label></div>
+                       <div class="ui-grid-col-10"><input type="text" readonly pInputText [ngModel]="selectedPosition.lat()"></div>
+                   </div>
+                   <div class="ui-grid-row">
+                       <div class="ui-grid-col-2"><label for="lng">Lng</label></div>
+                       <div class="ui-grid-col-10"><input type="text" readonly pInputText [ngModel]="selectedPosition.lng()"></div>
+                   </div>
+
+                   <div *ngIf="departDialog">
+                     <div class="ui-grid-row">
+                         <div class="ui-grid-col-4"><label for="debit">Débit</label></div>
+                         <div class="ui-grid-col-8"><p-spinner #tasty [(ngModel)]="flow" [step]="100"></p-spinner></div>
+                     </div>
+                     <div class="ui-grid-row">
+                         <div class="ui-grid-col-4"><label for="debit">Temps de départ</label></div>
+                         <div class="ui-grid-col-8"><p-spinner [(ngModel)]="departTime" [step]="10"></p-spinner></div>
+                     </div>
+                  </div>
+                  <div *ngIf="accidentDialog">
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-4"><label for="debit">Temps accident</label></div>
+                        <div class="ui-grid-col-8"><p-spinner [(ngModel)]="accidentTime" [step]="100"></p-spinner></div>
+                    </div>
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-4"><label for="debit">Durée accident</label></div>
+                        <div class="ui-grid-col-8"><p-spinner  [(ngModel)]="accidentDuration" [step]="10"></p-spinner></div>
+                    </div>
+                 </div>
+               </div>
+               <p-footer>
+                   <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                       <button type="button" pButton label="Ajouter" icon="fa-plus" (click)="addPoint()"></button>
+                   </div>
+               </p-footer>
+           </p-dialog>
+       </div>
+   </div>
+
+ </div>
+
+<div class="ui-g-12">
+  <div class="content-block">
+       <div class="card card-stats">
+           <div class="card-header card-header-icon" data-background-color="blue">
+               <i class="material-icons fa fa-flag"></i>
+           </div>
+           <div class="card-content">
+                <h4 class="card-title">Liste des points de départ</h4>
+                <p-dataTable [value]="departPoints">
+                    <p-column field="id" header="id"></p-column>
+                    <p-column field="position.lat" header="Point de depart"></p-column>
+                    <p-column field="flow" header="Débit"></p-column>
+                    <p-column field="departTime" header="Temps de départ"></p-column>
+                </p-dataTable>
+          </div>
+       </div>
+  </div>
+</div>
+
+<div class="ui-g-6">
+  <div class="content-block">
+       <div class="card card-stats">
+           <div class="card-header card-header-icon" data-background-color="orange">
+               <i class="material-icons fa fa-flag-checkered"></i>
+           </div>
+           <div class="card-content">
+                <h4 class="card-title">Liste des points de d'arrivé'</h4>
+                <p-dataTable [value]="arrivalPoints">
+                    <p-column field="id" header="id"></p-column>
+                    <p-column field="position.lat" header="Point d'arrivé"></p-column>
+                </p-dataTable>
+          </div>
+       </div>
+  </div>
+</div>
+
+<div class="ui-g-6">
+  <div class="content-block">
+       <div class="card card-stats">
+           <div class="card-header card-header-icon" data-background-color="red">
+               <i class="material-icons fa fa-car"></i>
+           </div>
+           <div class="card-content">
+                <h4 class="card-title">Liste des accidents</h4>
+                <p-dataTable [value]="accidentPoints">
+                    <p-column field="id" header="id"></p-column>
+                    <p-column field="position.lat" header="Lieu"></p-column>
+                    <p-column field="accidentTime" header="Temps"></p-column>
+                    <p-column field="accidentDuration" header="Durré"></p-column>
+                </p-dataTable>
+          </div>
+       </div>
+  </div>
+</div>

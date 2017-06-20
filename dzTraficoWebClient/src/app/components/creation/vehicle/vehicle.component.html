@@ -1,0 +1,81 @@
+
+<p-growl [value]="msgs"></p-growl>
+
+<div class="content-block">
+    <div class="card card-stats">
+        <div class="card-header card-header-icon" data-background-color="red">
+            <i class="material-icons fa fa-truck"></i>
+        </div>
+        <div class="card-content">
+            <h4 class="card-title">Choisir les types de véhicule</h4>
+            <app-steps [activeIndex]='2'></app-steps>
+            <p-dialog showEffect="fade" [(visible)]="dialogVisible" header="Nv Type">
+                <div class="ui-grid ui-grid-pad ui-fluid">
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-4"><label for="accel">Acceleratin</label></div>
+                        <div class="ui-grid-col-8"><p-spinner [(ngModel)]="newType.accel" [step]="10"></p-spinner></div>
+                    </div>
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-4"><label for="decel">Declaration</label></div>
+                        <div class="ui-grid-col-8"><p-spinner [(ngModel)]="newType.decel" [step]="10"></p-spinner></div>
+                    </div>
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-4"><label for="impat">Impatience</label></div>
+                        <div class="ui-grid-col-8"><p-spinner [(ngModel)]="newType.impatience" [step]="10"></p-spinner></div>
+                    </div>
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-4"><label for="sigma">Sigma</label></div>
+                        <div class="ui-grid-col-8"><p-spinner [(ngModel)]="newType.sigma" [step]="10"></p-spinner></div>
+                    </div>
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-4"><label for="minGap">minGap</label></div>
+                        <div class="ui-grid-col-8"><p-spinner [(ngModel)]="newType.minGap" [step]="10"></p-spinner></div>
+                    </div>
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-4"><label for="tau">Tau</label></div>
+                        <div class="ui-grid-col-8"><p-spinner [(ngModel)]="newType.tau" [step]="10"></p-spinner></div>
+                    </div>
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-4"><label for="maxSpeeds">maxSpeed</label></div>
+                        <div class="ui-grid-col-8"><p-spinner [(ngModel)]="newType.maxSpeed" [step]="10"></p-spinner></div>
+                    </div>
+
+                </div>
+                <p-footer>
+                    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                        <button type="button" pButton label="Ajouter" icon="fa-plus" (click)="addVehicleType()"></button>
+                    </div>
+                </p-footer>
+            </p-dialog>
+
+
+          <div style="margin-top:20px">
+                  <p-panel>
+                      <p-header>
+                          <div class="ui-helper-clearfix">
+                              <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px">Type de véhicules</span>
+                              <button type="text" pButton style="float:right" (click)="showDialog()" icon="fa-plus" label="Nouveau Type"></button>
+                          </div>
+                      </p-header>
+                      <p-dataTable [value]="vehiclesDistri" dataKey="id">
+                          <p-column *ngFor="let col of cols"[style]="{'width':'100px'}" [field]="col.field" [header]="col.header"></p-column>
+                          <p-column field="pourcentage" header="% Pourcentage" [editable]="true">
+                              <ng-template let-col let-vd="rowData" pTemplate="body">
+                                  <p-slider [(ngModel)]="vd[col.field]"  [style]="{'width':'100px'}"></p-slider>
+                              </ng-template>
+                          </p-column>
+                      </p-dataTable>
+                  </p-panel>
+
+                  <div class="card-footer">
+                       <div style="float:right">
+                            <button type="button" pButton label="suivant" icon="fa-arrow-right" (click)="next()"></button>
+                       </div>
+                       <div>
+                            <button type="button" pButton label="précédent" icon="fa-arrow-left" (click)="prev()"></button>
+                       </div>
+                  </div>
+          </div>
+        </div>
+    </div>
+</div>

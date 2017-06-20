@@ -1,0 +1,43 @@
+<p-growl [value]="msgs"></p-growl>
+
+<div class="content-block">
+    <div class="card card-stats">
+        <div class="card-header card-header-icon" data-background-color="red">
+            <i class="material-icons fa fa-wifi"></i>
+        </div>
+        <div class="card-content">
+            <h4 class="card-title">Configurer les capteurs</h4>
+            <app-steps [activeIndex]='3'></app-steps>
+
+            <div style="margin-top:20px; width:44%">
+                  <p-panel header="Paramètrage de capteurs">
+                      <div class="ui-grid-row">
+                          <div class="ui-grid-col-6"><label for="distance">Distance entre deux capteurs (m)</label></div>
+                          <div class="ui-grid-col-4"><p-spinner [(ngModel)]="simulConfig.distance" [step]="10"></p-spinner></div>
+                      </div>
+                      <div class="ui-grid-row">
+                          <div class="ui-grid-col-6"><label for="minGap">Temps écoulé entre deux mesure (s)</label></div>
+                          <div class="ui-grid-col-4"><p-spinner [(ngModel)]="simulConfig.timeMesure" [step]="1"></p-spinner></div>
+                      </div>
+                  </p-panel>
+            </div>
+
+            <div style="margin-top:20px; width:44%">
+                  <p-panel header="Paramètrage de la simulation">
+                      <div class="ui-grid-row">
+                          <div class="ui-grid-col-6"><label for="distance">Début de la simula (s)</label></div>
+                          <div class="ui-grid-col-4"><p-spinner [(ngModel)]="simulConfig.startTime" [step]="10"></p-spinner></div>
+                      </div>
+                  </p-panel>
+            </div>
+          </div>
+          <div class="card-footer">
+               <div style="float:right">
+                    <button type="button" pButton label="lancer" icon="fa-arrow-right" (click)="lancerSimulation()"></button>
+               </div>
+               <div>
+                    <button type="button" pButton label="précédent" icon="fa-arrow-left" (click)="prev()"></button>
+               </div>
+          </div>
+        </div>
+  </div>

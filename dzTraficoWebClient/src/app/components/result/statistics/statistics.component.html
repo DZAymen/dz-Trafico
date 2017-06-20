@@ -1,0 +1,45 @@
+<div class="content-block">
+            <div class="ui-g-12">
+                <div class="card card-stats">
+                    <div class="card-header card-header-icon" data-background-color="blue">
+                        <i class="material-icons fa fa-line-chart"></i>
+                    </div>
+                    <div class="card-content">
+                        <h4 class="card-title">Lines Chart
+                            <small> - Rounded</small>
+                        </h4>
+                    </div>
+                    <div class="chart-card">
+                       <p-chart type="line" [data]="lineData"></p-chart>
+                    </div>
+                </div>
+            </div>
+      
+              <div class="ui-g-6">
+                  <div class="card card-stats">
+                      <div class="card-header card-header-icon" data-background-color="red">
+                          <i class="material-icons fa fa-pie-chart"></i>
+                      </div>
+                      <div class="card-content">
+                          <h4 class="card-title">Pie Chart</h4>
+                      </div>
+                      <div class="chart-card">
+                        <p-chart type="pie" [data]="pieData" width="200" height="200"></p-chart>
+                      </div>
+                   </div>
+              </div>
+              <div class="ui-g-6">
+                  <div class="card card-stats">
+                      <div class="card-header card-header-icon" data-background-color="green">
+                          <i class="material-icons fa fa-bar-chart"></i>
+                      </div>
+                      <div class="card-content">
+                          <h4 class="card-title">Bar Chart</h4>
+                      </div>
+                      <div class="chart-card">
+                        <p-chart type="bar" [data]="barData"></p-chart>
+                      </div>
+                  </div>
+            </div>
+
+</div>
