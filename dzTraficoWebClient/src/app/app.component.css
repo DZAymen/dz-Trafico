@@ -6,14 +6,17 @@
 .mySidebar{
   width: 250px;
   height: 100%;
-  background-color: #20272a;
+  overflow: hidden;
 }
 .demo-header {
+  /*position: fixed;*/
   align-items: center;
   background:  #3C4252; /*#0273d4*/
   height: 40px;
+  width: 100%;
   color: #fff;
   padding: 1em;
+  z-index: 150;
 }
 .demo-header__toggle {
     background: transparent;

@@ -1,14 +1,23 @@
+<ng-sidebar-container>
+     <ng-sidebar
+       [(opened)]="opened"
+       [mode]="'push'"
+       [position]="'left'"
+       [sidebarClass]="'demo-sidebar'"
+       [animate]="true">
+       <div class="mySidebar">
+         <!-- Sidebar components -->
+         <div class="sidebar" data-color='green' data-image="">
+            <sidebar-cmp></sidebar-cmp>
+            <div class="sidebar-background" style="background-image: url(../assets/images/sidebar-2.jpg)"></div>
+        </div>
+       </div>
+     </ng-sidebar>
 
-<div class="wrapper">
-     <div class="sidebar" data-color='green' data-image="">
-        <sidebar-cmp></sidebar-cmp>
-        <div class="sidebar-background" style="background-image: url(../assets/images/sidebar-2.jpg)"></div>
-    </div> -->
-    <div class="main-panel">
-        <header class="demo-header">
-          <span (click)="toggleOpened()" class="fa fa-bars"></span>
-          <span>Traffic Simulator</span>
-        </header>
-       <router-outlet></router-outlet>
-    </div>
-</div>
+     <header class="demo-header">
+       <span (click)="toggleOpened()" class="fa fa-bars"></span>
+       <span>Traffic Simulator</span>
+     </header>
+    <router-outlet></router-outlet>
+
+</ng-sidebar-container>

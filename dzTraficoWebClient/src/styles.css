@@ -28,7 +28,7 @@ ul{
     position: absolute;
     margin-top: 10px;
     margin-left: 10px;
-    z-index: 1000;
+    z-index: 100;
 }
 .mapSize{
   width:100%;
@@ -518,8 +518,8 @@ h2.title {
 .off-canvas-sidebar .sidebar-wrapper {
  position: relative;
  height: calc(100vh - 75px);
- overflow: auto;
- width: 260px;
+ overflow: hidden; /* auto*/
+ width: 250px;
  z-index: 4;
 }
 .sidebar .logo-img,
@@ -4917,7 +4917,7 @@ footer .btn {
    width: 260px;
    right: 0;
    left: auto;
-   z-index: 1032;
+   z-index: 1000;
    visibility: visible;
    background-color: #9A9A9A;
    overflow-y: visible;
