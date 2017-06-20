@@ -31,38 +31,32 @@ def set_traffic_flow(request):
 @api_view(['POST'])
 def add_traffic_inflow(request):
     # request.data validation
-    inflowPointSerializer = InFlowPointSerializer(data=request.data, many=True)
+    inflowPointSerializer = InFlowPointSerializer(data=request.data)
     inflowPointSerializer.is_valid(raise_exception=True)
 
-    inFlowPoints = []
-    for data in request.data:
-        inFlowPoints.append(
-            InFlowPoint(
-                data["location"]["lng"],
-                data["location"]["lat"],
-                data["departTime"],
-                data["flow"])
+    simulationManager.add_inflows(
+        InFlowPoint(
+            request.data["location"]["lng"],
+            request.data["location"]["lat"],
+            request.data["departTime"],
+            request.data["flow"]
         )
-
-    simulationManager.add_inflows(inFlowPoints)
+    )
     return Response(status.HTTP_202_ACCEPTED)
 
 @api_view(['POST'])
 def add_traffic_outflow(request):
     # request.data validation
-    outflowPointSerializer = OutFlowPointSerializer(data=request.data, many=True)
+    outflowPointSerializer = OutFlowPointSerializer(data=request.data)
     outflowPointSerializer.is_valid(raise_exception=True)
 
-    outFlowPoints = []
-    for data in request.data:
-        outFlowPoints.append(
-            OutFlowPoint(
-                data["location"]["lng"],
-                data["location"]["lat"],
-                data["flow"])
+    simulationManager.add_outflows(
+        OutFlowPoint(
+                request.data["location"]["lng"],
+                request.data["location"]["lat"],
+                request.data["flow"]
         )
-
-    simulationManager.add_outflows(outFlowPoints)
+    )
     return Response(status.HTTP_202_ACCEPTED)
 
 #Post vehicle types
@@ -102,19 +96,16 @@ def add_vehicle_types_percentages(request):
 @api_view(['POST'])
 def add_incidents(request):
     # request.data validation
-    incidentSerializer = IncidentSerializer(data=request.data, many=True)
+    incidentSerializer = IncidentSerializer(data=request.data)
     incidentSerializer.is_valid(raise_exception=True)
-    #Create incidents objects
-    incidents = []
-    for incident in request.data:
-        incidents.append(
-            Incident(
-                incident["location"]["lng"],
-                incident["location"]["lat"],
-                incident["time"]
+
+    simulationManager.add_incidents(
+        Incident(
+                request.incident["location"]["lng"],
+                request.incident["location"]["lat"],
+                request.incident["time"]
             )
-        )
-    simulationManager.add_incidents(incidents)
+    )
     return Response(status.HTTP_202_ACCEPTED)
 
 #Post configuration state

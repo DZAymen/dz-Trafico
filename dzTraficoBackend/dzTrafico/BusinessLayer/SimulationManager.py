@@ -44,8 +44,8 @@ class SimulationManager:
         SimulationManager.__simulationCreator.define_traffic_flows(SimulationManager.__simulation.inFlowPoints, SimulationManager.__simulation.outFlowPoints)
 
     # Call SimulationCreator.set_map method to create the map
-    def add_incidents(self, incidents):
-        SimulationManager.__simulationCreator.add_incidents(incidents)
+    def add_incidents(self, incident):
+        SimulationManager.__simulationCreator.add_incidents(incident)
 
     def add_vehicule_types(self, vehicle_types):
         SimulationManager.__simulationCreator.add_vehicle_types(vehicle_types)
