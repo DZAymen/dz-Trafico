@@ -67,6 +67,7 @@ class Simulation:
         traci.start([sumogui, "-c", Simulation.project_directory + Simulation.__sumocfg_file])
         for step in range(2000):
             traci.simulationStep()
+            self.check_incidents(step)
             #print self.__sensors_list[0].get_sensor_id()
             for sensor in self.__sensors_list:
                 sensor.add_measure(traci.inductionloop.getLastStepMeanSpeed(str(sensor.get_sensor_id())))
@@ -82,3 +83,12 @@ class Simulation:
 
     def set_incidents(self, incidents):
         self.__incidents = incidents
+
+    def chech_incidents(self, step):
+        for incident in self.__incidents:
+            if step == incident.time:
+                for lane in incident.lanes:
+                    vehicles = traci.lane.getLastStepVehicleIDs(lane)
+                    if len(vehicles)>0:
+                        traci.vehicle.setSpeed(vehicles[0], 0)
+                        break
