@@ -81,8 +81,8 @@ class Simulation:
     def set_sensors_file(self, file_path):
         Simulation.__sensors_file = file_path
 
-    def set_incidents(self, incidents):
-        self.__incidents = incidents
+    def add_incidents(self, incidents):
+        self.__incidents.append(incidents)
 
     def check_incidents(self, step):
         for incident in self.__incidents:
