@@ -41,4 +41,4 @@ class SimulationCreator:
         return SimulationCreator.__simulation
 
     def add_incidents(self, incidents):
-        SimulationCreator.__tripManager.define_incidents(incidents)
+        SimulationCreator.__simulation.set_incidents(incidents)
