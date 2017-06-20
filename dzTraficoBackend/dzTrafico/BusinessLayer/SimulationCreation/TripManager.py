@@ -170,3 +170,8 @@ class TripManager:
 #                        vtypesdistribution_node[0].append(vtypeschild)
 #            else:
 #                root.insert(0, vtypesdist)
+
+    def set_edges(self, incidents):
+        for incident in incidents:
+            incident.set_edge_id(self.__networkManager.get_edgeId_from_geoCoord(incident.lon, incident.lat))
+        return incidents
