@@ -41,4 +41,6 @@ class SimulationCreator:
         return SimulationCreator.__simulation
 
     def add_incidents(self, incidents):
-        SimulationCreator.__simulation.set_incidents(incidents)
+        #Calculate each incident edge_id before setting them in simulation instance
+        incident_list = SimulationCreator.__tripManager.set_edges(incidents)
+        SimulationCreator.__simulation.set_incidents(incident_list)
