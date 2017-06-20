@@ -64,13 +64,13 @@ class Simulation:
     def start_simulation(self):
         sumogui = sumolib.checkBinary("sumo-gui")
         #subprocess.Popen([sumogui, "-c", Simulation.__project_directory + Simulation.__sumocfg_file])
-        traci.start([sumogui, "-c", Simulation.project_directory + Simulation.__sumocfg_file])
+        traci.start([sumogui, "-c", Simulation.project_directory + Simulation.__sumocfg_file, "--summary", Simulation.project_directory + "summary.xml"])
         for step in range(2000):
             traci.simulationStep()
             self.check_incidents(step)
             #print self.__sensors_list[0].get_sensor_id()
-            for sensor in self.__sensors_list:
-                sensor.add_measure(traci.inductionloop.getLastStepMeanSpeed(str(sensor.get_sensor_id())))
+            #for sensor in self.__sensors_list:
+                #sensor.add_measure(traci.inductionloop.getLastStepMeanSpeed(str(sensor.get_sensor_id())))
 
     def set_flows(self, flows):
         self.__traffic_flows = flows
@@ -84,7 +84,7 @@ class Simulation:
     def set_incidents(self, incidents):
         self.__incidents = incidents
 
-    def chech_incidents(self, step):
+    def check_incidents(self, step):
         for incident in self.__incidents:
             if step == incident.time:
                 for lane in incident.lanes:
