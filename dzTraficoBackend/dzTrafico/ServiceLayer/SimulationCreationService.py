@@ -28,70 +28,69 @@ def set_traffic_flow(request):
     simulationManager.set_traffic_flow()
     return Response(status.HTTP_202_ACCEPTED)
 
-@api_view(['POST'])
+@api_view(['POST', 'GET'])
 def add_traffic_inflow(request):
-    # request.data validation
-    inflowPointSerializer = InFlowPointSerializer(data=request.data)
-    inflowPointSerializer.is_valid(raise_exception=True)
+    if request.method == 'POST':
+        inflowPointSerializer = InFlowPointSerializer(data=request.data)
+        inflowPointSerializer.is_valid(raise_exception=True)
 
-    simulationManager.add_inflows(
-        InFlowPoint(
-            request.data["location"]["lng"],
-            request.data["location"]["lat"],
-            request.data["departTime"],
-            request.data["flow"]
-        )
-    )
-    return Response(data=inflowPointSerializer.data,status=status.HTTP_202_ACCEPTED)
-@api_view(['GET'])
-def add_traffic_inflow(request):
-    return Response(data={},status=status.HTTP_200_OK)
-
-
-@api_view(['POST'])
-def add_traffic_outflow(request):
-    # request.data validation
-    outflowPointSerializer = OutFlowPointSerializer(data=request.data)
-    outflowPointSerializer.is_valid(raise_exception=True)
-
-    simulationManager.add_outflows(
-        OutFlowPoint(
+        simulationManager.add_inflows(
+            InFlowPoint(
                 request.data["location"]["lng"],
                 request.data["location"]["lat"],
+                request.data["departTime"],
                 request.data["flow"]
+            )
         )
-    )
-    return Response(data=outflowPointSerializer.data,status=status.HTTP_202_ACCEPTED)
-@api_view(['GET'])
+        return Response(data=inflowPointSerializer.data,status=status.HTTP_202_ACCEPTED)
+
+    elif request.method == 'GET':
+        return Response(data={}, status=status.HTTP_200_OK)
+
+@api_view(['POST', 'GET'])
 def add_traffic_outflow(request):
-    return Response(data={},status=status.HTTP_200_OK)
+    if request.method == 'POST':
+        # request.data validation
+        outflowPointSerializer = OutFlowPointSerializer(data=request.data)
+        outflowPointSerializer.is_valid(raise_exception=True)
+
+        simulationManager.add_outflows(
+            OutFlowPoint(
+                    request.data["location"]["lng"],
+                    request.data["location"]["lat"],
+                    request.data["flow"]
+            )
+        )
+        return Response(data=outflowPointSerializer.data,status=status.HTTP_202_ACCEPTED)
+
+    elif request.method == 'GET':
+        return Response(data={}, status=status.HTTP_200_OK)
 
 
 #Post vehicle types
-@api_view(['POST'])
+@api_view(['POST', 'GET'])
 def add_vehicle_types(request):
-    vehicleTypes = []
-    vehicleTypeSerializer = VehicleTypeSerializer(data=request.data)
-    vehicleTypeSerializer.is_valid(raise_exception=True)
+    if request.method == 'POST':
+        vehicleTypeSerializer = VehicleTypeSerializer(data=request.data)
+        vehicleTypeSerializer.is_valid(raise_exception=True)
 
-    simulationManager.add_vehicule_types(
-        VehicleType(
-                request.data["max_speed"],
-                request.data["length"],
-                request.data["min_gap"],
-                request.data["speed_factor"],
-                request.data["speed_dev"],
-                request.data["acceleration"],
-                request.data["deceleration"],
-                request.data["sigma"],
-                request.data["tau"]
-            )
-    )
-    return Response(data=vehicleTypeSerializer.data,status=status.HTTP_201_CREATED)
-@api_view(['GET'])
-def add_vehicle_types(request):
-    return Response(data={},status=status.HTTP_200_OK)
+        simulationManager.add_vehicule_types(
+            VehicleType(
+                    request.data["max_speed"],
+                    request.data["length"],
+                    request.data["min_gap"],
+                    request.data["speed_factor"],
+                    request.data["speed_dev"],
+                    request.data["acceleration"],
+                    request.data["deceleration"],
+                    request.data["sigma"],
+                    request.data["tau"]
+                )
+        )
+        return Response(data=vehicleTypeSerializer.data,status=status.HTTP_201_CREATED)
 
+    elif request.method == 'GET':
+        return Response(data={}, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def add_vehicle_types_percentages(request):
@@ -103,27 +102,28 @@ def add_vehicle_types_percentages(request):
     return Response(status.HTTP_201_CREATED)
 
 #Post incidents list
-@api_view(['POST'])
+@api_view(['POST', 'GET'])
 def add_incidents(request):
 
-    # request.data validation
-    incidentSerializer = IncidentSerializer(data=request.data)
-    incidentSerializer.is_valid(raise_exception=True)
+    if request.method == 'POST':
+        # request.data validation
+        incidentSerializer = IncidentSerializer(data=request.data)
+        incidentSerializer.is_valid(raise_exception=True)
 
-    simulationManager.add_incidents(
-        Incident(
-                request.data["location"]["lng"],
-                request.data["location"]["lat"],
-                request.data["time"],
-                request.data["duration"]
-            )
-    )
-    #response = Response(status.HTTP_202_ACCEPTED)
-    #response = JSon
-    return Response(data=incidentSerializer.data,status=status.HTTP_202_ACCEPTED)
-@api_view(['GET'])
-def add_incidents(request):
-    return Response(data={},status=status.HTTP_200_OK)
+        simulationManager.add_incidents(
+            Incident(
+                    request.data["location"]["lng"],
+                    request.data["location"]["lat"],
+                    request.data["time"],
+                    request.data["duration"]
+                )
+        )
+        #response = Response(status.HTTP_202_ACCEPTED)
+        #response = JSon
+        return Response(data=incidentSerializer.data,status=status.HTTP_202_ACCEPTED)
+
+    elif request.method == 'GET':
+        return Response(data={},status=status.HTTP_200_OK)
 
 
 #Post configuration state
