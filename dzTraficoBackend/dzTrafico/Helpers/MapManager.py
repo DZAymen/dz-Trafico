@@ -1,8 +1,10 @@
 import os
 from datetime import datetime
-import osmGet
+import osmGet, wget
+from dzTrafico.BusinessEntities.MapBox import MapBox
 
 class MapManager:
+    OSM_API_URL = "http://overpass-api.de/api/map?bbox="
 
     def download_map(self, map_box):
         #Create the directory for the new simulation
@@ -10,9 +12,11 @@ class MapManager:
         directory_path = os.path.join(os.path.normpath(os.getcwd()), "dzTrafico\\SimulationFiles")
         directory_path = os.path.join(directory_path, directory_name)
         os.makedirs(directory_path)
-        self.osm_file_path = directory_path + "\\map"
+        self.osm_file_path = directory_path + "\\map_bbox.osm.xml"
+
+        osm_api_url = MapManager.OSM_API_URL + ",".join(map(str, map_box.get_coords()))
 
         #Get the osm file
-        osmGet.get(["-b", ",".join(map(str, map_box.get_coords())), "-p", self.osm_file_path])
+        wget.download(url=osm_api_url, out=self.osm_file_path)
 
-        return self.osm_file_path + "_bbox.osm.xml"
+        return self.osm_file_path
