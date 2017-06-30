@@ -55,15 +55,17 @@ def add_traffic_outflow(request):
         # request.data validation
         outflowPointSerializer = OutFlowPointSerializer(data=request.data)
         outflowPointSerializer.is_valid(raise_exception=True)
-
-        simulationManager.add_outflows(
-            OutFlowPoint(
-                    request.data["position"]["lng"],
-                    request.data["position"]["lat"],
-                    request.data["flow"]
-            )
+        outFlowPoint = OutFlowPoint(
+            request.data["position"]["lng"],
+            request.data["position"]["lat"],
+            2000
         )
-        return Response(data=outflowPointSerializer.data,status=status.HTTP_202_ACCEPTED)
+        simulationManager.add_outflows(outFlowPoint)
+        data = outflowPointSerializer.data
+        data["id"] = outFlowPoint.id
+
+        return Response(data=data, status=status.HTTP_202_ACCEPTED)
+        # return Response(data=outflowPointSerializer.data,status=status.HTTP_202_ACCEPTED)
 
     elif request.method == 'GET':
         return Response(data=[], status=status.HTTP_200_OK)
@@ -79,10 +81,13 @@ def add_vehicle_types(request):
         simulationManager.add_vehicule_types(
             VehicleType(
                     request.data["maxSpeed"],
-                    request.data["length"],
+                    4,
+                    #request.data["length"],
                     request.data["minGap"],
-                    request.data["speed_factor"],
-                    request.data["speed_dev"],
+                    0.9,
+                    #request.data["speed_factor"],
+                    0,
+                    #request.data["speed_dev"],
                     request.data["accel"],
                     request.data["decel"],
                     request.data["sigma"],

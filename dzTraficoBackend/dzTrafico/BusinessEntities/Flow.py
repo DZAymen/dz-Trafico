@@ -28,8 +28,10 @@ class InFlowPointSerializer(serializers.Serializer):
     flow = serializers.FloatField()
 
 class OutFlowPoint(object):
-
+    id = 0
     def __init__(self, lon, lat, value):
+        self.id = OutFlowPoint.id
+        OutFlowPoint.id += 1
         self.lon = lon
         self.lat = lat
         self.value = value
