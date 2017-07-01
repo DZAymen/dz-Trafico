@@ -17,15 +17,13 @@ class SimulationManager:
             SimulationManager.__simulationManager = SimulationManager()
         return SimulationManager.__simulationManager
 
+    # -------------------------------- Net file creation ------------------------------------------------
     #Call SimulationCreator.set_map method to create the map
     def set_map(self, map_box):
         SimulationManager.__simulationCreator.create_network_file(map_box)
+    # ---------------------------------------------------------------------------------------------------
 
-    # Call SimulationCreator.set_map method to create the map
-    def add_sensors(self, sensors_distance):
-        Sensor.trafficAnalyzer = SimulationManager.__trafficAnalyzer
-        SimulationManager.__simulationCreator.create_sensors(sensors_distance)
-
+    # -------------------------------- Flows definition -------------------------------------------------
     def add_inflow(self, inFlowPoint):
         SimulationManager.__simulation.add_inflows(inFlowPoint)
         if (len(SimulationManager.__simulation.inFlowPoints) > 0) and (
@@ -43,18 +41,32 @@ class SimulationManager:
                 SimulationManager.__simulation.inFlowPoints,
                 SimulationManager.__simulation.outFlowPoints
             )
+    # ---------------------------------------------------------------------------------------------------
 
+    # -------------------------------- Incidents definition ---------------------------------------------
     # Call SimulationCreator.set_map method to create the map
     def add_incident(self, incident):
         SimulationManager.__simulationCreator.add_incidents(incident)
+    # ---------------------------------------------------------------------------------------------------
 
+    # -------------------------------- Vehicle types definition -----------------------------------------
     def add_vehicule_types(self, vehicle_type):
         SimulationManager.__simulationCreator.add_vehicle_types(vehicle_type)
 
     def set_vehicle_types_percentages(self, vehicle_types_percentages):
         SimulationManager.__simulationCreator.set_vehicle_types_percentages(vehicle_types_percentages)
+    # ---------------------------------------------------------------------------------------------------
 
+    # ------------------------------------- Add sensors -------------------------------------------------
+    # Call SimulationCreator.set_map method to create the map
+    def add_sensors(self, sensors_distance):
+        Sensor.trafficAnalyzer = SimulationManager.__trafficAnalyzer
+        SimulationManager.__simulationCreator.create_sensors(sensors_distance)
+    # ---------------------------------------------------------------------------------------------------
+
+    # ------------------------------------- Simulation Creation -----------------------------------------
     # Call SimulationCreator.set_map method to create the map
     def create_simulation(self):
         SimulationManager.__simulation = SimulationManager.__simulationCreator.createSimulation()
         SimulationManager.__simulation.start_simulation()
+    # ---------------------------------------------------------------------------------------------------
