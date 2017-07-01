@@ -27,6 +27,14 @@ class InFlowPointSerializer(serializers.Serializer):
     departTime = serializers.FloatField()
     flow = serializers.FloatField()
 
+    def create(self, validated_data):
+        return InFlowPoint(
+            validated_data["position"]["lng"],
+            validated_data["position"]["lat"],
+            validated_data["departTime"],
+            validated_data["flow"]
+        )
+
 class OutFlowPoint(object):
     id = 0
     def __init__(self, lon, lat, value):
@@ -39,3 +47,10 @@ class OutFlowPoint(object):
 class OutFlowPointSerializer(serializers.Serializer):
     position = LocationSerializer()
     flow = serializers.FloatField(required=False)
+
+    def create(self, validated_data):
+        return OutFlowPoint(
+            validated_data["position"]["lng"],
+            validated_data["position"]["lat"],
+            2000
+        )

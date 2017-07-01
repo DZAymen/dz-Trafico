@@ -15,9 +15,10 @@ class TripManager:
         self.__networkManager = networkManager
         self.vehicle_types_file_path = Simulation.project_directory + "\\..\\..\\data\\" + self.vehicle_types_filename
 
-    # The goal of this method is to define flows from flowPoints
-    # and then generate the flow file which will be included in
-    # the simulation config file
+    # -------------------------------- Flows definition -------------------------------------------------
+    # This method defines flows from flowPoints
+    # and then generate the flow file which will be used
+    # to generate route file
     def generate_flows_file(self, inFlowPoints, outFlowPoints):
         self.flows = self.generate_flows(inFlowPoints, outFlowPoints)
         return self.save_flows_xml_file(self.flows), self.flows
@@ -71,6 +72,8 @@ class TripManager:
         et = etree.ElementTree(root)
         et.write(Simulation.project_directory + "\\" + self.flows_filename, pretty_print=True)
         return Simulation.project_directory + "\\" + self.flows_filename
+
+    # ---------------------------------------------------------------------------------------------------
 
     def add_vehicle_types(self, vehicle_type):
 

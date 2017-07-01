@@ -26,22 +26,23 @@ class SimulationManager:
         Sensor.trafficAnalyzer = SimulationManager.__trafficAnalyzer
         SimulationManager.__simulationCreator.create_sensors(sensors_distance)
 
-    def add_inflows(self, inFlowPoints):
-        SimulationManager.__simulation.add_inflows(inFlowPoints)
-        SimulationManager.__simulationCreator.define_traffic_flows(
-            SimulationManager.__simulation.inFlowPoints,
-            SimulationManager.__simulation.outFlowPoints
-        )
+    def add_inflow(self, inFlowPoint):
+        SimulationManager.__simulation.add_inflows(inFlowPoint)
+        if (len(SimulationManager.__simulation.inFlowPoints) > 0) and (
+            len(SimulationManager.__simulation.outFlowPoints) > 0):
+            SimulationManager.__simulationCreator.define_traffic_flows(
+                SimulationManager.__simulation.inFlowPoints,
+                SimulationManager.__simulation.outFlowPoints
+            )
 
-    def add_outflows(self, outFlowPoints):
-        SimulationManager.__simulation.add_outflows(outFlowPoints)
-        SimulationManager.__simulationCreator.define_traffic_flows(
-            SimulationManager.__simulation.inFlowPoints,
-            SimulationManager.__simulation.outFlowPoints
-        )
-
-    def set_traffic_flow(self):
-        SimulationManager.__simulationCreator.define_traffic_flows(SimulationManager.__simulation.inFlowPoints, SimulationManager.__simulation.outFlowPoints)
+    def add_outflow(self, outFlowPoint):
+        SimulationManager.__simulation.add_outflows(outFlowPoint)
+        if (len(SimulationManager.__simulation.inFlowPoints) > 0) and (
+            len(SimulationManager.__simulation.outFlowPoints)>0):
+            SimulationManager.__simulationCreator.define_traffic_flows(
+                SimulationManager.__simulation.inFlowPoints,
+                SimulationManager.__simulation.outFlowPoints
+            )
 
     # Call SimulationCreator.set_map method to create the map
     def add_incidents(self, incident):

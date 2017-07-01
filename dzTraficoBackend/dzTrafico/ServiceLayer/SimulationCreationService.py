@@ -23,26 +23,19 @@ def set_simulation_map(request):
     simulationManager.set_map(map_box)
     return Response(status.HTTP_201_CREATED)
 
-#Post traffic flow
-@api_view(['POST'])
-def set_traffic_flow(request):
-    # request.data validation
-    simulationManager.set_traffic_flow()
-    return Response(status.HTTP_202_ACCEPTED)
-
+#POST: add an inflow point
+#GET: get inflow points
 @api_view(['POST', 'GET'])
 def add_traffic_inflow(request):
     if request.method == 'POST':
+        #Validate inflow point request data
         inflowPointSerializer = InFlowPointSerializer(data=request.data)
         inflowPointSerializer.is_valid(raise_exception=True)
+        #Create inflow point instance
+        inFlowPoint = inflowPointSerializer.create(inflowPointSerializer.validated_data)
+        #Add the inflow point
+        simulationManager.add_inflow(inFlowPoint)
 
-        inFlowPoint = InFlowPoint(
-            request.data["position"]["lng"],
-            request.data["position"]["lat"],
-            request.data["departTime"],
-            request.data["flow"]
-        )
-        simulationManager.add_inflows(inFlowPoint)
         data = inflowPointSerializer.data
         data["id"] = inFlowPoint.id
 
@@ -51,27 +44,26 @@ def add_traffic_inflow(request):
     elif request.method == 'GET':
         return Response(data=[], status=status.HTTP_200_OK)
 
+#POST: add an outflow point
+#GET: get outflow points
 @api_view(['POST', 'GET'])
 def add_traffic_outflow(request):
     if request.method == 'POST':
-        # request.data validation
+        # Validate outflow point request data
         outflowPointSerializer = OutFlowPointSerializer(data=request.data)
         outflowPointSerializer.is_valid(raise_exception=True)
-        outFlowPoint = OutFlowPoint(
-            request.data["position"]["lng"],
-            request.data["position"]["lat"],
-            2000
-        )
-        simulationManager.add_outflows(outFlowPoint)
+        #Create outflow point instance
+        outFlowPoint = outflowPointSerializer.create(outflowPointSerializer.validated_data)
+        #Add the outflow point
+        simulationManager.add_outflow(outFlowPoint)
+
         data = outflowPointSerializer.data
         data["id"] = outFlowPoint.id
 
         return Response(data=data, status=status.HTTP_202_ACCEPTED)
-        # return Response(data=outflowPointSerializer.data,status=status.HTTP_202_ACCEPTED)
 
     elif request.method == 'GET':
         return Response(data=[], status=status.HTTP_200_OK)
-
 
 #Post vehicle types
 @api_view(['POST', 'GET'])
