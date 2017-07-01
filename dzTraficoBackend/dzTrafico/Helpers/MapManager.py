@@ -1,7 +1,6 @@
 import os
 from datetime import datetime
-import osmGet, wget
-from dzTrafico.BusinessEntities.MapBox import MapBox
+import wget
 
 class MapManager:
     OSM_API_URL = "http://overpass-api.de/api/map?bbox="
@@ -14,6 +13,7 @@ class MapManager:
         os.makedirs(directory_path)
         self.osm_file_path = directory_path + "\\map_bbox.osm.xml"
 
+        #Create download url by adding the box coordinates
         osm_api_url = MapManager.OSM_API_URL + ",".join(map(str, map_box.get_coords()))
 
         #Get the osm file

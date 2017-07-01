@@ -31,6 +31,8 @@ class Simulation:
         self.inFlowPoints = []
         self.outFlowPoints = []
         self.__incidents = []
+        self.__traffic_flows = []
+
         Simulation.project_directory = os.path.dirname(file_path) + "\\"
         Simulation.__network_file = os.path.basename(file_path)
 

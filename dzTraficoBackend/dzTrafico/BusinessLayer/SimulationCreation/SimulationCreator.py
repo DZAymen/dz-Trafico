@@ -13,8 +13,8 @@ class SimulationCreator:
 
     #Call NetworkManager to create map.net.xml
     def create_network_file(self, mapBox):
-        self.network_file_path = SimulationCreator.__networkManager.get_network_file(mapBox)
-        SimulationCreator.__simulation.set_network_file(self.network_file_path)
+        network_file_path = SimulationCreator.__networkManager.get_network_file(mapBox)
+        SimulationCreator.__simulation.set_network_file(network_file_path)
 
     #
     def create_sensors(self, sensors_distance):

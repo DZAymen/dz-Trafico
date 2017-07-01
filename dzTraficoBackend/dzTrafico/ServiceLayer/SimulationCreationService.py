@@ -16,6 +16,7 @@ def set_simulation_map(request):
     #request.data validation
     mapBoxSerializer = MapBoxSerializer(data=request.data)
     mapBoxSerializer.is_valid(raise_exception=True)
+
     #Call SimulationManager to pass the mapBox to the simulationCreator
     map_box = mapBoxSerializer.create(mapBoxSerializer.validated_data)
 
