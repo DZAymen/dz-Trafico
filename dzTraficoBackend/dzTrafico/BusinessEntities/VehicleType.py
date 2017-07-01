@@ -7,7 +7,7 @@ class VehicleType(object):
 
     def __init__(self, max_speed, length, min_gap, speed_factor, speed_dev, acceleration, deceleration, sigma, tau):
         VehicleType.type_id += 1
-        self.type_id = "vtype" + str(VehicleType.type_id)
+        self.type_id = VehicleType.type_id
         self.max_speed = max_speed
         self.length = length
         self.min_gap = min_gap
@@ -33,6 +33,22 @@ class VehicleTypeSerializer(serializers.Serializer):
     sigma = serializers.FloatField()
     tau = serializers.FloatField()
     #Impatience
+
+    def create(self, validated_data):
+        return VehicleType(
+            validated_data["maxSpeed"],
+            4,
+            #validated_data["length"],
+            validated_data["minGap"],
+            0.9,
+            #validated_data["speed_factor"],
+            0,
+            #validated_data["speed_dev"],
+            validated_data["accel"],
+            validated_data["decel"],
+            validated_data["sigma"],
+            validated_data["tau"]
+        )
 
 class VehicleTypesPercentagesSerializer(serializers.Serializer):
     type_id = serializers.CharField()

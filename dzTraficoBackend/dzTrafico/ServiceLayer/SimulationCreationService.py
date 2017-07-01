@@ -87,28 +87,21 @@ def add_incidents(request):
 @api_view(['POST', 'GET'])
 def add_vehicle_types(request):
     if request.method == 'POST':
+        # Validate vehicle type request data
         vehicleTypeSerializer = VehicleTypeSerializer(data=request.data)
         vehicleTypeSerializer.is_valid(raise_exception=True)
 
-        simulationManager.add_vehicule_types(
-            VehicleType(
-                    request.data["maxSpeed"],
-                    4,
-                    #request.data["length"],
-                    request.data["minGap"],
-                    0.9,
-                    #request.data["speed_factor"],
-                    0,
-                    #request.data["speed_dev"],
-                    request.data["accel"],
-                    request.data["decel"],
-                    request.data["sigma"],
-                    request.data["tau"]
-                )
-        )
+        # Create vehicle type instance
+        vehicleType = vehicleTypeSerializer.create(vehicleTypeSerializer.validated_data)
+
+        # Add vehicle type to vehicle types list
+        simulationManager.add_vehicule_type(vehicleType)
+
         return Response(data=vehicleTypeSerializer.data,status=status.HTTP_201_CREATED)
 
     elif request.method == 'GET':
+        vehicle_types = simulationManager.get_vehicle_types()
+        print vehicle_types
         return Response(data=[], status=status.HTTP_200_OK)
 
 @api_view(['POST'])

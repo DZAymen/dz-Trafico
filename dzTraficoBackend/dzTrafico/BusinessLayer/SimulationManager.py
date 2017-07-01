@@ -50,11 +50,15 @@ class SimulationManager:
     # ---------------------------------------------------------------------------------------------------
 
     # -------------------------------- Vehicle types definition -----------------------------------------
-    def add_vehicule_types(self, vehicle_type):
-        SimulationManager.__simulationCreator.add_vehicle_types(vehicle_type)
+    def add_vehicule_type(self, vehicle_type):
+        SimulationManager.__simulationCreator.add_vehicle_type(vehicle_type)
 
     def set_vehicle_types_percentages(self, vehicle_types_percentages):
         SimulationManager.__simulationCreator.set_vehicle_types_percentages(vehicle_types_percentages)
+
+    def get_vehicle_types(self):
+        return SimulationManager.__simulationCreator.get_vehicle_types()
+
     # ---------------------------------------------------------------------------------------------------
 
     # ------------------------------------- Add sensors -------------------------------------------------
