@@ -65,6 +65,24 @@ def add_traffic_outflow(request):
     elif request.method == 'GET':
         return Response(data=[], status=status.HTTP_200_OK)
 
+# Post incidents list
+@api_view(['POST', 'GET'])
+def add_incidents(request):
+
+        if request.method == 'POST':
+            # Validate incident request data
+            incidentSerializer = IncidentSerializer(data=request.data)
+            incidentSerializer.is_valid(raise_exception=True)
+            # Create incident instance
+            incident = incidentSerializer.create(incidentSerializer.validated_data)
+            # Add incident to incidents list
+            simulationManager.add_incident(incident)
+
+            return Response(data=incidentSerializer.data, status=status.HTTP_202_ACCEPTED)
+
+        elif request.method == 'GET':
+            return Response(data=[], status=status.HTTP_200_OK)
+
 #Post vehicle types
 @api_view(['POST', 'GET'])
 def add_vehicle_types(request):
@@ -101,30 +119,6 @@ def add_vehicle_types_percentages(request):
 
     simulationManager.set_vehicle_types_percentages(request.data)
     return Response(status.HTTP_201_CREATED)
-
-#Post incidents list
-@api_view(['POST', 'GET'])
-def add_incidents(request):
-
-    if request.method == 'POST':
-        # request.data validation
-        incidentSerializer = IncidentSerializer(data=request.data)
-        incidentSerializer.is_valid(raise_exception=True)
-
-        simulationManager.add_incidents(
-            Incident(
-                    request.data["position"]["lng"],
-                    request.data["position"]["lat"],
-                    request.data["accidentTime"],
-                    request.data["accidentDuration"]
-                )
-        )
-        #response = Response(status.HTTP_202_ACCEPTED)
-        #response = JSon
-        return Response(data=incidentSerializer.data,status=status.HTTP_202_ACCEPTED)
-
-    elif request.method == 'GET':
-        return Response(data=[],status=status.HTTP_200_OK)
 
 
 #Post configuration state

@@ -18,3 +18,11 @@ class IncidentSerializer(serializers.Serializer):
     position = LocationSerializer()
     accidentTime = serializers.FloatField()
     accidentDuration = serializers.FloatField()
+
+    def create(self, validated_data):
+        return Incident(
+            validated_data["position"]["lng"],
+            validated_data["position"]["lat"],
+            validated_data["accidentTime"],
+            validated_data["accidentDuration"]
+        )

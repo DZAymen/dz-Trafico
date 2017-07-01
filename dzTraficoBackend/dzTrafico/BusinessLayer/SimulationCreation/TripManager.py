@@ -72,7 +72,16 @@ class TripManager:
         et = etree.ElementTree(root)
         et.write(Simulation.project_directory + "\\" + self.flows_filename, pretty_print=True)
         return Simulation.project_directory + "\\" + self.flows_filename
+    # ---------------------------------------------------------------------------------------------------
 
+    # ---------------------------------- Incident lanes definition --------------------------------------
+    def set_incident_lanes(self, incident):
+        edge = self.__networkManager.get_edge(self.__networkManager.get_edgeId_from_geoCoord(incident.lon, incident.lat))
+        lanes_ids = []
+        for lane in edge.getLanes():
+            lanes_ids.append(lane.getID())
+        incident.set_lanes(lanes_ids)
+        return incident
     # ---------------------------------------------------------------------------------------------------
 
     def add_vehicle_types(self, vehicle_type):
@@ -172,11 +181,3 @@ class TripManager:
 #                        vtypesdistribution_node[0].append(vtypeschild)
 #            else:
 #                root.insert(0, vtypesdist)
-
-    def set_incident_lanes(self, incident):
-        edge = self.__networkManager.get_edge(self.__networkManager.get_edgeId_from_geoCoord(incident.lon, incident.lat))
-        lanes_ids = []
-        for lane in edge.getLanes():
-            lanes_ids.append(lane.getID())
-        incident.set_lanes(lanes_ids)
-        return incident
