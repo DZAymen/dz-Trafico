@@ -16,3 +16,11 @@ class MapBoxSerializer(serializers.Serializer):
     bottom = serializers.FloatField()
     right = serializers.FloatField()
     top = serializers.FloatField()
+
+    def create(self, validated_data):
+        return MapBox(
+            validated_data["left"],
+            validated_data["bottom"],
+            validated_data["right"],
+            validated_data["top"]
+        )
