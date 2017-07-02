@@ -87,9 +87,9 @@ def add_incidents(request):
         return Response(data=incidentSerializer.data, status=status.HTTP_202_ACCEPTED)
 
     elif request.method == 'GET':
-            incidents = simulationManager.get_incidents()
-            print incidents
-            return Response(data=[], status=status.HTTP_200_OK)
+        incidents = simulationManager.get_incidents()
+        serializer = IncidentSerializer(incidents, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 #Post vehicle types
 @api_view(['POST', 'GET'])
