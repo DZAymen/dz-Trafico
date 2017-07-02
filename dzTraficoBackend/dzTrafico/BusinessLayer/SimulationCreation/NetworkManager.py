@@ -4,7 +4,7 @@ import sumolib
 
 class NetworkManager:
 
-    __map_manager = MapManager()
+    __mapManager = MapManager()
     __network_file_path = ""
     net = None
 
@@ -15,7 +15,7 @@ class NetworkManager:
         return self.__network_file_path
 
     def get_network_file(self, map_box):
-        osm_file_path = NetworkManager.__map_manager.download_map(map_box)
+        osm_file_path = NetworkManager.__mapManager.download_map(map_box)
         return self.convert_map_to_network_file(osm_file_path)
 
     def initialize_net(self):
