@@ -5,11 +5,12 @@ class Incident(object):
 
     lanes = []
 
-    def __init__(self, lon, lat, time, duration):
+    def __init__(self, lon, lat, accidentTime, accidentDuration):
         self.lon = lon
         self.lat = lat
-        self.time = time
-        self.duration = duration
+        self.position = Location(lon, lat)
+        self.accidentTime = accidentTime
+        self.accidentDuration = accidentDuration
 
     def set_lanes(self, lanes):
         self.lanes = lanes

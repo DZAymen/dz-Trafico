@@ -95,13 +95,13 @@ class Simulation:
 
     def check_incidents(self, step):
         for incident in self.__incidents:
-            if step == incident.time:
+            if step == incident.accidentTime:
                 for lane in incident.lanes:
                     vehicles = traci.lane.getLastStepVehicleIDs(lane)
                     if len(vehicles)>0:
                         #traci.vehicle.setSpeed(vehicles[0], 0)
                         edge_id = traci.lane.getEdgeID(lane)
-                        traci.vehicle.setStop(vehID=vehicles[0],edgeID=edge_id,pos=100, laneIndex=0, duration=incident.duration)
+                        traci.vehicle.setStop(vehID=vehicles[0],edgeID=edge_id,pos=100, laneIndex=0, duration=incident.accidentDuration)
                         break
 
     def add_inflows(self, inFlowPoints):
