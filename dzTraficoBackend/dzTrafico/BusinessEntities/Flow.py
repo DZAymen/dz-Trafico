@@ -12,13 +12,14 @@ class Flow(object):
 class InFlowPoint(object):
 
     id = 0
-    def __init__(self, lon, lat, depart_time, value):
+    def __init__(self, lon, lat, departTime, flow):
         self.id = InFlowPoint.id
         InFlowPoint.id += 1
         self.lon = lon
         self.lat = lat
-        self.depart_time = depart_time
-        self.value = value
+        self.position = Location(lon, lat)
+        self.departTime = departTime
+        self.flow = flow
 
 class InFlowPointSerializer(serializers.Serializer):
 
@@ -37,12 +38,13 @@ class InFlowPointSerializer(serializers.Serializer):
 
 class OutFlowPoint(object):
     id = 0
-    def __init__(self, lon, lat, value):
+    def __init__(self, lon, lat, flow):
         self.id = OutFlowPoint.id
         OutFlowPoint.id += 1
         self.lon = lon
         self.lat = lat
-        self.value = value
+        self.position = Location(lon, lat)
+        self.flow = flow
 
 class OutFlowPointSerializer(serializers.Serializer):
     position = LocationSerializer()

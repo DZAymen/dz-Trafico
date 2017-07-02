@@ -30,7 +30,7 @@ class TripManager:
 
         # Calculate outflow sum
         for outflowPoint in outFlowPoints:
-            outflows_sum += outflowPoint.value
+            outflows_sum += outflowPoint.flow
 
         for inflowPoint in inFlowPoints:
             for outflowPoint in outFlowPoints:
@@ -39,8 +39,8 @@ class TripManager:
                     Flow(
                         self.__networkManager.get_edgeId_from_geoCoord(inflowPoint.lon, inflowPoint.lat),
                         self.__networkManager.get_edgeId_from_geoCoord(outflowPoint.lon, outflowPoint.lat),
-                        inflowPoint.depart_time,
-                        inflowPoint.value * outflowPoint.value / outflows_sum
+                        inflowPoint.departTime,
+                        inflowPoint.flow * outflowPoint.flow / outflows_sum
                     ))
         return flows
 
