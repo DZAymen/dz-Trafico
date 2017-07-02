@@ -68,8 +68,8 @@ def add_traffic_outflow(request):
 
     elif request.method == 'GET':
         outFlowPoints = simulationManager.get_outflow_points()
-        print outFlowPoints
-        return Response(data=[], status=status.HTTP_200_OK)
+        serializer = OutFlowPointSerializer(outFlowPoints, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 # Post incidents list
 @api_view(['POST', 'GET'])
