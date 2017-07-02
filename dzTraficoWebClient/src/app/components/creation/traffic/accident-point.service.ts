@@ -8,7 +8,7 @@ import { Accident } from '../../../domain/accident';
 @Injectable()
 export class AccidentPointsService {
 
-  private apiURL = 'api/accidents';
+  private apiURL = 'http://127.0.0.1:8000/api/creation/incident';
   private headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(private http: Http) { }
@@ -38,7 +38,7 @@ export class AccidentPointsService {
      return this.http
                 .post(this.apiURL, accident, {headers: this.headers})
                 .toPromise()
-                .then(res => res.json().data as Accident)
+                .then(res => res.json() as Accident)
                 .catch(this.handleError);
 
   }

@@ -33,8 +33,6 @@ export class VehicleComponent implements OnInit {
 
   ngOnInit() {
 
-    this.vehicleTypeService.getVehicleTypes()
-        .then( vTypes => this.transformToDist(vTypes));
     this.cols = DATATABLE_FIELD.filter(colomns => colomns);
   }
 
@@ -43,12 +41,12 @@ export class VehicleComponent implements OnInit {
   }
 
   addVehicleType(){
-    this.vehicleTypeService.create(this.newType)
-        .then(vtype => {
-          let newVDistri = new VehicleDistribution(vtype);
-          this.vehiclesDistri.push(newVDistri);
-        });
-      this.dialogVisible= false;
+    this.vehicleTypeService.create(this.newType);
+
+      let newVDistri = new VehicleDistribution(this.newType);
+      this.vehiclesDistri.push(newVDistri);
+      console.log(this.vehiclesDistri);
+      this.dialogVisible = false;
       //this.newType= null;
   }
 

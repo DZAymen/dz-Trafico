@@ -62,11 +62,11 @@ export class TrafficComponent implements OnInit {
 
     getAllPoints() {
       this.departPointService.getDepartPoints()
-          .then(departs => this.departPoints = departs);
+          .then(departs => this.departPoints = []);
       this.arrivalPointService.getArrivalPoints()
-          .then(arrivals => this.arrivalPoints = arrivals);
+          .then(arrivals => this.arrivalPoints = []);
      this.accidentPointService.getAccidentPoints()
-         .then(accidents => this.accidentPoints = accidents);
+         .then(accidents => this.accidentPoints = []);
     }
 
     ngOnInit() {
@@ -151,14 +151,13 @@ export class TrafficComponent implements OnInit {
                     this.accidentPointService.delete(point._id)
                     .then(() => {
                         //this.arrivalPoints= this.arrivalPoints.filter(p => p !== marker.label);
-                        this.overlays= this.overlays.filter(p=> p !== marker);
+                        this.overlays = this.overlays.filter(p=> p !== marker);
                      })
                   }
                }
            });
        }
     }
-
 
     addPoint() {
       if (this.departDialog) {
@@ -184,6 +183,25 @@ export class TrafficComponent implements OnInit {
         });
       }
     }
+
+    // addPoint() {
+    //   if (this.departDialog) {
+    //     let depart= new Depart( this.position, this.departTime, this.flow);
+    //     this.departPointService.create(depart);
+    //     this.departPoints.push(depart);
+    //     this.drawMarker(depart,'depart');
+    //   }else if (this.accidentDialog){
+    //     let accident= new Accident(this.position, this.accidentTime, this.accidentDuration);
+    //     this.accidentPointService.create(accident);
+    //     this.accidentPoints.push(accident);
+    //     this.drawMarker(accident,'accident');
+    //   }else{
+    //     let arrival= new Arrival(this.position);
+    //     this.arrivalPointService.create(arrival);
+    //     this.arrivalPoints.push(arrival);
+    //     this.drawMarker(arrival, 'arrival');
+    //   }
+    // }
 
     drawMarker(obj: any,type: string){
       this.overlays.push(new google.maps.Marker({

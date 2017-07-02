@@ -109,3 +109,12 @@ class Simulation:
 
     def add_outflows(self, outFlowPoints):
         self.outFlowPoints.append(outFlowPoints)
+
+    def get_inflows(self):
+        return self.inFlowPoints
+
+    def get_outflows(self):
+        return self.outFlowPoints
+
+    def get_incidents(self):
+        return self.__incidents

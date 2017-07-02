@@ -42,6 +42,8 @@ def add_traffic_inflow(request):
         return Response(data=data,status=status.HTTP_202_ACCEPTED)
 
     elif request.method == 'GET':
+        inFlowPoints = simulationManager.get_inflow_points()
+        print inFlowPoints
         return Response(data=[], status=status.HTTP_200_OK)
 
 #POST: add an outflow point
@@ -63,6 +65,8 @@ def add_traffic_outflow(request):
         return Response(data=data, status=status.HTTP_202_ACCEPTED)
 
     elif request.method == 'GET':
+        outFlowPoints = simulationManager.get_outflow_points()
+        print outFlowPoints
         return Response(data=[], status=status.HTTP_200_OK)
 
 # Post incidents list
@@ -81,6 +85,8 @@ def add_incidents(request):
             return Response(data=incidentSerializer.data, status=status.HTTP_202_ACCEPTED)
 
         elif request.method == 'GET':
+            incidents = simulationManager.get_incidents()
+            print incidents
             return Response(data=[], status=status.HTTP_200_OK)
 
 #Post vehicle types
@@ -112,7 +118,6 @@ def add_vehicle_types_percentages(request):
 
     simulationManager.set_vehicle_types_percentages(request.data)
     return Response(status.HTTP_201_CREATED)
-
 
 #Post configuration state
 # :true means to launch the simulation creation

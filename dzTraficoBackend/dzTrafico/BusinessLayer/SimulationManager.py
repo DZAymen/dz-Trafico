@@ -41,12 +41,22 @@ class SimulationManager:
                 SimulationManager.__simulation.inFlowPoints,
                 SimulationManager.__simulation.outFlowPoints
             )
+
+    def get_inflow_points(self):
+        return SimulationManager.__simulation.get_inflows()
+
+    def get_outflow_points(self):
+        return SimulationManager.__simulation.get_outflows()
+
     # ---------------------------------------------------------------------------------------------------
 
     # -------------------------------- Incidents definition ---------------------------------------------
     # Call SimulationCreator.set_map method to create the map
     def add_incident(self, incident):
         SimulationManager.__simulationCreator.add_incidents(incident)
+
+    def get_incidents(self):
+        return SimulationManager.__simulation.get_incidents()
     # ---------------------------------------------------------------------------------------------------
 
     # -------------------------------- Vehicle types definition -----------------------------------------

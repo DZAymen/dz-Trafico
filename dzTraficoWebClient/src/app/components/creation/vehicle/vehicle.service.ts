@@ -8,7 +8,7 @@ import { VehicleType } from '../../../domain/vehicle-type';
 @Injectable()
 export class VehicleTypeService {
 
-  private apiURL = 'api/vehicleTypes';
+  private apiURL = 'http://127.0.0.1:8000/api/creation/vehicletypes';
   private headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(private http: Http) { }

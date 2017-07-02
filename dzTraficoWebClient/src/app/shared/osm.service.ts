@@ -6,7 +6,7 @@ import 'rxjs/add/operator/toPromise';
 @Injectable()
 export class OsmService {
 
-  private mapURL= ""; //"http://127.0.0.1:8000/api/creation/map";
+  private mapURL= "http://127.0.0.1:8000/api/creation/map";
   private headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(private http: Http) {}
