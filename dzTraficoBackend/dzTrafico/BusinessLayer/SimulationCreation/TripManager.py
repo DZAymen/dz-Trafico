@@ -86,7 +86,7 @@ class TripManager:
 
     # ---------------------------------- Vehicle types defintion ----------------------------------------
     def add_vehicle_type(self, vehicle_type):
-        current_type_id = vehicle_type.type_id
+        current_type_id = vehicle_type.id
         #if it is already created, we append the new vehicle type
         if os.path.isfile(self.vehicle_types_file_path):
             # load vehicle.types.xml file
@@ -95,20 +95,20 @@ class TripManager:
             # Get the last element id
             if len(root.getchildren())>0:
                 current_type_id = int(root.getchildren().pop().get('id')) + 1
-                vehicle_type.type_id = current_type_id
+                vehicle_type.id = current_type_id
 
         else:
             #else, we create a new root and we append the vehicle types
             root = etree.Element("vTypeDistribution", id="vtypedist")
 
         type_node = etree.Element("vType",
-                                  accel=str(vehicle_type.acceleration),
-                                  decel=str(vehicle_type.deceleration),
+                                  accel=str(vehicle_type.accel),
+                                  decel=str(vehicle_type.decel),
                                   length=str(vehicle_type.length),
-                                  maxSpeed=str(vehicle_type.max_speed),
-                                  minGap=str(vehicle_type.min_gap),
-                                  speedFactor=str(vehicle_type.speed_factor),
-                                  speedDev=str(vehicle_type.speed_dev),
+                                  maxSpeed=str(vehicle_type.maxSpeed),
+                                  minGap=str(vehicle_type.minGap),
+                                  speedFactor=str(vehicle_type.speedFactor),
+                                  speedDev=str(vehicle_type.speedDev),
                                   sigma=str(vehicle_type.sigma),
                                   tau=str(vehicle_type.tau)
                                   )

@@ -3,31 +3,31 @@ from rest_framework import serializers
 
 class VehicleType(object):
 
-    type_id = -1
+    id = -1
 
-    def __init__(self, max_speed, length, min_gap, speed_factor, speed_dev, acceleration, deceleration, sigma, tau):
-        VehicleType.type_id += 1
-        self.type_id = VehicleType.type_id
-        self.max_speed = max_speed
+    def __init__(self, maxSpeed, length, minGap, speedFactor, speedDev, accel, decel, sigma, tau):
+        VehicleType.id += 1
+        self.id = VehicleType.id
+        self.maxSpeed = maxSpeed
         self.length = length
-        self.min_gap = min_gap
-        self.speed_factor = speed_factor
-        self.speed_dev = speed_dev
-        self.acceleration = acceleration
-        self.deceleration = deceleration
+        self.minGap = minGap
+        self.speedFactor = speedFactor
+        self.speedDev = speedDev
+        self.accel = accel
+        self.decel = decel
         self.sigma = sigma
         self.tau = tau
 
-    def set_type_id(self, type_id):
-        self.type_id = type_id
+    def set_type_id(self, id):
+        self.id = id
 
 class VehicleTypeSerializer(serializers.Serializer):
 
     maxSpeed = serializers.FloatField()
     length = serializers.FloatField(required=False)
     minGap = serializers.FloatField()
-    speed_factor = serializers.FloatField(required=False)
-    speed_dev = serializers.FloatField(required=False)
+    speedFactor = serializers.FloatField(required=False)
+    speedDev = serializers.FloatField(required=False)
     accel = serializers.FloatField()
     decel = serializers.FloatField()
     sigma = serializers.FloatField()
@@ -41,9 +41,9 @@ class VehicleTypeSerializer(serializers.Serializer):
             #validated_data["length"],
             validated_data["minGap"],
             0.9,
-            #validated_data["speed_factor"],
+            #validated_data["speedFactor"],
             0,
-            #validated_data["speed_dev"],
+            #validated_data["speedDev"],
             validated_data["accel"],
             validated_data["decel"],
             validated_data["sigma"],
@@ -51,5 +51,5 @@ class VehicleTypeSerializer(serializers.Serializer):
         )
 
 class VehicleTypesPercentagesSerializer(serializers.Serializer):
-    type_id = serializers.CharField()
+    id = serializers.CharField()
     percentage = serializers.FloatField()
