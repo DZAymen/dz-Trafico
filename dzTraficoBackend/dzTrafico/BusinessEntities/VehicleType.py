@@ -23,6 +23,7 @@ class VehicleType(object):
 
 class VehicleTypeSerializer(serializers.Serializer):
 
+    id = serializers.IntegerField(required=False)
     maxSpeed = serializers.FloatField()
     length = serializers.FloatField(required=False)
     minGap = serializers.FloatField()

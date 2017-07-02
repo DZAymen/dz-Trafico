@@ -109,10 +109,8 @@ def add_vehicle_types(request):
 
     elif request.method == 'GET':
         vehicle_types = simulationManager.get_vehicle_types()
-        serializer = VehicleTypeSerializer(vehicle_types)
-        stream = BytesIO(serializer.data)
-        data = JSONParser().parse(stream)
-        return Response(data=data, status=status.HTTP_200_OK)
+        serializer = VehicleTypeSerializer(vehicle_types, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def add_vehicle_types_percentages(request):
