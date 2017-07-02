@@ -45,8 +45,8 @@ def add_traffic_inflow(request):
 
     elif request.method == 'GET':
         inFlowPoints = simulationManager.get_inflow_points()
-        print inFlowPoints
-        return Response(data=[], status=status.HTTP_200_OK)
+        serializer = InFlowPointSerializer(inFlowPoints, many=True)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 #POST: add an outflow point
 #GET: get outflow points
