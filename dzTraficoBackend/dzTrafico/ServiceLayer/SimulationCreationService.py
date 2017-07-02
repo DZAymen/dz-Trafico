@@ -1,6 +1,8 @@
 from rest_framework import status
 from rest_framework.decorators import api_view
+from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
+from django.utils.six import BytesIO
 
 from dzTrafico.BusinessLayer.SimulationManager import SimulationManager
 from dzTrafico.BusinessEntities.MapBox import MapBox, MapBoxSerializer
@@ -73,18 +75,18 @@ def add_traffic_outflow(request):
 @api_view(['POST', 'GET'])
 def add_incidents(request):
 
-        if request.method == 'POST':
-            # Validate incident request data
-            incidentSerializer = IncidentSerializer(data=request.data)
-            incidentSerializer.is_valid(raise_exception=True)
-            # Create incident instance
-            incident = incidentSerializer.create(incidentSerializer.validated_data)
-            # Add incident to incidents list
-            simulationManager.add_incident(incident)
+    if request.method == 'POST':
+        # Validate incident request data
+        incidentSerializer = IncidentSerializer(data=request.data)
+        incidentSerializer.is_valid(raise_exception=True)
+        # Create incident instance
+        incident = incidentSerializer.create(incidentSerializer.validated_data)
+        # Add incident to incidents list
+        simulationManager.add_incident(incident)
 
-            return Response(data=incidentSerializer.data, status=status.HTTP_202_ACCEPTED)
+        return Response(data=incidentSerializer.data, status=status.HTTP_202_ACCEPTED)
 
-        elif request.method == 'GET':
+    elif request.method == 'GET':
             incidents = simulationManager.get_incidents()
             print incidents
             return Response(data=[], status=status.HTTP_200_OK)
@@ -107,8 +109,10 @@ def add_vehicle_types(request):
 
     elif request.method == 'GET':
         vehicle_types = simulationManager.get_vehicle_types()
-        print vehicle_types
-        return Response(data=[], status=status.HTTP_200_OK)
+        serializer = VehicleTypeSerializer(vehicle_types)
+        stream = BytesIO(serializer.data)
+        data = JSONParser().parse(stream)
+        return Response(data=data, status=status.HTTP_200_OK)
 
 @api_view(['POST'])
 def add_vehicle_types_percentages(request):
