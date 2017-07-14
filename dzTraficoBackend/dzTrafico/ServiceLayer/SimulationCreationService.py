@@ -126,6 +126,7 @@ def update_configuration_state(request):
 
     #timeMeasure
     #startTime
+    simulationManager.split_network_edges(request.data["distance"])
     simulationManager.add_sensors(request.data["distance"])
     if request.data["configCompleted"]:
         simulationManager.create_simulation()

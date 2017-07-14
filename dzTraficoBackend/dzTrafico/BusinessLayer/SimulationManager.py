@@ -26,11 +26,9 @@ class SimulationManager:
     # -------------------------------- Flows definition -------------------------------------------------
     def add_inflow(self, inFlowPoint):
         SimulationManager.__simulation.add_inflows(inFlowPoint)
-        self.generate_flows()
 
     def add_outflow(self, outFlowPoint):
         SimulationManager.__simulation.add_outflows(outFlowPoint)
-        self.generate_flows()
 
     def generate_flows(self):
         if (len(SimulationManager.__simulation.inFlowPoints) > 0) and (
@@ -69,13 +67,18 @@ class SimulationManager:
     # ---------------------------------------------------------------------------------------------------
 
     # ------------------------------------- Add sensors -------------------------------------------------
-
     def add_sensors(self, sensors_distance):
         Sensor.trafficAnalyzer = SimulationManager.__trafficAnalyzer
         SimulationManager.__simulationCreator.create_sensors(sensors_distance)
     # ---------------------------------------------------------------------------------------------------
 
     # ------------------------------------- Simulation Creation -----------------------------------------
+    # Split network edges
+    # && update network file
+    # && generate route file
+    def split_network_edges(self, sensors_distance):
+        SimulationManager.__simulationCreator.split_network_edges(sensors_distance)
+        self.generate_flows()
 
     def create_simulation(self):
         SimulationManager.__simulation = SimulationManager.__simulationCreator.createSimulation()
