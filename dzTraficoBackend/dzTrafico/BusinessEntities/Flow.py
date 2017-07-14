@@ -47,6 +47,8 @@ class OutFlowPoint(object):
         self.flow = flow
 
 class OutFlowPointSerializer(serializers.Serializer):
+
+    id = serializers.IntegerField(required=False)
     position = LocationSerializer()
     flow = serializers.FloatField(required=False)
 
