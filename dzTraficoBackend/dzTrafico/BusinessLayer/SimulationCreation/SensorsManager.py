@@ -9,9 +9,9 @@ class SensorsManager():
     def __init__(self, networkManager):
         self.__networkManager = networkManager
 
-    def create_sensors(self, flows, sensors_distance):
+    def create_sensors(self, flows):
         # Get splitted edges
-        edges = self.__networkManager.get_splitted_edges(flows, sensors_distance)
+        edges = self.__networkManager.get_edges(flows)
         # Add sensors for each edge
         for edge in edges:
             #Get lanes number

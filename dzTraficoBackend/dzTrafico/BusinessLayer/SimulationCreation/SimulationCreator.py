@@ -16,6 +16,13 @@ class SimulationCreator:
     def create_network_file(self, mapBox):
         network_file_path = SimulationCreator.__networkManager.get_network_file(mapBox)
         SimulationCreator.__simulation.set_network_file(network_file_path)
+
+    # Generate a new network file including splitted edges
+    def split_network_edges(self, distance):
+        SimulationCreator.__networkManager.generate_network_file_with_splitted_edges(
+            SimulationCreator.__simulation.get_flows(),
+            distance
+        )
     # ---------------------------------------------------------------------------------------------------
 
     # -------------------------------- Flows definition -------------------------------------------------
@@ -47,7 +54,7 @@ class SimulationCreator:
 
     # ------------------------------------- Add sensors -------------------------------------------------
     def create_sensors(self, sensors_distance):
-        self.sensors, self.sensors_file = SimulationCreator.__sensorsManager.create_sensors(SimulationCreator.__simulation.get_flows(), sensors_distance)
+        self.sensors, self.sensors_file = SimulationCreator.__sensorsManager.create_sensors(SimulationCreator.__simulation.get_flows())
         SimulationCreator.__simulation.add_sensors(self.sensors)
         SimulationCreator.__simulation.set_sensors_file(self.sensors_file)
     # ---------------------------------------------------------------------------------------------------

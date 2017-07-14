@@ -16,9 +16,17 @@ class NetworkManager:
         subprocess.call("netconvert --osm-files " + osm_file_path + " -o " + self.__network_file_path)
         return self.__network_file_path
 
+    def convert_map_to_network_file_with_splitted_edges(self, splitted_edges_file):
+        #Return network file path
+        subprocess.call(
+            "netconvert --osm-files " + self.osm_file_path
+            + " -e " + splitted_edges_file
+            + " -o " + self.__network_file_path)
+        return self.__network_file_path
+
     def get_network_file(self, map_box):
-        osm_file_path = NetworkManager.__mapManager.download_map(map_box)
-        return self.convert_map_to_network_file(osm_file_path)
+        self.osm_file_path = NetworkManager.__mapManager.download_map(map_box)
+        return self.convert_map_to_network_file(self.osm_file_path)
 
     def initialize_net(self):
         if self.net is None:
@@ -39,16 +47,15 @@ class NetworkManager:
         self.initialize_net()
         return self.net.getEdge(edge_id)
 
-    def get_splitted_edges(self, flows, sensors_distance):
+    def generate_network_file_with_splitted_edges(self, flows, distance):
         # Get primary edges
         primary_edges = self.get_edges(flows)
         # Split edges by sensors_distance
-        splitted_edges = self.split_edges(primary_edges, sensors_distance)
+        splitted_edges = self.split_edges(primary_edges, distance)
         # Generate edges definition xml file to include in netconvert command line
         splitted_edges_file = self.create_splitted_edges_file(splitted_edges)
-        # Returns edges after splitting the primary ones
-        edges = self.get_edges(flows)
-        return edges
+        # Generate the new net xml file with the splitted edges
+        self.convert_map_to_network_file_with_splitted_edges(splitted_edges_file)
 
     # Returns edges situated between start_edge and end_edge for each flow
     # We should fix the case of multi next edges
@@ -107,7 +114,7 @@ class NetworkManager:
             edges_node.append(edge_node)
         et = etree.ElementTree(edges_node)
         et.write(Simulation.project_directory + "\\" + splitted_edges_filename, pretty_print=True)
-        return splitted_edges_filename
+        return Simulation.project_directory + "\\" + splitted_edges_filename
 
 
 class SplittedEdge:
