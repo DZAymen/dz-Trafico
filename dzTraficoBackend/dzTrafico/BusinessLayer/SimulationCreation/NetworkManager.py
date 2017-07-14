@@ -22,6 +22,7 @@ class NetworkManager:
             "netconvert --osm-files " + self.osm_file_path
             + " -e " + splitted_edges_file
             + " -o " + self.__network_file_path)
+        self.net = None
         return self.__network_file_path
 
     def get_network_file(self, map_box):
