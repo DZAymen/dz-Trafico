@@ -26,15 +26,13 @@ class SimulationManager:
     # -------------------------------- Flows definition -------------------------------------------------
     def add_inflow(self, inFlowPoint):
         SimulationManager.__simulation.add_inflows(inFlowPoint)
-        if (len(SimulationManager.__simulation.inFlowPoints) > 0) and (
-            len(SimulationManager.__simulation.outFlowPoints) > 0):
-            SimulationManager.__simulationCreator.define_traffic_flows(
-                SimulationManager.__simulation.inFlowPoints,
-                SimulationManager.__simulation.outFlowPoints
-            )
+        self.generate_flows()
 
     def add_outflow(self, outFlowPoint):
         SimulationManager.__simulation.add_outflows(outFlowPoint)
+        self.generate_flows()
+
+    def generate_flows(self):
         if (len(SimulationManager.__simulation.inFlowPoints) > 0) and (
             len(SimulationManager.__simulation.outFlowPoints)>0):
             SimulationManager.__simulationCreator.define_traffic_flows(
@@ -68,18 +66,17 @@ class SimulationManager:
 
     def get_vehicle_types(self):
         return SimulationManager.__simulationCreator.get_vehicle_types()
-
     # ---------------------------------------------------------------------------------------------------
 
     # ------------------------------------- Add sensors -------------------------------------------------
-    # Call SimulationCreator.set_map method to create the map
+
     def add_sensors(self, sensors_distance):
         Sensor.trafficAnalyzer = SimulationManager.__trafficAnalyzer
         SimulationManager.__simulationCreator.create_sensors(sensors_distance)
     # ---------------------------------------------------------------------------------------------------
 
     # ------------------------------------- Simulation Creation -----------------------------------------
-    # Call SimulationCreator.set_map method to create the map
+
     def create_simulation(self):
         SimulationManager.__simulation = SimulationManager.__simulationCreator.createSimulation()
         SimulationManager.__simulation.start_simulation()
