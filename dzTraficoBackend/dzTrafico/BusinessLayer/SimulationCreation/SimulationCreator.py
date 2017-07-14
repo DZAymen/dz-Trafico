@@ -28,8 +28,10 @@ class SimulationCreator:
     # -------------------------------- Flows definition -------------------------------------------------
     def define_traffic_flows(self, inFlowPoints, outFlowPoints):
         self.flows_file_path, self.flows = SimulationCreator.__tripManager.generate_flows_file(inFlowPoints, outFlowPoints)
-        self.route_file = SimulationCreator.__tripManager.generate_route_file(self.flows_file_path)
         SimulationCreator.__simulation.set_flows(self.flows)
+
+    def create_route_file(self):
+        self.route_file = SimulationCreator.__tripManager.generate_route_file(self.flows_file_path)
         SimulationCreator.__simulation.set_route_file(self.route_file)
     # ---------------------------------------------------------------------------------------------------
 

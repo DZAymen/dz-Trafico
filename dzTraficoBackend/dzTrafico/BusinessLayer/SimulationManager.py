@@ -38,6 +38,9 @@ class SimulationManager:
                 SimulationManager.__simulation.outFlowPoints
             )
 
+    def generate_routes(self):
+        SimulationManager.__simulationCreator.create_route_file()
+
     def get_inflow_points(self):
         return SimulationManager.__simulation.get_inflows()
 
@@ -77,8 +80,9 @@ class SimulationManager:
     # && update network file
     # && generate route file
     def split_network_edges(self, sensors_distance):
-        SimulationManager.__simulationCreator.split_network_edges(sensors_distance)
         self.generate_flows()
+        SimulationManager.__simulationCreator.split_network_edges(sensors_distance)
+        self.generate_routes()
 
     def create_simulation(self):
         SimulationManager.__simulation = SimulationManager.__simulationCreator.createSimulation()
