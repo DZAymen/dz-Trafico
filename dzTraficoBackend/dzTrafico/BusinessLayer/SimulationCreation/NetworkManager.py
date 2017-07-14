@@ -1,7 +1,8 @@
 from dzTrafico.Helpers.MapManager import MapManager
+from dzTrafico.BusinessEntities.Simulation import Simulation
 from sumolib.net.generator.network import Split
-import subprocess, os
-import sumolib
+import subprocess, os, sumolib
+import lxml.etree as etree
 
 class NetworkManager:
 
@@ -38,13 +39,23 @@ class NetworkManager:
         self.initialize_net()
         return self.net.getEdge(edge_id)
 
+    def get_splitted_edges(self, flows, sensors_distance):
+        # Get primary edges
+        primary_edges = self.get_edges(flows)
+        # Split edges by sensors_distance
+        splitted_edges = self.split_edges(primary_edges, sensors_distance)
+        # Generate edges definition xml file to include in netconvert command line
+        splitted_edges_file = self.create_splitted_edges_file(splitted_edges)
+        # Returns edges after splitting the primary ones
+        edges = self.get_edges(flows)
+        return edges
 
     # Returns edges situated between start_edge and end_edge for each flow
     # We should fix the case of multi next edges
     def get_edges(self, flows):
         edges = []
         for flow in flows:
-            current_edge = self.__networkManager.get_edge(flow.start_edge)
+            current_edge = self.get_edge(flow.start_edge)
             while True:
                 edges.append(current_edge)
                 if current_edge.getID() == flow.end_edge:
@@ -78,6 +89,25 @@ class NetworkManager:
                 )
         return splitted_edges
 
+    def create_splitted_edges_file(self, splitted_edges):
+        splitted_edges_filename = "edges.xml"
+        edges_node = etree.Element("edges")
+        for splitted_edge in splitted_edges:
+            edge_node = etree.Element("edge",
+                                      id=str(splitted_edge.edge_id),
+                                      numLanes=str(splitted_edge.num_lanes)
+                                      )
+            # Add splits to the concerned edge
+            for split in splitted_edge.splits:
+                split_node = etree.Element("split",
+                                           pos=str(split.distance)
+                                           )
+                edge_node.append(split_node)
+
+            edges_node.append(edge_node)
+        et = etree.ElementTree(edges_node)
+        et.write(Simulation.project_directory + "\\" + splitted_edges_filename, pretty_print=True)
+        return splitted_edges_filename
 
 
 class SplittedEdge:

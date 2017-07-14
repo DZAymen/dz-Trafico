@@ -28,8 +28,6 @@ class SensorsManager():
         self.sensors_filename = self.create_sensors_file(self.sensors)
         return self.sensors, self.sensors_filename
 
-
-
     def create_sensors_file(self, sensors):
         sensors_filename = "sensors.xml"
         root = etree.Element("additional")
