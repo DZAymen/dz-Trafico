@@ -10,7 +10,10 @@ class SensorsManager():
         self.__networkManager = networkManager
 
     def create_sensors(self, flows, sensors_distance):
-        edges = self.get_edges(flows)
+        primary_edges = self.__networkManager.get_edges(flows)
+        # Split edges into equal segments
+        edges = self.__networkManager.split_edges(primary_edges, sensors_distance)
+        # Add sensors for each edge
         for edge in edges:
             #Calculate sensors number in the same edge from 0,1,2,..
             sensors_num = int(edge.getLength() / sensors_distance)
@@ -30,23 +33,11 @@ class SensorsManager():
         self.sensors_filename = self.create_sensors_file(self.sensors)
         return self.sensors, self.sensors_filename
 
-    def get_edges(self, flows):
-        edges = []
-        for flow in flows:
-            current_edge = self.__networkManager.get_edge(flow.start_edge)
-            while True:
-                edges.append(current_edge)
-                if current_edge.getID() == flow.end_edge:
-                    break
-                #get_next_edge_id
-                #fix the special case of a many next edges
-                current_edge = current_edge.getToNode().getOutgoing()[0]
-        return edges
+
 
     def create_sensors_file(self, sensors):
         sensors_filename = "sensors.xml"
         root = etree.Element("additional")
-        print sensors
         for sensor in sensors:
             sensor_node = etree.Element("inductionLoop",
                                         id=str(sensor.get_sensor_id()),

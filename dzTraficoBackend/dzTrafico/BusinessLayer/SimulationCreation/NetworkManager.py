@@ -1,4 +1,5 @@
 from dzTrafico.Helpers.MapManager import MapManager
+from sumolib.net.generator.network import Split
 import subprocess, os
 import sumolib
 
@@ -36,3 +37,52 @@ class NetworkManager:
     def get_edge(self, edge_id):
         self.initialize_net()
         return self.net.getEdge(edge_id)
+
+
+    # Returns edges situated between start_edge and end_edge for each flow
+    # We should fix the case of multi next edges
+    def get_edges(self, flows):
+        edges = []
+        for flow in flows:
+            current_edge = self.__networkManager.get_edge(flow.start_edge)
+            while True:
+                edges.append(current_edge)
+                if current_edge.getID() == flow.end_edge:
+                    break
+                #get_next_edge_id
+                #fix the special case of a many next edges
+                current_edge = current_edge.getToNode().getOutgoing()[0]
+        return edges
+
+    # Split edges into equal segments
+    # each one's length is almost equal sensors_distance
+    def split_edges(self, primary_edges, sensors_distance):
+        splitted_edges = []
+        for edge in primary_edges:
+            splits = []
+            sub_edges_num = int(edge.getLength() / sensors_distance)
+            for i in range(0, sub_edges_num):
+                splits.append(
+                    Split(
+                        distance = i * sensors_distance,
+                        lanes = []
+                    )
+                )
+            if len(splits) > 0:
+                splitted_edges.append(
+                    SplittedEdge(
+                        edge.getID(),
+                        edge.getLaneNumber(),
+                        splits
+                    )
+                )
+        return splitted_edges
+
+
+
+class SplittedEdge:
+
+    def __init__(self, edge_id, num_lanes, splits):
+        self.edge_id = edge_id
+        self.num_lanes = num_lanes
+        self.splits = splits
