@@ -24,7 +24,8 @@ class SensorsManager():
                     Sensor(
                         edge.getLane(j).getID(),
                         -1,
-                        edge.getSpeed() * 0.5
+                        edge.getSpeed() * 0.5,
+                        edge.getSpeed() * 0.75
                     )
                 )
             sink.add_nodes(
