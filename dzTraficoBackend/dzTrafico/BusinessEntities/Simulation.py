@@ -81,6 +81,8 @@ class Simulation:
         for step in range(2000):
             traci.simulationStep()
             self.check_incidents(step)
+            for sink in self.__sinks:
+                sink.read_traffic_state()
             #print self.__sensors_list[0].get_sensor_id()
             #for sensor in self.__sensors_list:
                 #sensor.add_measure(traci.inductionloop.getLastStepMeanSpeed(str(sensor.get_sensor_id())))
