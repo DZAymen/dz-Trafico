@@ -74,3 +74,10 @@ class Sink(object):
     def add_nodes(self, nodes):
         for node in nodes:
             self.nodes.append(node)
+
+    def get_sensors(self):
+        sensors = []
+        for node in self.nodes:
+            for sensor in node.sensors:
+                sensors.append(sensor)
+        return sensors
