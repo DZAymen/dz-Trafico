@@ -68,6 +68,9 @@ class Simulation:
                     </configuration>'''
                 )
 
+    def add_sinks(self, sinks):
+        self.__sinks.append(sinks)
+
     def add_sensors(self, sensors):
         self.__sensors_list.append(sensors)
 
