@@ -22,7 +22,7 @@ class SensorsManager():
                 self.sensors.append(
                     Sensor(
                         edge.getLane(j).getID(),
-                        0,
+                        -1,
                         edge.getSpeed() * 0.5
                     ))
         self.sensors_filename = self.create_sensors_file(self.sensors)
