@@ -32,7 +32,7 @@ class SimulationManager:
 
     def generate_flows(self):
         if (len(SimulationManager.__simulation.inFlowPoints) > 0) and (
-            len(SimulationManager.__simulation.outFlowPoints)>0):
+            len(SimulationManager.__simulation.outFlowPoints) > 0):
             SimulationManager.__simulationCreator.define_traffic_flows(
                 SimulationManager.__simulation.inFlowPoints,
                 SimulationManager.__simulation.outFlowPoints
@@ -82,6 +82,7 @@ class SimulationManager:
     def split_network_edges(self, sensors_distance):
         self.generate_flows()
         SimulationManager.__simulationCreator.split_network_edges(sensors_distance)
+        self.generate_flows()
         self.generate_routes()
 
     def create_simulation(self):
