@@ -57,8 +57,7 @@ class Node(object):
         self.initial_max_speed = edge.getSpeed()
 
     def add_sensors(self, sensors):
-        for sensor in sensors:
-            self.sensors.append(sensor)
+        self.sensors.append(sensors)
 
     def activate_VSL(self, max_speed):
         self.VSL_is_activated = True
@@ -72,8 +71,7 @@ class Sink(object):
         self.nodes = nodes
 
     def add_nodes(self, nodes):
-        for node in nodes:
-            self.nodes.append(node)
+        self.nodes.append(nodes)
 
     def get_sensors(self):
         sensors = []
