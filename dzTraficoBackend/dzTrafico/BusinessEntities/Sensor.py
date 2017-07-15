@@ -63,8 +63,11 @@ class Node(object):
     def add_sensors(self, sensors):
         self.sensors.append(sensors)
 
-    def activate_VSL(self, max_speed):
+    def activate_VSL(self):
         self.VSL_is_activated = True
+        traci.edge.setMaxSpeed(self.edge.getID(), self.current_max_speed)
+
+    def set_current_max_speed(self, max_speed):
         self.current_max_speed = max_speed
 
     def check_congested_lanes(self):
@@ -78,10 +81,13 @@ class Node(object):
 
 class Sink(object):
 
+    id = 0
     trafficAnalyzer = None
     nodes = []
 
     def __init__(self, nodes):
+        self.id = Sink.id
+        Sink.id += 1
         self.nodes = nodes
 
     def add_nodes(self, nodes):
@@ -98,4 +104,4 @@ class Sink(object):
         for node in self.nodes:
             congested_lanes = node.check_congested_lanes()
             if len(congested_lanes):
-                Sink.trafficAnalyzer.notify_congestion_detected(node, congested_lanes)
+                Sink.trafficAnalyzer.notify_congestion_detected(self, node, congested_lanes)
