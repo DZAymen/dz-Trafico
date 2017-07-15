@@ -41,3 +41,36 @@ class Measure(object):
 
     def __init__(self, speed):
         self.__speed = speed
+
+class Node(object):
+
+    sensors = []
+    edge = None
+    initial_max_speed = 0
+    current_max_speed = 0
+
+    VSL_is_activated = False
+
+    def __init__(self, edge, sensors):
+        self.edge = edge
+        self.sensors = sensors
+        self.initial_max_speed = edge.getSpeed()
+
+    def add_sensors(self, sensors):
+        for sensor in sensors:
+            self.sensors.append(sensor)
+
+    def activate_VSL(self, max_speed):
+        self.VSL_is_activated = True
+        self.current_max_speed = max_speed
+
+class Sink(object):
+
+    nodes = []
+
+    def __init__(self, nodes):
+        self.nodes = nodes
+
+    def add_nodes(self, nodes):
+        for node in nodes:
+            self.nodes.append(node)

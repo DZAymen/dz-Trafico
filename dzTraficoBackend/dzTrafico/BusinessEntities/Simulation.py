@@ -14,6 +14,7 @@ class Simulation:
     __route_file = ""
     __sensors_file = ""
 
+    __sinks = []
     __sensors_list = []
     __incidents = []
     __traffic_flows = []
