@@ -1,32 +1,41 @@
-from dzTrafico.BusinessEntities.Sensor import Sensor
+from dzTrafico.BusinessEntities.Sensor import Sensor, Node, Sink
 import lxml.etree as etree
 from dzTrafico.BusinessEntities.Simulation import Simulation
 
 class SensorsManager():
 
-    sensors = []
-
     def __init__(self, networkManager):
         self.__networkManager = networkManager
 
     def create_sensors(self, flows):
+        sinks = []
         # Get splitted edges
         edges = self.__networkManager.get_edges(flows)
         # Add sensors for each edge
+        sink = Sink([])
         for edge in edges:
             #Get lanes number
             lanes_num = edge.getLaneNumber()
+            sensors = []
             #for each lane
             for j in range(0,lanes_num):
                 #We create a sensor
-                self.sensors.append(
+                sensors.append(
                     Sensor(
                         edge.getLane(j).getID(),
                         -1,
                         edge.getSpeed() * 0.5
-                    ))
-        self.sensors_filename = self.create_sensors_file(self.sensors)
-        return self.sensors, self.sensors_filename
+                    )
+                )
+            sink.add_nodes(
+                Node(
+                    edge,
+                    sensors
+                )
+            )
+        sensors = sink.get_sensors()
+        self.sensors_filename = self.create_sensors_file(sensors)
+        return sinks, sensors, self.sensors_filename
 
     def create_sensors_file(self, sensors):
         sensors_filename = "sensors.xml"
