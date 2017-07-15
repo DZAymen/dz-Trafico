@@ -7,18 +7,27 @@ class Sensor(object):
     __position = 0
     __measures_list = []
     __critical_speed = 50
+    __high_level_speed = 60
 
-    def __init__(self, lane, position, critical_speed):
+    def __init__(self, lane, position, critical_speed, high_level_speed):
         self.__id = Sensor.__id
         Sensor.__id += 1
         self.__lane = lane
         self.__position = position
         self.__critical_speed = critical_speed
+        self.__high_level_speed = high_level_speed
 
     def check_traffic_state(self):
         speed = traci.inductionloop.getLastStepMeanSpeed(str(self.__id))
         self.add_measure(speed)
         return self.__check_measure(speed)
+
+    def check_discharged_area(self):
+        speed = traci.inductionloop.getLastStepMeanSpeed(str(self.__id))
+        self.add_measure(speed)
+        if speed > self.__high_level_speed:
+            return True
+        return False
 
     def add_measure(self, speed):
         self.__measures_list.append(Measure(speed))
@@ -67,6 +76,10 @@ class Node(object):
         self.VSL_is_activated = True
         traci.edge.setMaxSpeed(self.edge.getID(), self.current_max_speed)
 
+    def deactivate_VSL(self):
+        self.VSL_is_activated = False
+        traci.edge.setMaxSpeed(self.edge.getID(), self.initial_max_speed)
+
     def set_current_max_speed(self, max_speed):
         self.current_max_speed = max_speed
 
@@ -78,6 +91,12 @@ class Node(object):
                 congested_lanes.append(i)
             i += 1
         return congested_lanes
+
+    def check_if_discharged(self):
+        is_discharged = True
+        for sensor in self.sensors:
+            is_discharged = is_discharged and sensor.check_discharged_lane()
+        return is_discharged
 
 class Sink(object):
 
@@ -102,6 +121,10 @@ class Sink(object):
 
     def read_traffic_state(self):
         for node in self.nodes:
-            congested_lanes = node.check_congested_lanes()
-            if len(congested_lanes):
-                Sink.trafficAnalyzer.notify_congestion_detected(self, node, congested_lanes)
+            if node.VSL_is_activated:
+                if node.check_if_discharged():
+                    node.deactivate_VSL()
+            else:
+                congested_lanes = node.check_congested_lanes()
+                if len(congested_lanes):
+                    Sink.trafficAnalyzer.notify_congestion_detected(self, node, congested_lanes)
