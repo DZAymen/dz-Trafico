@@ -124,7 +124,7 @@ class TripManager:
             tree = etree.parse(self.vehicle_types_file_path)
             root = tree.getroot()
             for vtype_percentage in vehicle_types_percentages:
-                vtype = root.findall("*[@id='"+ vtype_percentage["type_id"] +"']")
+                vtype = root.findall("*[@id='"+ vtype_percentage["id"] +"']")
                 if len(vtype) > 0:
                     vtype[0].set("probability", str(vtype_percentage["percentage"]))
             et = etree.ElementTree(root)
