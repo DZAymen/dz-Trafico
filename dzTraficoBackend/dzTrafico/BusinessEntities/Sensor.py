@@ -6,8 +6,8 @@ class Sensor(object):
     __lane = ""
     __position = 0
     __measures_list = []
-    __critical_speed = 50
-    __high_level_speed = 60
+    __critical_speed = 0
+    __high_level_speed = 0
 
     def __init__(self, lane, position, critical_speed, high_level_speed):
         self.__id = Sensor.__id
@@ -33,7 +33,15 @@ class Sensor(object):
         self.__measures_list.append(Measure(speed))
 
     def __check_measure(self, speed):
-        if speed < self.__critical_speed:
+
+        # print "-------- Edge ID --------"
+        # print self.__id
+        # print "-------- Speed --------"
+        # print speed
+        # print "-------- Critical_speed --------"
+        # print self.__critical_speed
+
+        if (speed > 0) and (speed < self.__critical_speed):
             # Congestion
             return True
         return False
@@ -46,6 +54,7 @@ class Sensor(object):
 
     def get_sensor_position(self):
         return self.__position
+
 
 class Measure(object):
 
@@ -95,7 +104,7 @@ class Node(object):
     def check_if_discharged(self):
         is_discharged = True
         for sensor in self.sensors:
-            is_discharged = is_discharged and sensor.check_discharged_lane()
+            is_discharged = is_discharged and sensor.check_discharged_area()
         return is_discharged
 
 class Sink(object):
@@ -104,13 +113,15 @@ class Sink(object):
     trafficAnalyzer = None
     nodes = []
 
-    def __init__(self, nodes):
+    def __init__(self):
         self.id = Sink.id
         Sink.id += 1
-        self.nodes = nodes
 
-    def add_nodes(self, nodes):
-        self.nodes.append(nodes)
+        #print "--------nodes----------"
+        #print len(nodes)
+
+    def add_node(self, node):
+        self.nodes.append(node)
 
     def get_sensors(self):
         sensors = []
@@ -122,9 +133,21 @@ class Sink(object):
     def read_traffic_state(self):
         for node in self.nodes:
             if node.VSL_is_activated:
+
+                print "--------VSL_is_activated----------"
+                print node.edge.getID()
+
                 if node.check_if_discharged():
                     node.deactivate_VSL()
+
+                    print "--------deactivate_VSL----------"
+                    print node.edge.getID()
             else:
                 congested_lanes = node.check_congested_lanes()
-                if len(congested_lanes):
+                if len(congested_lanes)>0:
+
+                    print "--------notify_congestion_detected----------"
+                    print node.edge.getID()
+                    print congested_lanes
+
                     Sink.trafficAnalyzer.notify_congestion_detected(self, node, congested_lanes)
