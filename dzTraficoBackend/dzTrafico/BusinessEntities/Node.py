@@ -42,3 +42,6 @@ class Node(object):
         for sensor in self.sensors:
             is_discharged = is_discharged and sensor.check_discharged_area()
         return is_discharged
+
+    def get_current_speed(self):
+        return traci.edge.getLastStepMeanSpeed(self.edge.getID())
