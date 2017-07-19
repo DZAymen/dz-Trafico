@@ -1,4 +1,6 @@
-from dzTrafico.BusinessEntities.Sensor import Sensor, Node, Sink
+from dzTrafico.BusinessEntities.Sensor import Sensor
+from dzTrafico.BusinessEntities.Sink import Sink
+from dzTrafico.BusinessEntities.Node import Node
 import lxml.etree as etree
 from dzTrafico.BusinessEntities.Simulation import Simulation
 
