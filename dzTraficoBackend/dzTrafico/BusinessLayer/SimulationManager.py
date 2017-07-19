@@ -1,6 +1,6 @@
 from dzTrafico.BusinessLayer.SimulationCreation.SimulationCreator import SimulationCreator
 from dzTrafico.BusinessEntities.Simulation import Simulation
-from dzTrafico.BusinessEntities.Sensor import Sensor
+from dzTrafico.BusinessEntities.Sensor import Sensor, Sink
 from dzTrafico.BusinessLayer.TrafficAnalysis.TrafficAnalyzer import TrafficAnalyzer
 
 class SimulationManager:
@@ -71,7 +71,7 @@ class SimulationManager:
 
     # ------------------------------------- Add sensors -------------------------------------------------
     def add_sensors(self, sensors_distance):
-        Sensor.trafficAnalyzer = SimulationManager.__trafficAnalyzer
+        Sink.trafficAnalyzer = SimulationManager.__trafficAnalyzer
         SimulationManager.__simulationCreator.create_sensors(sensors_distance)
     # ---------------------------------------------------------------------------------------------------
 
