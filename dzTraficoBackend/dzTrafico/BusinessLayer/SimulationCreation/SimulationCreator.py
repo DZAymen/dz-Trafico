@@ -32,6 +32,7 @@ class SimulationCreator:
 
     def create_route_file(self):
         self.route_file = SimulationCreator.__tripManager.generate_route_file(self.flows_file_path)
+        SimulationCreator.__tripManager.set_vehicle_types_in_route_file(self.route_file)
         SimulationCreator.__simulation.set_route_file(self.route_file)
     # ---------------------------------------------------------------------------------------------------
 
@@ -48,7 +49,6 @@ class SimulationCreator:
 
     def set_vehicle_types_percentages(self, vehicle_types_percentages):
         SimulationCreator.__tripManager.set_vehicle_types_percentages(vehicle_types_percentages)
-        SimulationCreator.__tripManager.set_vehicle_types_in_route_file(SimulationCreator.__simulation.get_route_file())
 
     def get_vehicle_types(self):
         return SimulationCreator.__tripManager.get_vehicle_types()
