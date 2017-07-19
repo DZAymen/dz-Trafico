@@ -1,3 +1,4 @@
+import traci
 
 class Node(object):
 
