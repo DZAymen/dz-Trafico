@@ -50,12 +50,13 @@ class Node(object):
         self.recommendations = recommendations
 
     def activate_LC(self):
-        for recommendation in self.recommendations:
-            self.change_lane(recommendation)
+        #self.LC_is_activated = True
+        self.change_lane()
 
-    def change_lane(self, recommendation):
-        if recommendation.change_lane:
-            lane = self.edge.getLane(recommendation.lane)
-            vehicles = traci.lane.getLastStepVehicleIDs(lane.getID())
-            for vehicle_id in vehicles:
-                traci.vehicle.changeLane(vehicle_id, recommendation.target_lane, 200)
+    def change_lane(self):
+        for recommendation in self.recommendations:
+            if recommendation.change_lane:
+                lane = self.edge.getLane(recommendation.lane)
+                vehicles = traci.lane.getLastStepVehicleIDs(lane.getID())
+                for vehicle_id in vehicles:
+                    traci.vehicle.changeLane(vehicle_id, recommendation.target_lane, 200)
