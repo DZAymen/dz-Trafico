@@ -46,5 +46,16 @@ class Node(object):
     def get_current_speed(self):
         return traci.edge.getLastStepMeanSpeed(self.edge.getID())
 
+    def set_current_recommendations(self, recommendations):
+        self.recommendations = recommendations
+
     def activate_LC(self):
-        pass
+        for recommendation in self.recommendations:
+            self.change_lane(recommendation)
+
+    def change_lane(self, recommendation):
+        if recommendation.change_lane:
+            lane = self.edge.getLane(recommendation.lane)
+            vehicles = traci.lane.getLastStepVehicleIDs(lane.getID())
+            for vehicle_id in vehicles:
+                traci.vehicle.changeLane(vehicle_id, recommendation.target_lane, 200)
