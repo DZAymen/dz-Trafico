@@ -45,3 +45,6 @@ class Node(object):
 
     def get_current_speed(self):
         return traci.edge.getLastStepMeanSpeed(self.edge.getID())
+
+    def activate_LC(self):
+        pass
