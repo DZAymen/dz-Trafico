@@ -9,7 +9,7 @@ class JamTailProtection:
                 max_speed = self.get_max_speed(node)
                 node.set_current_max_speed(max_speed)
                 vsl_nodes.append(node)
-                node = self.get_previous_node(sink, congested_node)
+                node = self.get_previous_node(sink, node)
             else:
                 break
         return vsl_nodes
