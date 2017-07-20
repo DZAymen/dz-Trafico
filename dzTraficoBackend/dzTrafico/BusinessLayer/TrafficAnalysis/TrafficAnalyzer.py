@@ -1,25 +1,30 @@
 import sumolib
 from dzTrafico.BusinessLayer.TrafficAnalysis.JamTailProtectionControlAlgo import JamTailProtection
+from dzTrafico.BusinessLayer.TrafficAnalysis.LaneChangeControlAlgo import LaneChange
 
 class TrafficAnalyzer:
 
-    jamTailProtection = JamTailProtection()
+    jamTailProtectionController = JamTailProtection()
+    laneChangeController = LaneChange()
 
     def __init__(self, simulation):
         self.__simulation = simulation
-        self.__net = sumolib.net.readNet(simulation.get_network_file_path())
 
     def notify_congestion_detected(self, sink, node, congested_lanes):
-        if len(node.sensors) == len(congested_lanes):
-            print "jam"
-        vsl_nodes = self.jamTailProtection.get_vsl_nodes(sink, node)
-        self.activate_vsl(vsl_nodes)
 
+        vsl_nodes = self.jamTailProtectionController.get_vsl_nodes(sink, node)
+        self.activate_vsl_control(vsl_nodes)
+
+        # if there is a free lane
+        if len(node.sensors) > len(congested_lanes):
+            lc_nodes = self.laneChangeController.get_lc_nodes(sink, node, congested_lanes)
+            self.activate_lc_control(lc_nodes)
         # nextNodeID = self.__net.getEdge(sumolib._laneID2edgeID(sensor_lane)).getToNode().getID()
-        # print(nextNodeID)
-        # traci.lane.setMaxSpeed(sensor_lane, 10)
 
-    def activate_vsl(self, vsl_nodes):
+    def activate_vsl_control(self, vsl_nodes):
         for node in vsl_nodes:
             node.activate_VSL()
-        print vsl_nodes
+
+    def activate_lc_control(self, lc_nodes):
+        for node in lc_nodes:
+            node.activate_LC()
