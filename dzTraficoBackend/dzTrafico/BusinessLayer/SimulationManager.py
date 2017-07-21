@@ -1,6 +1,6 @@
 from dzTrafico.BusinessLayer.SimulationCreation.SimulationCreator import SimulationCreator
 from dzTrafico.BusinessEntities.Simulation import Simulation
-from dzTrafico.BusinessEntities.Sensor import Sensor, Sink
+from dzTrafico.BusinessEntities.Sink import Sink
 from dzTrafico.BusinessLayer.TrafficAnalysis.TrafficAnalyzer import TrafficAnalyzer
 
 class SimulationManager:
