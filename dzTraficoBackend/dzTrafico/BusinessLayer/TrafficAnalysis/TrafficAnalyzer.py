@@ -22,9 +22,15 @@ class TrafficAnalyzer:
         # nextNodeID = self.__net.getEdge(sumolib._laneID2edgeID(sensor_lane)).getToNode().getID()
 
     def activate_vsl_control(self, vsl_nodes):
+
+        print "-------Activate VSL CONTROL-------"
+
         for node in vsl_nodes:
             node.activate_VSL()
 
     def activate_lc_control(self, lc_nodes):
+
+        print "-------Activate LC CONTROL-------"
+
         for node in lc_nodes:
             node.activate_LC()
