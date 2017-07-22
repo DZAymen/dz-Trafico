@@ -2,7 +2,7 @@
 class JamTailProtection:
 
     def get_vsl_nodes(self, sink, congested_node):
-        vsl_nodes = [congested_node]
+        vsl_nodes = []
         node = self.get_previous_node(sink, congested_node)
         while node is not None:
             if self.is_concerned(node):
@@ -15,7 +15,9 @@ class JamTailProtection:
         return vsl_nodes
 
     def get_previous_node(self, sink, node):
-        index = sink.nodes.count(node) - 1
+        index = 0
+        if sink.nodes.count(node):
+            index = sink.nodes.index(node)
         if(index > 0):
             return sink.nodes[index - 1]
         else:
