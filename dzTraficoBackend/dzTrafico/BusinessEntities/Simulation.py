@@ -104,7 +104,7 @@ class Simulation:
                     if len(vehicles)>0:
                         #traci.vehicle.setSpeed(vehicles[0], 0)
                         edge_id = traci.lane.getEdgeID(lane)
-                        traci.vehicle.setStop(vehID=vehicles[0],edgeID=edge_id,pos=100, laneIndex=0, duration=incident.accidentDuration)
+                        traci.vehicle.setStop(vehID=vehicles[0],edgeID=edge_id, laneIndex=0, pos=traci.lane.getLength(lane)-20, duration=incident.accidentDuration * 1000)
                         break
 
     def add_inflows(self, inFlowPoints):
