@@ -13,6 +13,7 @@ class Node(object):
         self.edge = edge
         self.sensors = sensors
         self.initial_max_speed = edge.getSpeed()
+        self.current_max_speed = self.initial_max_speed * 0.8
 
     def add_sensors(self, sensors):
         self.sensors.append(sensors)
@@ -38,9 +39,9 @@ class Node(object):
         return congested_lanes
 
     def check_if_discharged(self):
-        is_discharged = True
+        is_discharged = False
         for sensor in self.sensors:
-            is_discharged = is_discharged and sensor.check_discharged_area()
+            is_discharged = is_discharged or sensor.check_discharged_area()
         return is_discharged
 
     def get_current_speed(self):
@@ -51,6 +52,9 @@ class Node(object):
 
     def activate_LC(self):
         #self.LC_is_activated = True
+        print "----------- Lane Change -----------"
+        print self.edge.getID()
+
         self.change_lane()
 
     def change_lane(self):
@@ -58,5 +62,9 @@ class Node(object):
             if recommendation.change_lane:
                 lane = self.edge.getLane(recommendation.lane)
                 vehicles = traci.lane.getLastStepVehicleIDs(lane.getID())
+
+                print "------recommendation------"
+                print recommendation.target_lane
+
                 for vehicle_id in vehicles:
                     traci.vehicle.changeLane(vehicle_id, recommendation.target_lane, 200)
