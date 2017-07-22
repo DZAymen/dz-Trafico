@@ -2,22 +2,24 @@ from dzTrafico.BusinessEntities.LCRecommendation import LCRecommendation
 
 class LaneChange:
     def get_lc_nodes(self, sink, congested_node, congested_lanes):
-        lc_nodes = []
-        node = self.get_previous_node(sink, congested_node)
+        lc_nodes = self.get_previous_nodes(sink, congested_node, 2)
 
-        while node is not None and len(lc_nodes)<2:
+        for node in lc_nodes:
             recommendations = self.get_lane_change_recommendations(congested_lanes, node)
             node.set_current_recommendations(recommendations)
-            lc_nodes.append(node)
-            node = self.get_previous_node(sink, node)
+
         return lc_nodes
 
-    def get_previous_node(self, sink, node):
-        index = sink.nodes.count(node)
-        if(index > 0):
-            return sink.nodes[index - 1]
-        else:
-            return None
+    def get_previous_nodes(self, sink, node, nodes_number):
+        index = 0
+        if sink.nodes.count(node):
+            index = sink.nodes.index(node)
+        nodes = []
+        i = 0
+        while i < nodes_number and i < index:
+            nodes.append(sink.nodes[index - 1 - i])
+            i += 1
+        return nodes
 
     def get_lane_change_recommendations(self, congested_lanes, node):
         recommendations = []
