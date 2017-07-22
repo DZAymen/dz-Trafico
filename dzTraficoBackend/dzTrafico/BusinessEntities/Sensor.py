@@ -25,6 +25,11 @@ class Sensor(object):
     def check_discharged_area(self):
         speed = traci.inductionloop.getLastStepMeanSpeed(str(self.__id))
         self.add_measure(speed)
+
+        print "-------Check discharged Area--------"
+        print speed
+        print self.__high_level_speed
+        print speed > self.__high_level_speed
         if speed > self.__high_level_speed:
             return True
         return False
