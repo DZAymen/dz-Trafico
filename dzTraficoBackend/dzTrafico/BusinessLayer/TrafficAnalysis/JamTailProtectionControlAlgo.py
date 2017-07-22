@@ -15,7 +15,7 @@ class JamTailProtection:
         return vsl_nodes
 
     def get_previous_node(self, sink, node):
-        index = sink.nodes.count(node)
+        index = sink.nodes.count(node) - 1
         if(index > 0):
             return sink.nodes[index - 1]
         else:
