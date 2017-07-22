@@ -24,9 +24,13 @@ class JamTailProtection:
     def is_concerned(self, node):
         if (node.initial_max_speed - node.get_current_speed()) > 20:
             return True
+
+        print "----is COncerned ?------"
+        print (node.initial_max_speed - node.get_current_speed()) > 20
+
         return False
 
     def get_max_speed(self, node):
         # node.get_current_speed()
         # We need to define max speed values
-        return node.initial_max_speed * 0.8
+        return node.current_max_speed
