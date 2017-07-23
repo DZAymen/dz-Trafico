@@ -154,6 +154,8 @@ class TripManager:
 
             for vehicle in vehicles:
                 vehicle.set("type", vtypesdist_id)
+                vehicle.set("departSpeed", "random")
+                vehicle.set("departLane", "random")
 
             et = etree.ElementTree(map_route_root_node)
             et.write(Simulation.project_directory + "\\" + route_filename, pretty_print=True)
