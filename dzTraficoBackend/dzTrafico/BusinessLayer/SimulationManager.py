@@ -85,7 +85,7 @@ class SimulationManager:
         self.generate_flows()
         self.generate_routes()
 
-    def create_simulation(self):
+    def create_simulation(self, sim_duration):
         SimulationManager.__simulation = SimulationManager.__simulationCreator.createSimulation()
-        SimulationManager.__simulation.start_simulation()
+        SimulationManager.__simulation.start_simulation(sim_duration)
     # ---------------------------------------------------------------------------------------------------

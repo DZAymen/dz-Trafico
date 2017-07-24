@@ -78,7 +78,7 @@ class Simulation:
     def add_sensors(self, sensors):
         self.__sensors_list.append(sensors)
 
-    def start_simulation(self):
+    def start_simulation(self, sim_duration):
         sumogui = sumolib.checkBinary("sumo-gui")
         sumo = sumolib.checkBinary("sumo")
         #subprocess.Popen([sumogui, "-c", Simulation.__project_directory + Simulation.__sumocfg_file])
@@ -99,7 +99,7 @@ class Simulation:
             label=self.SIM_VSL_LC
         )
 
-        for step in range(2000):
+        for step in range(sim_duration):
             traci.switch(self.SIM)
             traci.simulationStep()
 

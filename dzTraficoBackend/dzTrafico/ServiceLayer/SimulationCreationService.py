@@ -129,7 +129,8 @@ def update_configuration_state(request):
     simulationManager.split_network_edges(request.data["distance"])
     simulationManager.add_sensors(request.data["distance"])
     if request.data["configCompleted"]:
-        simulationManager.create_simulation()
+        sim_duration = request.data["simDuration"]
+        simulationManager.create_simulation(sim_duration)
         return Response(status.HTTP_202_ACCEPTED)
     else:
         return Response(status.HTTP_400_BAD_REQUEST)
