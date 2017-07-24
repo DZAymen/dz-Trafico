@@ -110,6 +110,10 @@ class Simulation:
             for sink in self.__sinks:
                 sink[0].read_traffic_state()
 
+        traci.close()
+        traci.switch(self.SIM)
+        traci.close()
+
     def set_flows(self, flows):
         self.__traffic_flows = flows
 
@@ -147,3 +151,4 @@ class Simulation:
 
     def get_incidents(self):
         return self.__incidents
+
