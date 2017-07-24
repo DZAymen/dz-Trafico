@@ -2,6 +2,10 @@ import os, sumolib, subprocess
 import traci
 
 class Simulation:
+    #Simulation without vsl and lc control
+    SIM = "sim"
+    # Simulation with vsl and lc control
+    SIM_VSL_LC = "sim_vsl_lc"
 
     inFlowPoints = []
     outFlowPoints = []
@@ -76,10 +80,32 @@ class Simulation:
 
     def start_simulation(self):
         sumogui = sumolib.checkBinary("sumo-gui")
+        sumo = sumolib.checkBinary("sumo")
         #subprocess.Popen([sumogui, "-c", Simulation.__project_directory + Simulation.__sumocfg_file])
-        traci.start([sumogui, "-c", Simulation.project_directory + Simulation.__sumocfg_file, "--summary", Simulation.project_directory + "summary.xml"])
+        traci.start(
+            [
+                sumo,
+                "-c", Simulation.project_directory + Simulation.__sumocfg_file,
+                "--summary", Simulation.project_directory + "summary.xml"
+            ],
+            label=self.SIM
+        )
+        traci.start(
+            [
+                sumogui,
+                "-c", Simulation.project_directory + Simulation.__sumocfg_file,
+                "--summary", Simulation.project_directory + "summary_vsl_lc.xml"
+            ],
+            label=self.SIM_VSL_LC
+        )
+
         for step in range(2000):
+            traci.switch(self.SIM)
             traci.simulationStep()
+
+            traci.switch(self.SIM_VSL_LC)
+            traci.simulationStep()
+
             self.check_incidents(step)
             for sink in self.__sinks:
                 sink[0].read_traffic_state()
