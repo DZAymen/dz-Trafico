@@ -24,11 +24,19 @@ class JamTailProtection:
             return None
 
     def is_concerned(self, node):
-        if (node.initial_max_speed - node.get_current_speed()) > 20:
+        if (node.initial_max_speed - node.get_current_speed()) > 5:
+
+            print "----is COncerned ?------"
+            print node.edge.getID()
+            print node.initial_max_speed - node.get_current_speed()
+            print True
+
             return True
 
         print "----is COncerned ?------"
-        print (node.initial_max_speed - node.get_current_speed()) > 20
+        print node.edge.getID()
+        print node.initial_max_speed - node.get_current_speed()
+        print False
 
         return False
 
