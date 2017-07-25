@@ -11,35 +11,38 @@ class SensorsManager():
 
     def create_sensors(self, flows):
         sinks = []
+        sensors_list = []
         # Get splitted edges
-        edges = self.__networkManager.get_edges(flows)
-        # Add sensors for each edge
-        sink = Sink()
-        for edge in edges:
-            #Get lanes number
-            lanes_num = edge.getLaneNumber()
-            sensors = []
-            #for each lane
-            for j in range(0,lanes_num):
-                #We create a sensor
-                sensors.append(
-                    Sensor(
-                        edge.getLane(j).getID(),
-                        -1,
-                        edge.getSpeed() * 0.5,
-                        edge.getSpeed() * 0.65
+        edges_list = self.__networkManager.get_edges(flows)
+        for edges in edges_list:
+            # Add sensors for each edge
+            sink = Sink()
+            for edge in edges:
+                #Get lanes number
+                lanes_num = edge.getLaneNumber()
+                sensors = []
+                #for each lane
+                for j in range(0,lanes_num):
+                    #We create a sensor
+                    sensors.append(
+                        Sensor(
+                            edge.getLane(j).getID(),
+                            -1,
+                            edge.getSpeed() * 0.5,
+                            edge.getSpeed() * 0.65
+                        )
+                    )
+                sink.add_node(
+                    Node(
+                        edge,
+                        sensors
                     )
                 )
-            sink.add_node(
-                Node(
-                    edge,
-                    sensors
-                )
-            )
-        sinks.append(sink)
-        sensors = sink.get_sensors()
-        self.sensors_filename = self.create_sensors_file(sensors)
-        return sinks, sensors, self.sensors_filename
+            sinks.append(sink)
+            for sensor in sink.get_sensors():
+                sensors_list.append(sensor)
+        self.sensors_filename = self.create_sensors_file(sensors_list)
+        return sinks, sensors_list, self.sensors_filename
 
     def create_sensors_file(self, sensors):
         sensors_filename = "sensors.xml"
