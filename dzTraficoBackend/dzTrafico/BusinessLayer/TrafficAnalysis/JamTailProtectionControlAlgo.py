@@ -1,6 +1,8 @@
 
 class JamTailProtection:
 
+    max_speed_values = [20,40,60,80]
+
     def get_vsl_nodes(self, sink, congested_node):
         vsl_nodes = []
         node = self.get_previous_node(sink, congested_node)
@@ -41,6 +43,8 @@ class JamTailProtection:
         return False
 
     def get_max_speed(self, node):
-        # node.get_current_speed()
-        # We need to define max speed values
+        current_speed = node.get_current_speed()
+        for speed in self.max_speed_values:
+            if current_speed < speed:
+                return speed
         return node.current_max_speed
