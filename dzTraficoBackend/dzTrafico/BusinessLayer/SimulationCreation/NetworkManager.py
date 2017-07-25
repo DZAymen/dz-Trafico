@@ -61,8 +61,9 @@ class NetworkManager:
     # Returns edges situated between start_edge and end_edge for each flow
     # We should fix the case of multi next edges
     def get_edges(self, flows):
-        edges = []
+        edges_list = []
         for flow in flows:
+            edges = []
             current_edge = self.get_edge(flow.start_edge)
             while True:
                 edges.append(current_edge)
@@ -71,7 +72,8 @@ class NetworkManager:
                 #get_next_edge_id
                 #fix the special case of a many next edges
                 current_edge = current_edge.getToNode().getOutgoing()[0]
-        return edges
+            edges_list.append(edges)
+        return edges_list
 
     # Split edges into equal segments
     # each one's length is almost equal sensors_distance
