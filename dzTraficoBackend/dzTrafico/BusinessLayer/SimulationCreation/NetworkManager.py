@@ -64,16 +64,55 @@ class NetworkManager:
         edges_list = []
         for flow in flows:
             edges = []
+
             current_edge = self.get_edge(flow.start_edge)
-            while True:
-                edges.append(current_edge)
+            edges.append(current_edge)
+
+            is_route_found = False
+            while not is_route_found:
+
                 if current_edge.getID() == flow.end_edge:
-                    break
+                    is_route_found = True
+
                 #get_next_edge_id
                 #fix the special case of a many next edges
-                current_edge = current_edge.getToNode().getOutgoing()[0]
+                current_edges = current_edge.getToNode().getOutgoing()
+
+                if len(current_edges) > 1:
+                    for edge in current_edges:
+                        is_route_found = False
+                        temp_edges_list = []
+                        for i in range(0, 30):
+                            temp_edges_list.append(edge)
+                            if edge.getID() == flow.end_edge:
+                                is_route_found = True
+                                break
+                            edge = edge.getToNode().getOutgoing()[0]
+                        if is_route_found:
+                            for temp_edge in temp_edges_list:
+                                edges.append(temp_edge)
+                            break
+                else:
+                    edges.append(current_edges[0])
+
             edges_list.append(edges)
         return edges_list
+
+    # returns edges from which the destination is reachable
+    def get_source_edges(self, destination):
+        fringe = [destination]
+        found = set()
+        found.add(destination)
+        while len(fringe) > 0:
+            new_fringe = []
+            for edge in fringe:
+                cands = edge.getIncoming()
+                for reachable in cands:
+                    if not reachable in found:
+                        found.add(reachable)
+                        new_fringe.append(reachable)
+            fringe = new_fringe
+        return found
 
     # Split edges into equal segments
     # each one's length is almost equal sensors_distance
