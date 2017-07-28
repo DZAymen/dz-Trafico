@@ -64,36 +64,18 @@ class NetworkManager:
         edges_list = []
         for flow in flows:
             edges = []
+            # get source edges from which we can reach the flow.end_edge
+            cands = self.get_source_edges(self.get_edge(flow.end_edge))
 
             current_edge = self.get_edge(flow.start_edge)
             edges.append(current_edge)
 
-            is_route_found = False
-            while not is_route_found:
-
-                if current_edge.getID() == flow.end_edge:
-                    is_route_found = True
-
-                #get_next_edge_id
-                #fix the special case of a many next edges
+            while current_edge.getID() != flow.end_edge:
                 current_edges = current_edge.getToNode().getOutgoing()
-
                 if len(current_edges) > 1:
-                    for edge in current_edges:
-                        is_route_found = False
-                        temp_edges_list = []
-                        for i in range(0, 30):
-                            temp_edges_list.append(edge)
-                            if edge.getID() == flow.end_edge:
-                                is_route_found = True
-                                break
-                            edge = edge.getToNode().getOutgoing()[0]
-                        if is_route_found:
-                            for temp_edge in temp_edges_list:
-                                edges.append(temp_edge)
-                            break
+                    current_edge = self.choose_next_edge(current_edges, cands)
                 else:
-                    edges.append(current_edges[0])
+                    current_edge = current_edges[0]
 
             edges_list.append(edges)
         return edges_list
@@ -113,6 +95,12 @@ class NetworkManager:
                         new_fringe.append(reachable)
             fringe = new_fringe
         return found
+
+    # returns the first next edge found
+    def choose_next_edge(self, current_edges, cands):
+        for edge in current_edges:
+            if edge in cands:
+                return edge
 
     # Split edges into equal segments
     # each one's length is almost equal sensors_distance
