@@ -106,24 +106,27 @@ class NetworkManager:
     # each one's length is almost equal sensors_distance
     def split_edges(self, primary_edges, sensors_distance):
         splitted_edges = []
+        already_splitted_edges = set()
         for edge in primary_edges:
-            splits = []
-            sub_edges_num = int(edge.getLength() / sensors_distance)
-            for i in range(0, sub_edges_num):
-                splits.append(
-                    Split(
-                        distance = i * sensors_distance,
-                        lanes = []
+            if not edge in already_splitted_edges:
+                splits = []
+                sub_edges_num = int(edge.getLength() / sensors_distance)
+                for i in range(0, sub_edges_num):
+                    splits.append(
+                        Split(
+                            distance = i * sensors_distance,
+                            lanes = []
+                        )
                     )
-                )
-            if len(splits) > 0:
-                splitted_edges.append(
-                    SplittedEdge(
-                        edge.getID(),
-                        edge.getLaneNumber(),
-                        splits
+                if len(splits) > 0:
+                    splitted_edges.append(
+                        SplittedEdge(
+                            edge.getID(),
+                            edge.getLaneNumber(),
+                            splits
+                        )
                     )
-                )
+                already_splitted_edges.add(edge)
         return splitted_edges
 
     def create_splitted_edges_file(self, splitted_edges):
