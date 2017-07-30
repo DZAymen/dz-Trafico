@@ -2,11 +2,11 @@ class Sink(object):
 
     id = 0
     trafficAnalyzer = None
+    nodes = []
 
     def __init__(self):
         self.id = Sink.id
         Sink.id += 1
-        self.nodes = []
 
         #print "--------nodes----------"
         #print len(nodes)
