@@ -67,7 +67,11 @@ class Simulation:
                             <route-files value="''' + Simulation.__route_file + '''"/>
                             <additional-files value="''' + Simulation.__sensors_file + '''"/>
                         </input>
-    
+                        
+                        <processing>
+                            <time-to-teleport value="-1"/>
+                        </processing>
+                        
                         <time>
                             <begin value="0"/>
                             <end value="10000"/>
