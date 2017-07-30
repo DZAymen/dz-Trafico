@@ -5,7 +5,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from dzTrafico.views import home
 
-from dzTrafico.ServiceLayer import SimulationCreationService
+from dzTrafico.ServiceLayer import SimulationCreationService, StatisticsService
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -20,5 +20,6 @@ urlpatterns = [
     url(r'^api/creation/vehicletypespercentages$', SimulationCreationService.add_vehicle_types_percentages),
     url(r'^api/creation/state$', SimulationCreationService.update_configuration_state),
 
-    #Simulation Creation Routes _________________________________________________________________
+    #Simulation Results Routes _________________________________________________________________
+    url(r'^api/statistics/gpm$', StatisticsService.get_simulation_gpm_results),
 ]
