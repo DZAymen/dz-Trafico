@@ -1,4 +1,5 @@
 from dzTrafico.BusinessEntities.Simulation import Simulation
+from rest_framework import serializers
 import lxml.etree as etree
 
 class GlobalPerformanceMeasurementsController:
@@ -97,3 +98,13 @@ class GlobalPerformanceMeasurement(object):
         self.fuel = fuel
         self.co2 = co2
         self.nox = nox
+
+class GlobalPerformanceMeasurementSerializer(serializers.Serializer):
+
+    type = serializers.CharField()
+    meanTravelTime = serializers.FloatField()
+    numStops = serializers.FloatField()
+    numLC = serializers.FloatField()
+    fuel = serializers.FloatField()
+    co2 = serializers.FloatField()
+    nox = serializers.FloatField()
