@@ -2,12 +2,14 @@ from dzTrafico.BusinessLayer.SimulationCreation.SimulationCreator import Simulat
 from dzTrafico.BusinessEntities.Simulation import Simulation
 from dzTrafico.BusinessEntities.Sink import Sink
 from dzTrafico.BusinessLayer.TrafficAnalysis.TrafficAnalyzer import TrafficAnalyzer
+from dzTrafico.BusinessLayer.Statistics.StatisticsManager import StatisticsManager
 
 class SimulationManager:
 
     __simulation = Simulation()
     __simulationCreator = SimulationCreator()
     __trafficAnalyzer = TrafficAnalyzer(__simulation)
+    __statisticsManager = StatisticsManager(__simulation)
 
     #Define a singleton SimulationManager class
     __simulationManager = None
@@ -88,4 +90,10 @@ class SimulationManager:
     def create_simulation(self, sim_duration):
         SimulationManager.__simulation = SimulationManager.__simulationCreator.createSimulation()
         SimulationManager.__simulation.start_simulation(sim_duration)
+    # ---------------------------------------------------------------------------------------------------
+
+
+    # ------------------------------------ Simulation Results -------------------------------------------
+    def get_simulation_gpm_results(self):
+        return SimulationManager.__statisticsManager.get_GPMs()
     # ---------------------------------------------------------------------------------------------------

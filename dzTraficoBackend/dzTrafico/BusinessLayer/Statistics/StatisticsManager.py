@@ -9,3 +9,5 @@ class StatisticsManager:
         gpm_results = self.gpmController.get_results()
         for gpm in gpm_results:
             print gpm.type, gpm.meanTravelTime
+
+        return gpm_results
