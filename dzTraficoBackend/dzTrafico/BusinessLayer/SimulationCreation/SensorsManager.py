@@ -10,11 +10,22 @@ class SensorsManager():
         self.__networkManager = networkManager
 
     def create_sensors(self, flows):
+
+        print "-------------- Create sensors ----------------"
+
         sinks = []
         sensors_list = []
         # Get splitted edges
         edges_list = self.__networkManager.get_edges(flows)
+
+        print "-------------- Edges List ----------------"
+        print len(edges_list)
+
         for edges in edges_list:
+
+            print "-------------- Edges ----------------"
+            print edges
+
             # Add sensors for each edge
             sink = Sink()
             for edge in edges:
@@ -38,9 +49,20 @@ class SensorsManager():
                         sensors
                     )
                 )
-            sinks.append(sink)
-            for sensor in sink.get_sensors():
-                sensors_list.append(sensor)
+                for sensor in sensors:
+                    sensors_list.append(sensor)
+
+            if len(sink.get_sensors()) > 0:
+                sinks.append(sink)
+
+            print "---------- Sensors List ------------"
+            print len(sensors_list)
+
+            print "---------- Sinks ------------"
+            print len(sinks)
+            for sinkk in sinks:
+                print len(sinkk.get_sensors())
+
         self.sensors_filename = self.create_sensors_file(sensors_list)
         return sinks, sensors_list, self.sensors_filename
 
