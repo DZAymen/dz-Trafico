@@ -63,21 +63,39 @@ class NetworkManager:
     def get_edges(self, flows):
         edges_list = []
         for flow in flows:
-            edges = []
+
             # get source edges from which we can reach the flow.end_edge
             cands = self.get_source_edges(self.get_edge(flow.end_edge))
 
             current_edge = self.get_edge(flow.start_edge)
-            edges.append(current_edge)
+            edges = [current_edge]
 
-            while current_edge.getID() != flow.end_edge:
+            print "not current_edge.getID() == flow.end_edge"
+            print not current_edge.getID() == flow.end_edge
+            print current_edge
+            while not current_edge.getID() == flow.end_edge:
                 current_edges = current_edge.getToNode().getOutgoing()
                 if len(current_edges) > 1:
                     current_edge = self.choose_next_edge(current_edges, cands)
+                    print "len(current_edges) > 1"
+                    print current_edge
                 else:
                     current_edge = current_edges[0]
+                    print "len(current_edges) == 0"
+                    print current_edge
+                edges.append(current_edge)
 
             edges_list.append(edges)
+
+            print "------------flow------------"
+            print flow
+
+            print "------------edges------------"
+            print edges
+
+        print "------------edges_list------------"
+        print edges_list
+
         return edges_list
 
     # returns edges from which the destination is reachable
@@ -107,26 +125,31 @@ class NetworkManager:
     def split_edges(self, primary_edges, sensors_distance):
         splitted_edges = []
         already_splitted_edges = set()
-        for edge in primary_edges:
-            if not edge in already_splitted_edges:
-                splits = []
-                sub_edges_num = int(edge.getLength() / sensors_distance)
-                for i in range(0, sub_edges_num):
-                    splits.append(
-                        Split(
-                            distance = i * sensors_distance,
-                            lanes = []
+
+        print "------------primary_edges------------"
+        print primary_edges
+
+        for edges in primary_edges:
+            for edge in edges:
+                if not edge in already_splitted_edges:
+                    splits = []
+                    sub_edges_num = int(edge.getLength() / sensors_distance)
+                    for i in range(0, sub_edges_num):
+                        splits.append(
+                            Split(
+                                distance = i * sensors_distance,
+                                lanes = []
+                            )
                         )
-                    )
-                if len(splits) > 0:
-                    splitted_edges.append(
-                        SplittedEdge(
-                            edge.getID(),
-                            edge.getLaneNumber(),
-                            splits
+                    if len(splits) > 0:
+                        splitted_edges.append(
+                            SplittedEdge(
+                                edge.getID(),
+                                edge.getLaneNumber(),
+                                splits
+                            )
                         )
-                    )
-                already_splitted_edges.add(edge)
+                    already_splitted_edges.add(edge)
         return splitted_edges
 
     def create_splitted_edges_file(self, splitted_edges):
