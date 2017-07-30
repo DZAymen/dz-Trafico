@@ -9,6 +9,10 @@ class Simulation:
 
     simulation_summary_filename = "summary.xml"
     simulation_summary_vsl_lc_filename = "summary_vsl_lc.xml"
+
+    lanechange_summary_filename = "lc.summary.xml"
+    lanechange_summary_vsl_lc_filename = "lc.summary_vsl_lc.xml"
+
     graph_image = "summary_mean_travel_time.png"
 
     inFlowPoints = []
@@ -94,7 +98,8 @@ class Simulation:
             [
                 sumo,
                 "-c", Simulation.project_directory + Simulation.__sumocfg_file,
-                "--summary", Simulation.project_directory + self.simulation_summary_filename
+                "--summary", Simulation.project_directory + self.simulation_summary_filename,
+                "--lanechange-output", Simulation.project_directory + self.lanechange_summary_filename
             ],
             label=self.SIM
         )
@@ -102,7 +107,8 @@ class Simulation:
             [
                 sumogui,
                 "-c", Simulation.project_directory + Simulation.__sumocfg_file,
-                "--summary", Simulation.project_directory + self.simulation_summary_vsl_lc_filename
+                "--summary", Simulation.project_directory + self.simulation_summary_vsl_lc_filename,
+                "--lanechange-output", Simulation.project_directory + self.lanechange_summary_vsl_lc_filename
             ],
             label=self.SIM_VSL_LC
         )
