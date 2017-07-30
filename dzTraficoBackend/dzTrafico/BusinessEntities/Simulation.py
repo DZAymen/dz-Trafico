@@ -13,6 +13,14 @@ class Simulation:
     lanechange_summary_filename = "lc.summary.xml"
     lanechange_summary_vsl_lc_filename = "lc.summary_vsl_lc.xml"
 
+    edge_dump_additional_filename = "../../data/edge.dump.add.xml"
+    edge_dump_filename = "edge.dump.xml"
+    emissions_edge_dump_filename = "emissions.edge.dump.xml"
+
+    edge_dump_additional_vsl_lc_filename = "../../data/edge.dump.add.vsl_lc.xml"
+    edge_dump_vsl_lc_filename = "edge.dump.vsl_lc.xml"
+    emissions_edge_dump_vsl_lc_filename = "emissions.edge.dump.vsl_lc.xml"
+
     graph_image = "summary_mean_travel_time.png"
 
     inFlowPoints = []
@@ -99,7 +107,8 @@ class Simulation:
                 sumo,
                 "-c", Simulation.project_directory + Simulation.__sumocfg_file,
                 "--summary", Simulation.project_directory + self.simulation_summary_filename,
-                "--lanechange-output", Simulation.project_directory + self.lanechange_summary_filename
+                "--lanechange-output", Simulation.project_directory + self.lanechange_summary_filename,
+                "-a", Simulation.project_directory + self.edge_dump_additional_filename
             ],
             label=self.SIM
         )
@@ -108,7 +117,8 @@ class Simulation:
                 sumogui,
                 "-c", Simulation.project_directory + Simulation.__sumocfg_file,
                 "--summary", Simulation.project_directory + self.simulation_summary_vsl_lc_filename,
-                "--lanechange-output", Simulation.project_directory + self.lanechange_summary_vsl_lc_filename
+                "--lanechange-output", Simulation.project_directory + self.lanechange_summary_vsl_lc_filename,
+                "-a", Simulation.project_directory + self.edge_dump_additional_vsl_lc_filename
             ],
             label=self.SIM_VSL_LC
         )
