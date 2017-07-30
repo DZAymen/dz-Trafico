@@ -7,6 +7,10 @@ class Simulation:
     # Simulation with vsl and lc control
     SIM_VSL_LC = "sim_vsl_lc"
 
+    simulation_summary_filename = "summary.xml"
+    simulation_summary_vsl_lc_filename = "summary_vsl_lc.xml"
+    graph_image = "summary_mean_travel_time.png"
+
     inFlowPoints = []
     outFlowPoints = []
 
@@ -86,7 +90,7 @@ class Simulation:
             [
                 sumo,
                 "-c", Simulation.project_directory + Simulation.__sumocfg_file,
-                "--summary", Simulation.project_directory + "summary.xml"
+                "--summary", Simulation.project_directory + self.simulation_summary_filename
             ],
             label=self.SIM
         )
@@ -94,7 +98,7 @@ class Simulation:
             [
                 sumogui,
                 "-c", Simulation.project_directory + Simulation.__sumocfg_file,
-                "--summary", Simulation.project_directory + "summary_vsl_lc.xml"
+                "--summary", Simulation.project_directory + self.simulation_summary_vsl_lc_filename
             ],
             label=self.SIM_VSL_LC
         )
@@ -113,6 +117,7 @@ class Simulation:
         traci.close()
         traci.switch(self.SIM)
         traci.close()
+        # self.draw_mean_travel_time_graph()
 
     def set_flows(self, flows):
         self.__traffic_flows = flows
@@ -152,3 +157,14 @@ class Simulation:
     def get_incidents(self):
         return self.__incidents
 
+    def draw_mean_travel_time_graph(self):
+        subprocess.call(
+            [
+                r"python F:\PFE\Simulateurs\SUMO\tools\visualization\plot_summary.py",
+                "-i", self.project_directory + self.simulation_summary_filename +
+                      "," + self.project_directory + self.simulation_summary_vsl_lc_filename,
+                "-l", "Mean Travel Time - VSL/LC" + "," + "Mean Travel Time + VSL/LC",
+                "-o", self.project_directory + self.graph_image,
+                "-m", "meanTravelTime"
+            ]
+        )
