@@ -49,11 +49,11 @@ class SensorsManager():
                         sensors
                     )
                 )
-                for sensor in sensors:
-                    sensors_list.append(sensor)
-
-            if len(sink.get_sensors()) > 0:
+            sink_sensors = sink.get_sensors()
+            if len(sink_sensors) > 0:
                 sinks.append(sink)
+                for sensor in sink_sensors:
+                    sensors_list.append(sensor)
 
             print "---------- Sensors List ------------"
             print len(sensors_list)
