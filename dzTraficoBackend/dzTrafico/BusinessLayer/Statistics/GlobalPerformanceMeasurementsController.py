@@ -1,3 +1,5 @@
+from dzTrafico.BusinessEntities.Simulation import Simulation
+import lxml.etree as etree
 
 class GlobalPerformanceMeasurementsController:
 
@@ -6,7 +8,39 @@ class GlobalPerformanceMeasurementsController:
         self.simulation = simulation
 
     def get_results(self):
-        pass
+        gpms = []
+        noControlGPM = self.get_no_control_GPM()
+        gpms.append(noControlGPM)
+        return gpms
+
+    def get_no_control_GPM(self):
+        # Read values from summary files
+        meanTravelTime = 0
+        numStops = 0
+        numLC = self.get_num_lanechange(
+            self.simulation.lanechange_summary_filename
+        )
+        fuel = 0
+        co2 = 0
+        nox = 0
+
+        return GlobalPerformanceMeasurement(
+            GlobalPerformanceMeasurement.NoControl,
+            meanTravelTime,
+            numStops,
+            numLC,
+            fuel,
+            co2,
+            nox
+        )
+
+    def get_num_lanechange(self, lanechange_filename):
+        root = self.get_root_node_file(lanechange_filename)
+        return len(root.getchildren())
+
+    def get_root_node_file(self, filename):
+        tree = etree.parse(Simulation.project_directory + filename)
+        return tree.getroot()
 
 class GlobalPerformanceMeasurement(object):
 
