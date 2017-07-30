@@ -62,63 +62,53 @@ class NetworkManager:
     # We should fix the case of multi next edges
     def get_edges(self, flows):
         edges_list = []
+        # Generate a temp flows file
+        flows_filename = "flows.tmp.xml"
+        root = etree.Element("flowdefs")
+        i = 0
         for flow in flows:
+            flow_node = etree.Element("flow",
+                                      id=str(i),
+                                      to=str(flow.end_edge),
+                                      begin=str(flow.depart_time),
+                                      end=str(flow.end_depart_time),
+                                      number="1"
+                                      )
+            flow_node.set("from", str(flow.start_edge))
+            root.append(flow_node)
+            i += 1
+        et = etree.ElementTree(root)
+        et.write(Simulation.project_directory + "\\" + flows_filename , pretty_print=True)
 
-            # get source edges from which we can reach the flow.end_edge
-            cands = self.get_source_edges(self.get_edge(flow.end_edge))
+        # Generate a temp routes file
+        network_file = "map.net.xml"
+        tmp_route_file = "rou.tmp.xml"
 
-            current_edge = self.get_edge(flow.start_edge)
-            edges = [current_edge]
+        subprocess.call(
+            "duarouter -n " + Simulation.project_directory + "\\" + network_file
+            + " -f " + Simulation.project_directory + "\\" + flows_filename
+            + " -o " + Simulation.project_directory + "\\" + tmp_route_file
+        )
+        # Get routes from this file
+        routes = []
+        route_file = etree.parse(Simulation.project_directory + "\\" + tmp_route_file)
+        root = route_file.getroot()
+        vehs = root.getchildren()
+        for veh in vehs:
+            interm_routes = veh.getchildren()
+            for route in interm_routes:
+                routes.append(route)
 
-            print "not current_edge.getID() == flow.end_edge"
-            print not current_edge.getID() == flow.end_edge
-            print current_edge
-            while not current_edge.getID() == flow.end_edge:
-                current_edges = current_edge.getToNode().getOutgoing()
-                if len(current_edges) > 1:
-                    current_edge = self.choose_next_edge(current_edges, cands)
-                    print "len(current_edges) > 1"
-                    print current_edge
-                else:
-                    current_edge = current_edges[0]
-                    print "len(current_edges) == 0"
-                    print current_edge
-                edges.append(current_edge)
-
+        # Delete temp files
+        # Get and parse edges from routes
+        for route in routes:
+            edges = []
+            edge_IDs = route.get("edges").split(' ')
+            for edge_ID in edge_IDs:
+                edges.append(self.get_edge(edge_ID))
             edges_list.append(edges)
 
-            print "------------flow------------"
-            print flow
-
-            print "------------edges------------"
-            print edges
-
-        print "------------edges_list------------"
-        print edges_list
-
         return edges_list
-
-    # returns edges from which the destination is reachable
-    def get_source_edges(self, destination):
-        fringe = [destination]
-        found = set()
-        found.add(destination)
-        while len(fringe) > 0:
-            new_fringe = []
-            for edge in fringe:
-                cands = edge.getIncoming()
-                for reachable in cands:
-                    if not reachable in found:
-                        found.add(reachable)
-                        new_fringe.append(reachable)
-            fringe = new_fringe
-        return found
-
-    # returns the first next edge found
-    def choose_next_edge(self, current_edges, cands):
-        for edge in current_edges:
-            if edge in cands:
-                return edge
 
     # Split edges into equal segments
     # each one's length is almost equal sensors_distance
