@@ -128,6 +128,7 @@ class Simulation:
         for step in range(sim_duration):
             traci.switch(self.SIM)
             traci.simulationStep()
+            self.check_incidents(step)
 
             traci.switch(self.SIM_VSL_LC)
             traci.simulationStep()
