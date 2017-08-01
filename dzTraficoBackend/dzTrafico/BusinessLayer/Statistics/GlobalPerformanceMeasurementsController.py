@@ -63,23 +63,34 @@ class GlobalPerformanceMeasurementsController:
         meanTravelTime = 0
         meanWaintingTime = 0
 
+        edges = []
         root = self.get_root_node_file(edge_dump_filename)
-        edges = root.getchildren()
+        # Get edges
+        intervals = root.getchildren()
+        for interval in intervals:
+            for edge in interval.getchildren():
+                edges.append(edge)
+
         for edge in edges:
-            meanTravelTime += edge.get("traveltime")
-            meanWaintingTime += edge.get("waitingTime")
+            meanTravelTime += float(edge.get("traveltime"))
+            meanWaintingTime += float(edge.get("waitingTime"))
 
         return meanTravelTime, meanWaintingTime
 
     def get_FuelCo2Nox(self, emissions_edge_dump_filename):
         fuel, co2, nox = 0, 0, 0
-
+        edges = []
+        # Get edges
         root = self.get_root_node_file(emissions_edge_dump_filename)
-        edges = root.getchildren()
+        intervals = root.getchildren()
+        for interval in intervals:
+            for edge in interval.getchildren():
+                edges.append(edge)
+
         for edge in edges:
-            fuel += edge.get("fuel_abs")
-            co2 += edge.get("CO2_abs")
-            nox += edge.get("NOx_abs")
+            fuel += float(edge.get("fuel_abs"))
+            co2 += float(edge.get("CO2_abs"))
+            nox += float(edge.get("NOx_abs"))
 
         return fuel, co2, nox
 
