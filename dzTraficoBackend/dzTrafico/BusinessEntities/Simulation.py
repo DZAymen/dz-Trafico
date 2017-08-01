@@ -13,13 +13,13 @@ class Simulation:
     lanechange_summary_filename = "lc.summary.xml"
     lanechange_summary_vsl_lc_filename = "lc.summary_vsl_lc.xml"
 
-    edge_dump_additional_filename = "../../data/edge.dump.add.xml"
-    edge_dump_filename = "edge.dump.xml"
-    emissions_edge_dump_filename = "emissions.edge.dump.xml"
+    edge_dump_additional_filename = "..\..\data\edge.dump.add.xml"
+    edge_dump_filename = "..\..\data\edge.dump.xml"
+    emissions_edge_dump_filename = "..\..\data\emissions.edge.dump.xml"
 
-    edge_dump_additional_vsl_lc_filename = "../../data/edge.dump.add.vsl_lc.xml"
-    edge_dump_vsl_lc_filename = "edge.dump.vsl_lc.xml"
-    emissions_edge_dump_vsl_lc_filename = "emissions.edge.dump.vsl_lc.xml"
+    edge_dump_additional_vsl_lc_filename = "..\..\data\edge.dump.add.vsl_lc.xml"
+    edge_dump_vsl_lc_filename = "..\..\data\edge.dump.vsl_lc.xml"
+    emissions_edge_dump_vsl_lc_filename = "..\..\data\emissions.edge.dump.vsl_lc.xml"
 
     graph_image = "summary_mean_travel_time.png"
 
@@ -108,7 +108,8 @@ class Simulation:
                 "-c", Simulation.project_directory + Simulation.__sumocfg_file,
                 "--summary", Simulation.project_directory + self.simulation_summary_filename,
                 "--lanechange-output", Simulation.project_directory + self.lanechange_summary_filename,
-                "-a", Simulation.project_directory + self.edge_dump_additional_filename
+                "-a", Simulation.project_directory + self.edge_dump_additional_filename + ','
+                      + Simulation.project_directory + Simulation.__sensors_file
             ],
             label=self.SIM
         )
@@ -118,7 +119,8 @@ class Simulation:
                 "-c", Simulation.project_directory + Simulation.__sumocfg_file,
                 "--summary", Simulation.project_directory + self.simulation_summary_vsl_lc_filename,
                 "--lanechange-output", Simulation.project_directory + self.lanechange_summary_vsl_lc_filename,
-                "-a", Simulation.project_directory + self.edge_dump_additional_vsl_lc_filename
+                "-a", Simulation.project_directory + self.edge_dump_additional_vsl_lc_filename + ','
+                      + Simulation.project_directory + Simulation.__sensors_file
             ],
             label=self.SIM_VSL_LC
         )
@@ -129,8 +131,8 @@ class Simulation:
 
             traci.switch(self.SIM_VSL_LC)
             traci.simulationStep()
-
             self.check_incidents(step)
+
             for sink in self.__sinks:
                 sink[0].read_traffic_state()
 
