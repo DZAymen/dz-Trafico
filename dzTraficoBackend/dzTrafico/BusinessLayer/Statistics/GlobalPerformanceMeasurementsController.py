@@ -104,7 +104,7 @@ class GlobalPerformanceMeasurement(object):
     def __init__(self, type, meanTravelTime, meanWaitingTime, numLC, fuel, co2, nox):
         self.type = type
         self.meanTravelTime = meanTravelTime
-        self.numStops = meanWaitingTime
+        self.meanWaitingTime = meanWaitingTime
         self.numLC = numLC
         self.fuel = fuel
         self.co2 = co2
@@ -114,7 +114,7 @@ class GlobalPerformanceMeasurementSerializer(serializers.Serializer):
 
     type = serializers.CharField()
     meanTravelTime = serializers.FloatField()
-    numStops = serializers.FloatField()
+    meanWaitingTime = serializers.FloatField()
     numLC = serializers.FloatField()
     fuel = serializers.FloatField()
     co2 = serializers.FloatField()
