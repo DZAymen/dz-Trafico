@@ -3,6 +3,7 @@ from dzTrafico.BusinessEntities.Simulation import Simulation
 from dzTrafico.BusinessEntities.Sink import Sink
 from dzTrafico.BusinessLayer.TrafficAnalysis.TrafficAnalyzer import TrafficAnalyzer
 from dzTrafico.BusinessLayer.Statistics.StatisticsManager import StatisticsManager
+from dzTrafico.BusinessLayer.TrafficAnalysis.LaneChangeControlAlgo import LaneChange
 
 class SimulationManager:
 
@@ -82,6 +83,8 @@ class SimulationManager:
     # && update network file
     # && generate route file
     def split_network_edges(self, sensors_distance):
+        LaneChange.EdgeLength = sensors_distance
+
         self.generate_flows()
         SimulationManager.__simulationCreator.split_network_edges(sensors_distance)
         self.generate_flows()

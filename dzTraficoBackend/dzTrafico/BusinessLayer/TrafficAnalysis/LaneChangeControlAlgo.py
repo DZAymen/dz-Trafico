@@ -1,8 +1,16 @@
 from dzTrafico.BusinessEntities.LCRecommendation import LCRecommendation
 
 class LaneChange:
+
+    EdgeLength = 200
+    # A design parameter related to the capacity of bottleneck and the traffic demand
+    Xi = 400
+
     def get_lc_nodes(self, sink, congested_node, congested_lanes):
-        lc_nodes = self.get_previous_nodes(sink, congested_node, 2)
+
+        num_LC_controlled_sections = len(congested_lanes) * LaneChange.Xi / LaneChange.EdgeLength
+
+        lc_nodes = self.get_previous_nodes(sink, congested_node, num_LC_controlled_sections)
 
         for node in lc_nodes:
             recommendations = self.get_lane_change_recommendations(congested_lanes, node)
