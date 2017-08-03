@@ -11,6 +11,8 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     #url(r'^$', dzTrafico.views.home),
 
+    url(r'^api/simulation/run$', SimulationCreationService.run_simulation),
+
     #Simulation Creation Routes _________________________________________________________________
     url(r'^api/creation/map$', SimulationCreationService.set_simulation_map),
     url(r'^api/creation/trafficflow/departs$', SimulationCreationService.add_traffic_inflow),

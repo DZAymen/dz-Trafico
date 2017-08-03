@@ -134,3 +134,8 @@ def update_configuration_state(request):
         return Response(status.HTTP_202_ACCEPTED)
     else:
         return Response(status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+def run_simulation(request):
+    simulationManager.run_simulation()
+    return Response(status.HTTP_202_ACCEPTED)
