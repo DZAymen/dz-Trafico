@@ -29,6 +29,8 @@ class Node(object):
 
     def set_current_max_speed(self, max_speed):
         self.current_max_speed = max_speed
+        for sensor in self.sensors:
+            sensor.set_high_level_speed(self.current_max_speed * 0.75)
 
     def check_congested_lanes(self):
         congested_lanes = []
@@ -68,4 +70,4 @@ class Node(object):
                 print recommendation.target_lane
 
                 for vehicle_id in vehicles:
-                    traci.vehicle.changeLane(vehicle_id, recommendation.target_lane, 200)
+                    traci.vehicle.changeLane(vehicle_id, recommendation.target_lane, 500000)

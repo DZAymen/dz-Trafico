@@ -61,6 +61,8 @@ class Sensor(object):
     def get_sensor_position(self):
         return self.__position
 
+    def set_high_level_speed(self, high_speed):
+        self.__high_level_speed = high_speed
 
 class Measure(object):
 
