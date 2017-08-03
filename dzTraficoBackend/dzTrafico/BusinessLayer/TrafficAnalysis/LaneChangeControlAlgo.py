@@ -8,7 +8,7 @@ class LaneChange:
 
     def get_lc_nodes(self, sink, congested_node, congested_lanes):
 
-        num_LC_controlled_sections = len(congested_lanes) * LaneChange.Xi / LaneChange.EdgeLength
+        num_LC_controlled_sections = int(len(congested_lanes) * LaneChange.Xi / LaneChange.EdgeLength)
 
         lc_nodes = self.get_previous_nodes(sink, congested_node, num_LC_controlled_sections)
 
