@@ -1,7 +1,7 @@
 
 class JamTailProtection:
 
-    max_speed_values = [20,40,60,80]
+    max_speed_values = [40,60,80]
 
     def get_vsl_nodes(self, sink, congested_node):
         vsl_nodes = []
