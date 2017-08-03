@@ -1,8 +1,10 @@
 
 class Converter:
 
-    def tokmh(self, speed):
+    @staticmethod
+    def tokmh(speed):
         return int(round(speed * 3.6))
 
-    def toms(self, speed):
+    @staticmethod
+    def toms(speed):
         return int(round(speed / 3.6))
