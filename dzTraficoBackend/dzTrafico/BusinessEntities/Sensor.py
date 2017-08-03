@@ -1,3 +1,4 @@
+from dzTrafico.Helpers.Converter import Converter
 import traci
 
 class Sensor(object):
@@ -14,16 +15,16 @@ class Sensor(object):
         Sensor.__id += 1
         self.__lane = lane
         self.__position = position
-        self.__critical_speed = critical_speed
-        self.__high_level_speed = high_level_speed
+        self.__critical_speed = Converter.tokmh(critical_speed)
+        self.__high_level_speed = Converter.tokmh(high_level_speed)
 
     def check_traffic_state(self):
-        speed = traci.inductionloop.getLastStepMeanSpeed(str(self.__id))
+        speed = Converter.tokmh(traci.inductionloop.getLastStepMeanSpeed(str(self.__id)))
         self.add_measure(speed)
         return self.__check_measure(speed)
 
     def check_discharged_area(self):
-        speed = traci.inductionloop.getLastStepMeanSpeed(str(self.__id))
+        speed = Converter.tokmh(traci.inductionloop.getLastStepMeanSpeed(str(self.__id)))
         self.add_measure(speed)
 
         print "-------Check discharged Area--------"

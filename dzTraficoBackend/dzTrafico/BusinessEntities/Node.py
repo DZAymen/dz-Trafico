@@ -1,3 +1,4 @@
+from dzTrafico.Helpers.Converter import Converter
 import traci
 
 class Node(object):
@@ -12,19 +13,19 @@ class Node(object):
     def __init__(self, edge, sensors):
         self.edge = edge
         self.sensors = sensors
-        self.initial_max_speed = edge.getSpeed()
-        self.current_max_speed = self.initial_max_speed * 0.8
+        self.initial_max_speed = Converter.tokmh(edge.getSpeed())
+        self.current_max_speed = Converter.tokmh(self.initial_max_speed * 0.8)
 
     def add_sensors(self, sensors):
         self.sensors.append(sensors)
 
     def activate_VSL(self):
         self.VSL_is_activated = True
-        traci.edge.setMaxSpeed(self.edge.getID(), self.current_max_speed)
+        traci.edge.setMaxSpeed(self.edge.getID(), Converter.toms(self.current_max_speed))
 
     def deactivate_VSL(self):
         self.VSL_is_activated = False
-        traci.edge.setMaxSpeed(self.edge.getID(), self.initial_max_speed)
+        traci.edge.setMaxSpeed(self.edge.getID(), Converter.toms(self.initial_max_speed))
 
     def set_current_max_speed(self, max_speed):
         self.current_max_speed = max_speed
@@ -45,7 +46,7 @@ class Node(object):
         return is_discharged
 
     def get_current_speed(self):
-        return traci.edge.getLastStepMeanSpeed(self.edge.getID())
+        return Converter.tokmh(traci.edge.getLastStepMeanSpeed(self.edge.getID()))
 
     def set_current_recommendations(self, recommendations):
         self.recommendations = recommendations
