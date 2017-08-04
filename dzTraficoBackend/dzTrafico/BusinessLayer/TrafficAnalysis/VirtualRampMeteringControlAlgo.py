@@ -49,3 +49,14 @@ class VirtualRampMetering:
 
     def get_max_speed(self, node, previous_nodes_of_discharged_area):
         pass
+
+    def get_average_vehicle_density(self, concerned_node, nodes, previous=False):
+        # the sum of edges' density * each one length / the sum of node.edge.getLength()
+        sum = 0
+        if previous:
+            for node in nodes:
+                sum += node.get_previous_density() * node.edge.getLength()
+        else:
+            for node in nodes:
+                sum += node.get_current_density() * node.edge.getLength()
+        return sum / ( len(nodes) * concerned_node.edge.getLength() )
