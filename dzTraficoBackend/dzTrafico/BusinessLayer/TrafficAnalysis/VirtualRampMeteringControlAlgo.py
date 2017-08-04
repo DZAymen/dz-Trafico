@@ -2,7 +2,10 @@
 class VirtualRampMetering:
 
     num_vsl_controlled_sections = 3
+    V_max = 0
+    V_min = 0
     Ki = 2
+    Cv = 16
 
     def get_vsl_nodes(self, sink, node, num_lc_controlled_sections):
 
@@ -18,9 +21,15 @@ class VirtualRampMetering:
                 discharged_area_node,
                 num_lc_controlled_sections + i
             )
+            previous_node = self.get_previous_nodes(
+                sink,
+                vsl_node,
+                1,
+            )
             speed = self.get_max_speed(
                 vsl_node,
-                previous_nodes_of_discharged_area
+                previous_nodes_of_discharged_area,
+                previous_node
             )
             vsl_node.set_current_max_speed(speed)
             i += 1
@@ -48,9 +57,9 @@ class VirtualRampMetering:
         else:
             return None
 
-    def get_max_speed(self, node, previous_nodes_of_discharged_area):
+    def get_max_speed(self, node, previous_nodes_of_discharged_area, previous_node):
         # V- i(k)
-        Vi = node.get_previous_speed() + self.round_to_base(
+        Vi4 = node.get_previous_speed() + self.round_to_base(
             VirtualRampMetering.Ki * (
                 self.get_average_vehicle_density(
                     node,
@@ -64,6 +73,11 @@ class VirtualRampMetering:
             )
         )
 
+        Vi5 = max(
+            Vi4,
+            node.get_previous_speed() - VirtualRampMetering.Cv,
+            previous_node.get_previous_speed() - VirtualRampMetering.Cv
+        )
 
 
     def get_average_vehicle_density(self, concerned_node, nodes, previous=False):
