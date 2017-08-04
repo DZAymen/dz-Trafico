@@ -1,5 +1,6 @@
 
 class VirtualRampMetering:
+
     num_vsl_controlled_sections = 3
 
     def get_vsl_nodes(self, sink, node, num_lc_controlled_sections):
@@ -8,8 +9,20 @@ class VirtualRampMetering:
 
         vsl_nodes = self.get_previous_nodes(sink, first_vsl_node, self.num_vsl_controlled_sections)
 
-        for node in vsl_nodes:
-            node.set_current_max_speed(self.get_max_speed(node))
+        discharged_area_node = self.get_node_by_index(sink, node, 1)
+        i = 1
+        for vsl_node in vsl_nodes:
+            previous_nodes_of_discharged_area = self.get_previous_nodes(
+                sink,
+                discharged_area_node,
+                num_lc_controlled_sections + i
+            )
+            speed = self.get_max_speed(
+                vsl_node,
+                previous_nodes_of_discharged_area
+            )
+            vsl_node.set_current_max_speed(speed)
+            i += 1
 
         return vsl_nodes
 
@@ -34,5 +47,5 @@ class VirtualRampMetering:
         else:
             return None
 
-    def get_max_speed(self, node):
+    def get_max_speed(self, node, previous_nodes_of_discharged_area):
         pass
