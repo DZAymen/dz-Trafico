@@ -10,6 +10,12 @@ class Sensor(object):
     __critical_speed = 0
     __high_level_speed = 0
 
+    previous_step_speed = 0
+    last_step_speed = 0
+
+    previous_step_density = 0
+    last_step_density = 0
+
     def __init__(self, lane, position, critical_speed, high_level_speed):
         self.__id = Sensor.__id
         Sensor.__id += 1
@@ -20,12 +26,14 @@ class Sensor(object):
 
     def check_traffic_state(self):
         speed = Converter.tokmh(traci.inductionloop.getLastStepMeanSpeed(str(self.__id)))
-        self.add_measure(speed)
+        density = self.get_density()
+        self.add_measure(speed, density)
         return self.__check_measure(speed)
 
     def check_discharged_area(self):
         speed = Converter.tokmh(traci.inductionloop.getLastStepMeanSpeed(str(self.__id)))
-        self.add_measure(speed)
+        density = self.get_density()
+        self.add_measure(speed, density)
 
         print "-------Check discharged Area--------"
         print speed
@@ -35,8 +43,14 @@ class Sensor(object):
             return True
         return False
 
-    def add_measure(self, speed):
+    def add_measure(self, speed, density):
         self.__measures_list.append(Measure(speed))
+
+        self.previous_step_speed = self.last_step_speed
+        self.last_step_speed = speed
+
+        self.previous_step_density = self.last_step_density
+        self.last_step_density = density
 
     def __check_measure(self, speed):
 
@@ -63,6 +77,23 @@ class Sensor(object):
 
     def set_high_level_speed(self, high_speed):
         self.__high_level_speed = high_speed
+
+    def get_last_step_speed(self):
+        return self.last_step_speed
+
+    def get_previous_step_speed(self):
+        return self.previous_step_speed
+
+    def get_last_step_density(self):
+        return self.last_step_density
+
+    def get_previous_step_density(self):
+        return self.previous_step_density
+
+    def get_density(self):
+        vehs_number = len(traci.lane.getLastStepVehicleIDs(self.__lane))
+        edge_length = traci.lane.getLength(self.__lane)
+        return vehs_number * (1000 / edge_length)
 
 class Measure(object):
 
