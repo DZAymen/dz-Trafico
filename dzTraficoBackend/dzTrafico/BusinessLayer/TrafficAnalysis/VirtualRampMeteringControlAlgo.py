@@ -24,8 +24,8 @@ class VirtualRampMetering:
             previous_node = self.get_previous_nodes(
                 sink,
                 vsl_node,
-                1,
-            )
+                1
+            )[0]
             speed = self.get_max_speed(
                 vsl_node,
                 previous_nodes_of_discharged_area,
@@ -79,6 +79,12 @@ class VirtualRampMetering:
             previous_node.get_previous_speed() - VirtualRampMetering.Cv
         )
 
+        if Vi5 > VirtualRampMetering.V_max:
+            return VirtualRampMetering.V_max
+        elif Vi5 < VirtualRampMetering.V_min:
+            return VirtualRampMetering.V_min
+        else:
+            return Vi5
 
     def get_average_vehicle_density(self, concerned_node, nodes, previous=False):
         # the sum of edges' density * each one length / the sum of node.edge.getLength()
