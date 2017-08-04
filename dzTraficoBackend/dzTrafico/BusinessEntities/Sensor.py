@@ -26,13 +26,13 @@ class Sensor(object):
 
     def check_traffic_state(self):
         speed = Converter.tokmh(traci.inductionloop.getLastStepMeanSpeed(str(self.__id)))
-        density = self.get_density()
+        density = self.__get_density()
         self.add_measure(speed, density)
         return self.__check_measure(speed)
 
     def check_discharged_area(self):
         speed = Converter.tokmh(traci.inductionloop.getLastStepMeanSpeed(str(self.__id)))
-        density = self.get_density()
+        density = self.__get_density()
         self.add_measure(speed, density)
 
         print "-------Check discharged Area--------"
@@ -90,7 +90,7 @@ class Sensor(object):
     def get_previous_step_density(self):
         return self.previous_step_density
 
-    def get_density(self):
+    def __get_density(self):
         vehs_number = len(traci.lane.getLastStepVehicleIDs(self.__lane))
         edge_length = traci.lane.getLength(self.__lane)
         return vehs_number * (1000 / edge_length)
