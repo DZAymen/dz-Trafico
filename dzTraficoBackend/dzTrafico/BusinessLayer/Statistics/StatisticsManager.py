@@ -8,8 +8,7 @@ class StatisticsManager:
         self.dataVisualizationController = DataVisualizationController(simulation)
 
     def get_GPMs(self):
-        gpm_results = self.gpmController.get_results()
-        return gpm_results
+        return self.gpmController.get_trip_infos()
 
     def get_travel_time_results(self):
         return self.dataVisualizationController.get_travel_time_results()
