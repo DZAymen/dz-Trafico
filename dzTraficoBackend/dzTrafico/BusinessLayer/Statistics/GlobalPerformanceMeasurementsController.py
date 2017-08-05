@@ -94,6 +94,68 @@ class GlobalPerformanceMeasurementsController:
 
         return fuel, co2, nox
 
+    "-------------------------- Trip Infos --------------------------------------------"
+
+    def get_trip_infos(self):
+        gpms = []
+
+        noControl_GPM = self.get_trip_infos_GPM(
+            self.simulation.trip_output,
+            GlobalPerformanceMeasurement.NoControl
+        )
+        gpms.append(noControl_GPM)
+
+        vsl_lc_GPM = self.get_trip_infos_GPM(
+            self.simulation.trip_output_vsl_lc,
+            GlobalPerformanceMeasurement.VSL_LC
+        )
+        gpms.append(vsl_lc_GPM)
+
+        return gpms
+
+    def get_trip_infos_GPM(self, trip_output_filename, type):
+        meanTravelTime, meanWaitingTime, numLC, fuel, co2, nox = 0,0,0,0,0,0
+
+        root = self.get_root_node_file(trip_output_filename)
+        trip_infos = root.getchildren()
+
+        depart = self.get_incident_depart_time(root)
+        i = 0
+        for trip_info in trip_infos:
+            if float(trip_info.get("depart")) > depart:
+                meanTravelTime += float(trip_info.get("duration"))
+                meanWaitingTime += float(trip_info.get("waitSteps"))
+                emissions_info = trip_info.getchildren()[0]
+                fuel += float(emissions_info.get("fuel_abs"))
+                co2 += float(emissions_info.get("CO2_abs"))
+                nox += float(emissions_info.get("NOx_abs"))
+                i += 1
+
+        print "----------- trips: " + str(type) + "-------------"
+        print i
+
+        meanTravelTime /= len(trip_infos)
+        meanWaitingTime /= len(trip_infos)
+
+        return GlobalPerformanceMeasurement(
+            type,
+            meanTravelTime,
+            meanWaitingTime,
+            numLC,
+            fuel,
+            co2,
+            nox
+        )
+
+    def get_incident_depart_time(self, root):
+        trip_info = root.findall("*[@id='" + str(Simulation.incident_veh) + "']")[0]
+
+        print "------------ depart ---------------------"
+        print float(trip_info.get("depart"))
+
+        return float(trip_info.get("depart"))
+
+
 class GlobalPerformanceMeasurement(object):
 
     NoControl = "no control"
