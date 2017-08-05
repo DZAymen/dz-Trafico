@@ -3,7 +3,7 @@ class VirtualRampMetering:
 
     num_vsl_controlled_sections = 3
     V_max = 80
-    V_min = 20
+    V_min = 40
     Ki = 2
     Cv = 16
 
@@ -11,29 +11,56 @@ class VirtualRampMetering:
 
         first_vsl_node = self.get_node_by_index(sink, node, num_lc_controlled_sections)
 
-        vsl_nodes = self.get_previous_nodes(sink, first_vsl_node, self.num_vsl_controlled_sections)
+        vsl_nodes = self.get_previous_nodes(sink, first_vsl_node, self.num_vsl_controlled_sections - 1)
 
-        discharged_area_node = self.get_node_by_index(sink, node, 1)
-        i = 1
+        discharged_area_node = self.get_node_by_index(sink, node, 0)
+        i = 0
+
+        print "-----------***************************************---------------"
+        print "-----------first_vsl_node---------------"
+        print first_vsl_node.edge.getID()
+        print "--------------vsl_nodes------------"
+        for n in vsl_nodes:
+            print n.edge.getID()
+        print "------------discharged_area_node--------------"
+        print discharged_area_node.edge.getID()
+        print "-----------node--------------"
+        print node.edge.getID()
+
         for vsl_node in vsl_nodes:
             previous_nodes_of_discharged_area = self.get_previous_nodes(
                 sink,
                 discharged_area_node,
                 num_lc_controlled_sections + i
             )
+
+            print "------------vsl_node-------------"
+            print vsl_node.edge.getID()
+            print "-------------previous_nodes_of_discharged_area------------"
+            for n in previous_nodes_of_discharged_area:
+                print n.edge.getID()
+            print "--------------i-------------------"
+            print i
+
             previous_node = self.get_previous_nodes(
                 sink,
                 vsl_node,
                 1
-            )[0]
+            )[-1]
             speed = self.get_max_speed(
                 vsl_node,
                 previous_nodes_of_discharged_area,
                 previous_node
             )
+
+            print "------------previous_node-------------"
+            print previous_node.edge.getID()
+            print "------------speed-------------"
+            print speed
+
             vsl_node.set_current_max_speed(speed)
             i += 1
-
+        print "-----------***************************************---------------"
         return vsl_nodes
 
     def get_previous_nodes(self, sink, node, nodes_number):
@@ -53,7 +80,9 @@ class VirtualRampMetering:
             index = sink.nodes.index(node)
         i = index - 1 - node_index
         if len(sink.nodes)>i:
-            return sink.nodes[index - 1 - node_index]
+            if i < 0:
+                return sink.nodes[0]
+            return sink.nodes[i]
         else:
             return None
 
