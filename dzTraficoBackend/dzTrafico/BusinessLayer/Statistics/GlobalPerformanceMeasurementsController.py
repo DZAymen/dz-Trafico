@@ -99,37 +99,59 @@ class GlobalPerformanceMeasurementsController:
     def get_trip_infos(self):
         gpms = []
 
+        trip_infos, trip_infos_vsl_lc, depart, depart_vsl_lc = self.get_trips_and_depart_time()
+
         noControl_GPM = self.get_trip_infos_GPM(
-            self.simulation.trip_output,
-            GlobalPerformanceMeasurement.NoControl
+            trip_infos,
+            GlobalPerformanceMeasurement.NoControl,
+            depart
         )
         gpms.append(noControl_GPM)
 
         vsl_lc_GPM = self.get_trip_infos_GPM(
-            self.simulation.trip_output_vsl_lc,
-            GlobalPerformanceMeasurement.VSL_LC
+            trip_infos_vsl_lc,
+            GlobalPerformanceMeasurement.VSL_LC,
+            depart_vsl_lc
         )
         gpms.append(vsl_lc_GPM)
 
         return gpms
 
-    def get_trip_infos_GPM(self, trip_output_filename, type):
+    def get_trips_and_depart_time(self):
+        root = self.get_root_node_file(self.simulation.trip_output)
+        trip_infos = root.getchildren()
+        depart = self.get_incident_depart_time(root)
+        for trip in trip_infos:
+            if float(trip.get("depart")) < depart:
+                trip_infos.remove(trip)
+
+        root_vsl_lc = self.get_root_node_file(self.simulation.trip_output_vsl_lc)
+        trip_infos_vsl_lc = root_vsl_lc.getchildren()
+        depart_vsl_lc = self.get_incident_depart_time(root_vsl_lc)
+        for trip in trip_infos_vsl_lc:
+            if float(trip.get("depart")) < depart_vsl_lc:
+                trip_infos_vsl_lc.remove(trip)
+
+        while len(trip_infos) > len(trip_infos_vsl_lc):
+            trip_infos.pop()
+
+        while len(trip_infos) < len(trip_infos_vsl_lc):
+            trip_infos_vsl_lc.pop()
+
+        return trip_infos, trip_infos_vsl_lc, depart, depart_vsl_lc
+
+    def get_trip_infos_GPM(self, trip_infos, type, depart):
         meanTravelTime, meanWaitingTime, numLC, fuel, co2, nox = 0,0,0,0,0,0
 
-        root = self.get_root_node_file(trip_output_filename)
-        trip_infos = root.getchildren()
-
-        depart = self.get_incident_depart_time(root)
         i = 0
         for trip_info in trip_infos:
-            if float(trip_info.get("depart")) > depart:
-                meanTravelTime += float(trip_info.get("duration"))
-                meanWaitingTime += float(trip_info.get("waitSteps"))
-                emissions_info = trip_info.getchildren()[0]
-                fuel += float(emissions_info.get("fuel_abs"))
-                co2 += float(emissions_info.get("CO2_abs"))
-                nox += float(emissions_info.get("NOx_abs"))
-                i += 1
+            meanTravelTime += float(trip_info.get("duration"))
+            meanWaitingTime += float(trip_info.get("waitSteps"))
+            emissions_info = trip_info.getchildren()[0]
+            fuel += float(emissions_info.get("fuel_abs"))
+            co2 += float(emissions_info.get("CO2_abs"))
+            nox += float(emissions_info.get("NOx_abs"))
+            i += 1
 
         print "----------- trips: " + str(type) + "-------------"
         print i
