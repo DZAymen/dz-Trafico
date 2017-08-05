@@ -2,8 +2,8 @@
 class VirtualRampMetering:
 
     num_vsl_controlled_sections = 3
-    V_max = 0
-    V_min = 0
+    V_max = 80
+    V_min = 20
     Ki = 2
     Cv = 16
 
