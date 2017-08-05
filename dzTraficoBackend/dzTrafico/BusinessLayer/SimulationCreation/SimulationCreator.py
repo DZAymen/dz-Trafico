@@ -37,9 +37,9 @@ class SimulationCreator:
     # ---------------------------------------------------------------------------------------------------
 
     # ---------------------------------- Incident lanes definition --------------------------------------
-    def add_incidents(self, incident):
+    def add_incidents(self, incidents):
         #Calculate each incident edge_id before setting them in simulation instance
-        incident_updated_lanes = SimulationCreator.__tripManager.set_incident_lanes(incident)
+        incident_updated_lanes = SimulationCreator.__tripManager.set_incident_lanes(incidents)
         SimulationCreator.__simulation.add_incidents(incident_updated_lanes)
     # ---------------------------------------------------------------------------------------------------
 

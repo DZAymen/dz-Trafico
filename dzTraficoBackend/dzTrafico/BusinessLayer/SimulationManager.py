@@ -12,6 +12,8 @@ class SimulationManager:
     __trafficAnalyzer = TrafficAnalyzer(__simulation)
     __statisticsManager = StatisticsManager(__simulation)
 
+    incidents = []
+
     #Define a singleton SimulationManager class
     __simulationManager = None
     @staticmethod
@@ -55,7 +57,8 @@ class SimulationManager:
     # -------------------------------- Incidents definition ---------------------------------------------
     # Call SimulationCreator.set_map method to create the map
     def add_incident(self, incident):
-        SimulationManager.__simulationCreator.add_incidents(incident)
+        SimulationManager.incidents.append(incident)
+        #SimulationManager.__simulationCreator.add_incidents(SimulationManager.incident)
 
     def get_incidents(self):
         return SimulationManager.__simulation.get_incidents()
@@ -87,6 +90,7 @@ class SimulationManager:
 
         self.generate_flows()
         SimulationManager.__simulationCreator.split_network_edges(sensors_distance)
+        SimulationManager.__simulationCreator.add_incidents(SimulationManager.incidents)
         self.generate_flows()
         self.generate_routes()
 

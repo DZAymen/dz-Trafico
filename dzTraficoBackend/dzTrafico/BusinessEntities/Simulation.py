@@ -42,6 +42,8 @@ class Simulation:
     __incidents = []
     __traffic_flows = []
 
+    incident_veh = None
+
     def __init__(self):
         simulations_directory = os.path.join(os.path.normpath(os.getcwd()), "dzTrafico\\SimulationFiles")
         Simulation.project_directory = simulations_directory + "\\" + \
@@ -135,7 +137,10 @@ class Simulation:
         for step in range(sim_duration):
             traci.switch(self.SIM)
             traci.simulationStep()
-            self.check_incidents(step)
+
+            veh_id = self.check_incidents(step)
+            if veh_id is not None and Simulation.incident_veh is None:
+                Simulation.incident_veh = veh_id
 
             traci.switch(self.SIM_VSL_LC)
             traci.simulationStep()
@@ -158,8 +163,9 @@ class Simulation:
     def set_sensors_file(self, file_path):
         Simulation.__sensors_file = file_path
 
-    def add_incidents(self, incident):
-        self.__incidents.append(incident)
+    def add_incidents(self, incidents):
+        for incident in incidents:
+            self.__incidents.append(incident)
 
     def check_incidents(self, step):
         for incident in self.__incidents:
@@ -170,7 +176,7 @@ class Simulation:
                         #traci.vehicle.setSpeed(vehicles[0], 0)
                         edge_id = traci.lane.getEdgeID(lane)
                         traci.vehicle.setStop(vehID=vehicles[0],edgeID=edge_id, laneIndex=0, pos=traci.lane.getLength(lane)-20, duration=incident.accidentDuration * 1000)
-                        break
+                        return vehicles[0]
 
     def add_inflows(self, inFlowPoints):
         self.inFlowPoints.append(inFlowPoints)
