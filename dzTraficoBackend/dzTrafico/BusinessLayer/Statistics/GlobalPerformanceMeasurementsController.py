@@ -99,7 +99,7 @@ class GlobalPerformanceMeasurementsController:
     def get_trip_infos(self):
         gpms = []
 
-        trip_infos, trip_infos_vsl_lc = self.get_trips_and_depart_time()
+        trip_infos, trip_infos_vsl_lc = self.get_trip_nodes()
 
         noControl_GPM = self.get_trip_infos_GPM(
             trip_infos,
@@ -115,7 +115,7 @@ class GlobalPerformanceMeasurementsController:
 
         return gpms
 
-    def get_trips_and_depart_time(self):
+    def get_trip_nodes(self):
         root = self.get_root_node_file(self.simulation.trip_output)
         trip_infos = root.getchildren()
         depart = self.get_incident_depart_time(root)
@@ -161,6 +161,8 @@ class GlobalPerformanceMeasurementsController:
         co2Rate = co2 / routeLength
         noxRate = nox / routeLength
 
+        # Get numLaneChange
+        numLC = self.get_trip_infos_num_LaneChange(trip_infos, type)
 
         return GlobalPerformanceMeasurement(
             type,
@@ -171,6 +173,19 @@ class GlobalPerformanceMeasurementsController:
             co2Rate,
             noxRate
         )
+
+    def get_trip_infos_num_LaneChange(self, trip_infos, type):
+        numLC = 0
+        lanechange_filename=""
+        if type == GlobalPerformanceMeasurement.NoControl:
+            lanechange_filename = self.simulation.lanechange_summary_filename
+        elif type == GlobalPerformanceMeasurement.VSL_LC:
+            lanechange_filename = self.simulation.lanechange_summary_vsl_lc_filename
+
+        root = self.get_root_node_file(lanechange_filename)
+        for trip in trip_infos:
+            numLC += len(root.findall("*[@id='" + str(trip.get("id")) + "']"))
+        return numLC
 
     def get_incident_depart_time(self, root):
         trip_info = root.findall("*[@id='" + str(Simulation.incident_veh) + "']")[0]
