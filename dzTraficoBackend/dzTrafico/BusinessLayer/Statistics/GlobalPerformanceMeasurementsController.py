@@ -99,19 +99,17 @@ class GlobalPerformanceMeasurementsController:
     def get_trip_infos(self):
         gpms = []
 
-        trip_infos, trip_infos_vsl_lc, depart, depart_vsl_lc = self.get_trips_and_depart_time()
+        trip_infos, trip_infos_vsl_lc = self.get_trips_and_depart_time()
 
         noControl_GPM = self.get_trip_infos_GPM(
             trip_infos,
-            GlobalPerformanceMeasurement.NoControl,
-            depart
+            GlobalPerformanceMeasurement.NoControl
         )
         gpms.append(noControl_GPM)
 
         vsl_lc_GPM = self.get_trip_infos_GPM(
             trip_infos_vsl_lc,
-            GlobalPerformanceMeasurement.VSL_LC,
-            depart_vsl_lc
+            GlobalPerformanceMeasurement.VSL_LC
         )
         gpms.append(vsl_lc_GPM)
 
@@ -138,9 +136,9 @@ class GlobalPerformanceMeasurementsController:
         while len(trip_infos) < len(trip_infos_vsl_lc):
             trip_infos_vsl_lc.pop()
 
-        return trip_infos, trip_infos_vsl_lc, depart, depart_vsl_lc
+        return trip_infos, trip_infos_vsl_lc
 
-    def get_trip_infos_GPM(self, trip_infos, type, depart):
+    def get_trip_infos_GPM(self, trip_infos, type):
         meanTravelTime, meanWaitingTime, numLC, fuel, co2, nox = 0,0,0,0,0,0
 
         i = 0
