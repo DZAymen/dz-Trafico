@@ -139,23 +139,28 @@ class GlobalPerformanceMeasurementsController:
         return trip_infos, trip_infos_vsl_lc
 
     def get_trip_infos_GPM(self, trip_infos, type):
-        meanTravelTime, meanWaitingTime, numLC, fuel, co2, nox = 0,0,0,0,0,0
+        meanTravelTime, meanWaitingTime, numLC, fuel, co2, nox, routeLength = 0,0,0,0,0,0,0
 
-        i = 0
         for trip_info in trip_infos:
             meanTravelTime += float(trip_info.get("duration"))
             meanWaitingTime += float(trip_info.get("waitSteps"))
+            routeLength += float(trip_info.get("routeLength"))
+
             emissions_info = trip_info.getchildren()[0]
             fuel += float(emissions_info.get("fuel_abs"))
             co2 += float(emissions_info.get("CO2_abs"))
             nox += float(emissions_info.get("NOx_abs"))
-            i += 1
 
         print "----------- trips: " + str(type) + "-------------"
-        print i
+        print len(trip_infos)
 
         meanTravelTime /= len(trip_infos)
         meanWaitingTime /= len(trip_infos)
+
+        fuel /= routeLength
+        co2 /= routeLength
+        nox /= routeLength
+
 
         return GlobalPerformanceMeasurement(
             type,
