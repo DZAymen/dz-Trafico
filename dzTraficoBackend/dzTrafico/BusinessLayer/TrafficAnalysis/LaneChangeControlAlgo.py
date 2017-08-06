@@ -71,12 +71,12 @@ class LaneChange:
                     )
             # if lane is in the middle between most right and left lanes is closed
             elif congested_lanes.count(lane) > 0:
-                # if the right and left lanes are opened, change to the left
+                # if the right and left lanes are opened, change to either way (!??)
                 if congested_lanes.count(lane-1) == 0 and congested_lanes.count(lane+1) == 0:
                     recommendations.append(
                         LCRecommendation(
                             lane,
-                            LCRecommendation.TURN_LEFT
+                            LCRecommendation.CHANGE_TO_EITHER_WAY
                         )
                     )
                 # elif the right lane is closed and the left one is opened, change to left

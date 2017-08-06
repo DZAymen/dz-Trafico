@@ -92,12 +92,32 @@ class Node(object):
             if recommendation.change_lane:
                 lane = self.edge.getLane(recommendation.lane)
                 vehicles = traci.lane.getLastStepVehicleIDs(lane.getID())
+                # Change either way
+                if recommendation.change_to_either_way:
+                    # Calculate the percentage of vehicles to change to left
+                    right_lane_occupancy = traci.lane.getLastStepOccupancy(
+                        self.edge.getLane(recommendation.lane - 1).getID()
+                    )
+                    left_lane_occupancy = traci.lane.getLastStepOccupancy(
+                        self.edge.getLane(recommendation.lane + 1).getID()
+                    )
+                    vehicles_number_turn_left = int(round(
+                        len(vehicles) * left_lane_occupancy / (left_lane_occupancy + right_lane_occupancy)
+                    ))
+                    i = 0
+                    for vehicle_id in vehicles:
+                        if i < vehicles_number_turn_left:
+                            traci.vehicle.changeLane(vehicle_id, recommendation.lane + 1, 500000)
+                            i += 1
+                        else:
+                            traci.vehicle.changeLane(vehicle_id, recommendation.lane - 1, 500000)
+                # Change vehicles position to target lane
+                else:
+                    print "------recommendation------"
+                    print recommendation.target_lane
+                    print "------Vehicles number------"
+                    print len(vehicles)
 
-                print "------recommendation------"
-                print recommendation.target_lane
-                print len(vehicles)
-                print vehicles
-
-                for vehicle_id in vehicles:
-                    traci.vehicle.changeLane(vehicle_id, recommendation.target_lane, 500000)
-                    #traci.vehicle.changeSublane(vehicle_id, recommendation.target_lane - recommendation.lane)
+                    for vehicle_id in vehicles:
+                        traci.vehicle.changeLane(vehicle_id, recommendation.target_lane, 500000)
+                        #traci.vehicle.changeSublane(vehicle_id, recommendation.target_lane - recommendation.lane)
