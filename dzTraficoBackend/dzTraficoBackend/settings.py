@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -40,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'dzTrafico.apps.DztraficoConfig',
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -75,6 +77,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'dzTraficoBackend.wsgi.application'
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+        },
+        "ROUTING": "dzTraficoBackend.routing.channel_routing",
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
