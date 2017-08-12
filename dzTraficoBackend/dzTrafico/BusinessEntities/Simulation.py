@@ -177,3 +177,5 @@ class Simulation:
     def set_duration(self, sim_duration):
         self.sim_duration = sim_duration
 
+    def get_sinks(self):
+        return self.__sinks
