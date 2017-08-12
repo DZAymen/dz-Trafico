@@ -46,6 +46,9 @@ class Node(object):
                 density += sensor.get_previous_step_density()
             return density / len(self.sensors)
 
+    def get_current_max_speed(self):
+        return self.current_max_speed
+
     # --------------- Check congestion state ------------------------------------------
     def check_congested_lanes(self):
         congested_lanes = []
