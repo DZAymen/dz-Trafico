@@ -97,7 +97,6 @@ class SimulationManager:
     def create_simulation(self, sim_duration):
         SimulationManager.__simulation = SimulationManager.__simulationCreator.createSimulation()
         SimulationManager.__simulation.set_duration(sim_duration)
-        SimulationManager.__simulation.start_simulation()
     # ---------------------------------------------------------------------------------------------------
 
 
@@ -105,6 +104,3 @@ class SimulationManager:
     def get_simulation_gpm_results(self):
         return SimulationManager.__statisticsManager.get_GPMs()
     # ---------------------------------------------------------------------------------------------------
-
-    def run_simulation(self):
-        SimulationManager.__simulation.start_simulation()
