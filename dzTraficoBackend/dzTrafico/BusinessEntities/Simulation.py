@@ -135,26 +135,6 @@ class Simulation:
             label=self.SIM_VSL_LC
         )
 
-        for step in range(self.sim_duration):
-            traci.switch(self.SIM)
-            traci.simulationStep()
-
-            veh_id = self.check_incidents(step)
-            if veh_id is not None and Simulation.incident_veh is None:
-                Simulation.incident_veh = veh_id
-
-            traci.switch(self.SIM_VSL_LC)
-            traci.simulationStep()
-            self.check_incidents(step)
-
-            for sink in self.__sinks:
-                sink[0].read_traffic_state()
-
-        traci.close()
-        traci.switch(self.SIM)
-        traci.close()
-        # self.draw_mean_travel_time_graph()
-
     def set_flows(self, flows):
         self.__traffic_flows = flows
 
@@ -196,3 +176,4 @@ class Simulation:
 
     def set_duration(self, sim_duration):
         self.sim_duration = sim_duration
+
