@@ -22,6 +22,9 @@ class SimulationManager:
             SimulationManager.__simulationManager = SimulationManager()
         return SimulationManager.__simulationManager
 
+    def get_simulation(self):
+        return SimulationManager.__simulation
+
     # -------------------------------- Net file creation ------------------------------------------------
     #Call SimulationCreator.set_map method to create the map
     def set_map(self, map_box):
