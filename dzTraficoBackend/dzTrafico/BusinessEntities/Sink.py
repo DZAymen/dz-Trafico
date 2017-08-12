@@ -1,3 +1,5 @@
+from EdgeState import EdgeState
+
 class Sink(object):
 
     id = 0
@@ -22,6 +24,8 @@ class Sink(object):
         return sensors
 
     def read_traffic_state(self):
+        traffic_state = []
+        congestion_detected = False
         for node in self.nodes:
             if node.VSL_is_activated:
 
@@ -35,10 +39,21 @@ class Sink(object):
                     print node.edge.getID()
             else:
                 congested_lanes = node.check_congested_lanes()
-                if len(congested_lanes)>0:
-
+                congestion_detected = len(congested_lanes)>0
+                if congestion_detected:
                     print "--------notify_congestion_detected----------"
                     print node.edge.getID()
                     print congested_lanes
 
                     Sink.trafficAnalyzer.notify_congestion_detected(self, node, congested_lanes)
+
+            traffic_state.append(
+                EdgeState(
+                    node.edge.getID(),
+                    node.get_current_speed(),
+                    node.get_current_max_speed(),
+                    node.VSL_is_activated,
+                    congestion_detected
+                )
+            )
+        return traffic_state
