@@ -43,6 +43,7 @@ class Simulation:
     __traffic_flows = []
 
     incident_veh = None
+    sim_duration = 0
 
     def __init__(self):
         simulations_directory = os.path.join(os.path.normpath(os.getcwd()), "dzTrafico\\SimulationFiles")
@@ -103,7 +104,7 @@ class Simulation:
     def add_sensors(self, sensors):
         self.__sensors_list.append(sensors)
 
-    def start_simulation(self, sim_duration):
+    def start_simulation(self):
         sumogui = sumolib.checkBinary("sumo-gui")
         sumo = sumolib.checkBinary("sumo")
         #subprocess.Popen([sumogui, "-c", Simulation.__project_directory + Simulation.__sumocfg_file])
@@ -134,7 +135,7 @@ class Simulation:
             label=self.SIM_VSL_LC
         )
 
-        for step in range(sim_duration):
+        for step in range(self.sim_duration):
             traci.switch(self.SIM)
             traci.simulationStep()
 
@@ -193,14 +194,5 @@ class Simulation:
     def get_incidents(self):
         return self.__incidents
 
-    def draw_mean_travel_time_graph(self):
-        subprocess.call(
-            [
-                r"python F:\PFE\Simulateurs\SUMO\tools\visualization\plot_summary.py",
-                "-i", self.project_directory + self.simulation_summary_filename +
-                      "," + self.project_directory + self.simulation_summary_vsl_lc_filename,
-                "-l", "Mean Travel Time - VSL/LC" + "," + "Mean Travel Time + VSL/LC",
-                "-o", self.project_directory + self.graph_image,
-                "-m", "meanTravelTime"
-            ]
-        )
+    def set_duration(self, sim_duration):
+        self.sim_duration = sim_duration
