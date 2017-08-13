@@ -92,8 +92,8 @@ class Sensor(object):
 
     def __get_density(self):
         vehs_number = len(traci.lane.getLastStepVehicleIDs(self.__lane))
-        edge_length = traci.lane.getLength(self.__lane)
-        return vehs_number * (1000 / edge_length)
+        lane_length = traci.lane.getLength(self.__lane)
+        return (vehs_number * (1000 / lane_length))
 
 class Measure(object):
 

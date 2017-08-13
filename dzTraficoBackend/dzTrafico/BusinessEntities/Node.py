@@ -6,7 +6,8 @@ class Node(object):
     sensors = []
     edge = None
     initial_max_speed = 0
-    current_max_speed = 0
+    current_vsl = 0
+    previous_vsl = 0
 
     VSL_is_activated = False
 
@@ -14,40 +15,51 @@ class Node(object):
         self.edge = edge
         self.sensors = sensors
         self.initial_max_speed = Converter.tokmh(edge.getSpeed())
-        self.current_max_speed = Converter.tokmh(self.initial_max_speed * 0.8)
+        self.current_vsl = self.initial_max_speed
+        self.previous_vsl = self.initial_max_speed
 
     def add_sensors(self, sensors):
         self.sensors.append(sensors)
 
     # ----------- Return previous and last step speed/density--------------------------------
     def get_current_speed(self):
-        #return Converter.tokmh(traci.edge.getLastStepMeanSpeed(self.edge.getID()))
+        # print "--------------current speed ----------------------------"
+        # print self.edge.getID()
+        # print Converter.tokmh(traci.edge.getLastStepMeanSpeed(self.edge.getID()))
+        # return Converter.tokmh(traci.edge.getLastStepMeanSpeed(self.edge.getID()))
         speed = 0
         for sensor in self.sensors:
-            speed += Converter.tokmh(sensor.get_last_step_speed())
-        return speed / len(self.sensors)
+            speed += sensor.get_last_step_speed()
+        #     print Converter.tokmh(sensor.get_last_step_speed())
+        # print speed
+        # print (speed / len(self.sensors))
+        return (speed / len(self.sensors))
 
     def get_previous_speed(self):
         #return Converter.tokmh(traci.edge.getLastStepMeanSpeed(self.edge.getID()))
         speed = 0
         for sensor in self.sensors:
-            speed += Converter.tokmh(sensor.get_previous_step_speed())
-        return speed / len(self.sensors)
+            speed += sensor.get_previous_step_speed()
+        return (speed / len(self.sensors))
 
     def get_current_density(self):
         density = 0
         for sensor in self.sensors:
             density += sensor.get_last_step_density()
-        return density / len(self.sensors)
+        return density
 
     def get_previous_density(self):
             density = 0
             for sensor in self.sensors:
                 density += sensor.get_previous_step_density()
-            return density / len(self.sensors)
+            return density
 
-    def get_current_max_speed(self):
-        return self.current_max_speed
+    def get_current_vsl(self):
+        # return Converter.tokmh(traci.edge.getMaxSpeed(self.edge.getID()))
+        return self.current_vsl
+
+    def get_previous_vsl(self):
+        return self.previous_vsl
 
     # --------------- Check congestion state ------------------------------------------
     def check_congested_lanes(self):
@@ -68,16 +80,17 @@ class Node(object):
     # --------------- VSL Control ------------------------------------------
     def activate_VSL(self):
         self.VSL_is_activated = True
-        traci.edge.setMaxSpeed(self.edge.getID(), Converter.toms(self.current_max_speed))
+        traci.edge.setMaxSpeed(self.edge.getID(), Converter.toms(self.current_vsl))
 
     def deactivate_VSL(self):
         self.VSL_is_activated = False
         traci.edge.setMaxSpeed(self.edge.getID(), Converter.toms(self.initial_max_speed))
 
-    def set_current_max_speed(self, max_speed):
-        self.current_max_speed = max_speed
+    def set_current_vsl(self, max_speed):
+        self.previous_vsl = self.current_vsl
+        self.current_vsl = max_speed
         for sensor in self.sensors:
-                sensor.set_high_level_speed(self.current_max_speed * 0.75)
+                sensor.set_high_level_speed(self.current_vsl * 0.75)
 
     #--------------- Lane Change Control ------------------------------------------
     def set_current_recommendations(self, recommendations):
