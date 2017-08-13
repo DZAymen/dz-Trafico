@@ -19,7 +19,7 @@ class TrafficStateManager:
         sinks = self.simulation.get_sinks()
 
         self.simulation.start_simulation()
-        print self.simulation.sim_duration
+
         for step in range(self.simulation.sim_duration):
             traffic_state = []
             traci.switch(self.simulation.SIM)

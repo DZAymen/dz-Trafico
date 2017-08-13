@@ -19,7 +19,7 @@ class RealTimeTrafficStateConsumer(JsonWebsocketConsumer):
     def send(self, content, close=False):
         RealTimeTrafficStateConsumer.reply_channel.send(
             {
-                "text": json.dumps({"i": content})
+                "text": json.dumps(content)
             },
             immediately=True
         )
