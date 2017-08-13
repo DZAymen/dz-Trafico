@@ -1,3 +1,4 @@
+from dzTrafico.Helpers.Converter import Converter
 
 class VirtualRampMetering:
 
@@ -5,7 +6,8 @@ class VirtualRampMetering:
     V_max = 80
     V_min = 40
     Ki = 2
-    Cv = 16
+    Cv = 20
+    critical_density = 45
 
     def get_vsl_nodes(self, sink, node, num_lc_controlled_sections):
 
@@ -47,6 +49,7 @@ class VirtualRampMetering:
                 vsl_node,
                 1
             )[-1]
+
             speed = self.get_max_speed(
                 vsl_node,
                 previous_nodes_of_discharged_area,
@@ -57,8 +60,10 @@ class VirtualRampMetering:
             print previous_node.edge.getID()
             print "------------speed-------------"
             print speed
+            print "------------density-------------"
+            print vsl_node.get_current_density()
 
-            vsl_node.set_current_max_speed(speed)
+            vsl_node.set_current_vsl(speed)
             i += 1
         print "-----------***************************************---------------"
         return vsl_nodes
@@ -88,14 +93,19 @@ class VirtualRampMetering:
 
     def get_max_speed(self, node, previous_nodes_of_discharged_area, previous_node):
         # V- i(k)
-        Vi4 = node.get_previous_speed() + self.round_to_base(
-            VirtualRampMetering.Ki * (
-                self.get_average_vehicle_density(
+        print "previous_vsl"
+        print node.get_previous_vsl()
+
+        print "average_vehicle_density"
+        print 1000 * self.get_average_vehicle_density(
                     node,
-                    previous_nodes_of_discharged_area,
-                    previous=True
+                    previous_nodes_of_discharged_area
                 )
-                - self.get_average_vehicle_density(
+
+        Vi4 = node.get_previous_vsl() + self.round_to_base(
+            VirtualRampMetering.Ki * (
+                VirtualRampMetering.critical_density
+                - 1000*self.get_average_vehicle_density(
                     node,
                     previous_nodes_of_discharged_area
                 )
@@ -104,11 +114,16 @@ class VirtualRampMetering:
 
         Vi5 = max(
             Vi4,
-            node.get_previous_speed() - VirtualRampMetering.Cv,
-            previous_node.get_previous_speed() - VirtualRampMetering.Cv
+            node.get_previous_vsl() - VirtualRampMetering.Cv,
+            previous_node.get_previous_vsl() - VirtualRampMetering.Cv
         )
 
-        if Vi5 > VirtualRampMetering.V_max:
+        print "-----------Vi4-----------------"
+        print Vi4
+        print "-----------Vi5-----------------"
+        print Vi5
+
+        if Vi5 > Converter.tokmh(node.edge.getSpeed()):
             return VirtualRampMetering.V_max
         elif Vi5 < VirtualRampMetering.V_min:
             return VirtualRampMetering.V_min
@@ -120,10 +135,10 @@ class VirtualRampMetering:
         sum = 0
         if previous:
             for node in nodes:
-                sum += node.get_previous_density() * node.edge.getLength()
+                sum += node.get_previous_density() * node.edge.getLength()/1000
         else:
             for node in nodes:
-                sum += node.get_current_density() * node.edge.getLength()
+                sum += node.get_current_density() * node.edge.getLength()/1000
         return sum / ( len(nodes) * concerned_node.edge.getLength() )
 
     def round_to_base(self, x, base=5):
