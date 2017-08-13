@@ -120,20 +120,23 @@ def add_vehicle_types_percentages(request):
 
 #Post configuration state
 # :true means to launch the simulation creation
-@api_view(['POST'])
-def update_configuration_state(request):
-    # request.data validation
 
-    #timeMeasure
-    #startTime
+@api_view(['POST'])
+def set_sensors_distance(request):
     simulationManager.split_network_edges(request.data["distance"])
     simulationManager.add_sensors(request.data["distance"])
-    if request.data["configCompleted"]:
-        sim_duration = request.data["simDuration"]
-        simulationManager.create_simulation(sim_duration)
-        return Response(status.HTTP_202_ACCEPTED)
-    else:
-        return Response(status.HTTP_400_BAD_REQUEST)
+
+    return Response(status.HTTP_202_ACCEPTED)
+
+
+@api_view(['POST'])
+def update_configuration_state(request):
+    sim_duration = request.data["simDuration"]
+    simulationManager.create_simulation(sim_duration)
+
+    simulationManager.update_config(request.data)
+
+    return Response(status.HTTP_202_ACCEPTED)
 
 @api_view(['POST'])
 def run_simulation(request):

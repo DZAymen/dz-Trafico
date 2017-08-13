@@ -4,6 +4,7 @@ from dzTrafico.BusinessEntities.Sink import Sink
 from dzTrafico.BusinessLayer.TrafficAnalysis.TrafficAnalyzer import TrafficAnalyzer
 from dzTrafico.BusinessLayer.Statistics.StatisticsManager import StatisticsManager
 from dzTrafico.BusinessLayer.TrafficAnalysis.LaneChangeControlAlgo import LaneChange
+from dzTrafico.BusinessLayer.TrafficAnalysis.VirtualRampMeteringControlAlgo import VirtualRampMetering
 
 class SimulationManager:
 
@@ -80,6 +81,8 @@ class SimulationManager:
 
     # ------------------------------------- Add sensors -------------------------------------------------
     def add_sensors(self, sensors_distance):
+        LaneChange.EdgeLength = sensors_distance
+
         Sink.trafficAnalyzer = SimulationManager.__trafficAnalyzer
         SimulationManager.__simulationCreator.create_sensors(sensors_distance)
     # ---------------------------------------------------------------------------------------------------
@@ -89,8 +92,6 @@ class SimulationManager:
     # && update network file
     # && generate route file
     def split_network_edges(self, sensors_distance):
-        LaneChange.EdgeLength = sensors_distance
-
         self.generate_flows()
         SimulationManager.__simulationCreator.split_network_edges(sensors_distance)
         SimulationManager.__simulationCreator.add_incidents(SimulationManager.incidents)
@@ -102,6 +103,16 @@ class SimulationManager:
         SimulationManager.__simulation.set_duration(sim_duration)
     # ---------------------------------------------------------------------------------------------------
 
+    # ----------------------------------------- Simulation Config ---------------------------------------
+    def update_config(self, data):
+        LaneChange.Xi = data["Xi"]
+        VirtualRampMetering.num_vsl_controlled_sections = data["num_vsl_sections"]
+        VirtualRampMetering.V_min = data["V_min"]
+        VirtualRampMetering.Ki = data["Ki"]
+        VirtualRampMetering.Cv = data["Cv"]
+        VirtualRampMetering.critical_density = data["critical_density"]
+
+    # ---------------------------------------------------------------------------------------------------
 
     # ------------------------------------ Simulation Results -------------------------------------------
     def get_simulation_gpm_results(self):
