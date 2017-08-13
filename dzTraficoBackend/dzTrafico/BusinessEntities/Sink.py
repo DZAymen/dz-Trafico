@@ -51,7 +51,8 @@ class Sink(object):
                 EdgeState(
                     node.edge.getID(),
                     node.get_current_speed(),
-                    node.get_current_max_speed(),
+                    node.get_current_vsl(),
+                    node.get_current_density(),
                     node.VSL_is_activated,
                     congestion_detected
                 )
