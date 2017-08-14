@@ -118,7 +118,7 @@ class Node(object):
                         self.edge.getLane(recommendation.lane + 1).getID()
                     )
                     vehicles_number_turn_left = int(round(
-                        len(vehicles) * left_lane_occupancy / (left_lane_occupancy + right_lane_occupancy)
+                        len(vehicles) * right_lane_occupancy / (left_lane_occupancy + right_lane_occupancy)
                     ))
                     i = 0
                     for vehicle_id in vehicles:
