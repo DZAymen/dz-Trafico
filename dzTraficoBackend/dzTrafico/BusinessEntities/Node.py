@@ -23,20 +23,12 @@ class Node(object):
 
     # ----------- Return previous and last step speed/density--------------------------------
     def get_current_speed(self):
-        # print "--------------current speed ----------------------------"
-        # print self.edge.getID()
-        # print Converter.tokmh(traci.edge.getLastStepMeanSpeed(self.edge.getID()))
-        # return Converter.tokmh(traci.edge.getLastStepMeanSpeed(self.edge.getID()))
         speed = 0
         for sensor in self.sensors:
             speed += sensor.get_last_step_speed()
-        #     print Converter.tokmh(sensor.get_last_step_speed())
-        # print speed
-        # print (speed / len(self.sensors))
         return (speed / len(self.sensors))
 
     def get_previous_speed(self):
-        #return Converter.tokmh(traci.edge.getLastStepMeanSpeed(self.edge.getID()))
         speed = 0
         for sensor in self.sensors:
             speed += sensor.get_previous_step_speed()
@@ -55,7 +47,6 @@ class Node(object):
             return density
 
     def get_current_vsl(self):
-        # return Converter.tokmh(traci.edge.getMaxSpeed(self.edge.getID()))
         return self.current_vsl
 
     def get_previous_vsl(self):
@@ -72,9 +63,9 @@ class Node(object):
         return congested_lanes
 
     def check_if_discharged(self):
-        is_discharged = False
+        is_discharged = True
         for sensor in self.sensors:
-            is_discharged = is_discharged or sensor.check_discharged_area()
+            is_discharged = is_discharged and sensor.check_discharged_area()
         return is_discharged
 
     # --------------- VSL Control ------------------------------------------
