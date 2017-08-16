@@ -32,8 +32,10 @@ class TrafficStateManager:
             traci.simulationStep()
             self.simulation.check_incidents(step)
 
-            traffic_state = self.read_traffic_state(sinks)
-            consumer.send(traffic_state)
+            res, rest = divmod(step, self.simulation.sim_step_duration)
+            if rest == 0:
+                traffic_state = self.read_traffic_state(sinks)
+                consumer.send(traffic_state)
 
         traci.close()
         traci.switch(self.simulation.SIM)

@@ -44,6 +44,7 @@ class Simulation:
 
     incident_veh = None
     sim_duration = 0
+    sim_step_duration = 1
 
     def __init__(self):
         simulations_directory = os.path.join(os.path.normpath(os.getcwd()), "dzTrafico\\SimulationFiles")
@@ -110,7 +111,7 @@ class Simulation:
         #subprocess.Popen([sumogui, "-c", Simulation.__project_directory + Simulation.__sumocfg_file])
         traci.start(
             [
-                sumo,
+                sumogui,
                 "-c", Simulation.project_directory + Simulation.__sumocfg_file,
                 "--summary", Simulation.project_directory + self.simulation_summary_filename,
                 "--lanechange-output", Simulation.project_directory + self.lanechange_summary_filename,

@@ -1,6 +1,7 @@
 from dzTrafico.BusinessLayer.SimulationCreation.SimulationCreator import SimulationCreator
 from dzTrafico.BusinessEntities.Simulation import Simulation
 from dzTrafico.BusinessEntities.Sink import Sink
+from dzTrafico.BusinessEntities.Sensor import Sensor
 from dzTrafico.BusinessLayer.TrafficAnalysis.TrafficAnalyzer import TrafficAnalyzer
 from dzTrafico.BusinessLayer.Statistics.StatisticsManager import StatisticsManager
 from dzTrafico.BusinessLayer.TrafficAnalysis.LaneChangeControlAlgo import LaneChange
@@ -105,12 +106,14 @@ class SimulationManager:
 
     # ----------------------------------------- Simulation Config ---------------------------------------
     def update_config(self, data):
-        LaneChange.Xi = data["Xi"]
+        LaneChange.Xi = data["xi"]
         VirtualRampMetering.num_vsl_controlled_sections = data["num_vsl_sections"]
-        VirtualRampMetering.V_min = data["V_min"]
-        VirtualRampMetering.Ki = data["Ki"]
-        VirtualRampMetering.Cv = data["Cv"]
+        VirtualRampMetering.V_min = data["v_min"]
+        VirtualRampMetering.Ki = data["ki"]
+        VirtualRampMetering.Cv = data["cv"]
         VirtualRampMetering.critical_density = data["critical_density"]
+        Sensor.critical_density = data["critical_density_sensor"]
+        Simulation.sim_step_duration = data["sim_step_duration"]
 
     # ---------------------------------------------------------------------------------------------------
 
