@@ -27,25 +27,25 @@ class Sink(object):
         traffic_state = []
         congestion_detected = False
         for node in self.nodes:
-            if node.VSL_is_activated:
-
-                print "--------VSL_is_activated----------"
+            # if node.VSL_is_activated:
+            #
+            #     print "--------VSL_is_activated----------"
+            #     print node.edge.getID()
+            #
+            #     if node.check_if_discharged():
+            #         node.deactivate_VSL()
+            #
+            #         print "--------deactivate_VSL----------"
+            #         print node.edge.getID()
+            # else:
+            congested_lanes = node.check_congested_lanes()
+            congestion_detected = len(congested_lanes)>0
+            if congestion_detected:
+                print "--------notify_congestion_detected----------"
                 print node.edge.getID()
+                print congested_lanes
 
-                if node.check_if_discharged():
-                    node.deactivate_VSL()
-
-                    print "--------deactivate_VSL----------"
-                    print node.edge.getID()
-            else:
-                congested_lanes = node.check_congested_lanes()
-                congestion_detected = len(congested_lanes)>0
-                if congestion_detected:
-                    print "--------notify_congestion_detected----------"
-                    print node.edge.getID()
-                    print congested_lanes
-
-                    Sink.trafficAnalyzer.notify_congestion_detected(self, node, congested_lanes)
+                Sink.trafficAnalyzer.notify_congestion_detected(self, node, congested_lanes)
 
             traffic_state.append(
                 EdgeState(
