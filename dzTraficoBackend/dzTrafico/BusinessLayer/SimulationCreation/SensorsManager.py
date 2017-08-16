@@ -9,7 +9,7 @@ class SensorsManager():
     def __init__(self, networkManager):
         self.__networkManager = networkManager
 
-    def create_sensors(self, flows):
+    def create_sensors(self, flows, incidents):
 
         print "-------------- Create sensors ----------------"
 
@@ -63,10 +63,12 @@ class SensorsManager():
             for sinkk in sinks:
                 print len(sinkk.get_sensors())
 
-        self.sensors_filename = self.create_sensors_file(sensors_list)
+        incident_sensors = self.get_incidents_sensors(incidents)
+
+        self.sensors_filename = self.create_sensors_file(sensors_list, incident_sensors)
         return sinks, sensors_list, self.sensors_filename
 
-    def create_sensors_file(self, sensors):
+    def create_sensors_file(self, sensors, incident_sensors):
         sensors_filename = "sensors.xml"
         root = etree.Element("additional")
         for sensor in sensors:
@@ -76,7 +78,31 @@ class SensorsManager():
                                         pos=str(sensor.get_sensor_position()),
                                         freq=str(1000),
                                         file="sensors.output.xml")
+        for sensor in incident_sensors:
+            sensor_node = etree.Element("inductionLoop",
+                                        id=str(sensor.get_sensor_id()),
+                                        lane=str(sensor.get_sensor_lane()),
+                                        pos=str(sensor.get_sensor_position()),
+                                        freq=str(30),
+                                        file="incident.sensors.output.xml")
             root.append(sensor_node)
         et = etree.ElementTree(root)
         et.write(Simulation.project_directory + "\\" + sensors_filename, pretty_print=True)
         return sensors_filename
+
+    def get_incidents_sensors(self, incidents):
+        sensors = []
+        for incident in incidents:
+            edge = self.__networkManager.get_edge_by_laneID(incident.lane_id)
+            lanes = edge.getLanes()
+            lanes.remove(edge.getLane(incident.lane))
+            for lane in lanes:
+                sensors.append(
+                    Sensor(
+                        lane.getID(),
+                        incident.lane_position,
+                        0,
+                        0
+                    )
+                )
+        return sensors

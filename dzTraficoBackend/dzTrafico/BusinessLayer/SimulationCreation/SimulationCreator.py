@@ -56,7 +56,10 @@ class SimulationCreator:
 
     # ------------------------------------- Add sensors -------------------------------------------------
     def create_sensors(self, sensors_distance):
-        self.sinks, self.sensors, self.sensors_file = SimulationCreator.__sensorsManager.create_sensors(SimulationCreator.__simulation.get_flows())
+        self.sinks, self.sensors, self.sensors_file = SimulationCreator.__sensorsManager.create_sensors(
+            SimulationCreator.__simulation.get_flows(),
+            SimulationCreator.__simulation.get_incidents()
+        )
         SimulationCreator.__simulation.add_sensors(self.sensors)
         SimulationCreator.__simulation.add_sinks(self.sinks)
         SimulationCreator.__simulation.set_sensors_file(self.sensors_file)
