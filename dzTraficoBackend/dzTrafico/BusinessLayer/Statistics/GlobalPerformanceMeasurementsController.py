@@ -113,22 +113,29 @@ class GlobalPerformanceMeasurementsController:
         )
         gpms.append(vsl_lc_GPM)
 
+        gpm_comparisain = self.compare_gpms(
+            noControl_GPM,
+            vsl_lc_GPM
+        )
+
+        gpms.append(gpm_comparisain)
+
         return gpms
 
     def get_trip_nodes(self):
         root = self.get_root_node_file(self.simulation.trip_output)
         trip_infos = root.getchildren()
-        depart = self.get_incident_depart_time(root)
-        for trip in trip_infos:
-            if float(trip.get("depart")) < depart:
-                trip_infos.remove(trip)
+        # depart = self.get_incident_depart_time(root)
+        # for trip in trip_infos:
+        #     if float(trip.get("depart")) < depart:
+        #         trip_infos.remove(trip)
 
         root_vsl_lc = self.get_root_node_file(self.simulation.trip_output_vsl_lc)
         trip_infos_vsl_lc = root_vsl_lc.getchildren()
-        depart_vsl_lc = self.get_incident_depart_time(root_vsl_lc)
-        for trip in trip_infos_vsl_lc:
-            if float(trip.get("depart")) < depart_vsl_lc:
-                trip_infos_vsl_lc.remove(trip)
+        # depart_vsl_lc = self.get_incident_depart_time(root_vsl_lc)
+        # for trip in trip_infos_vsl_lc:
+        #     if float(trip.get("depart")) < depart_vsl_lc:
+        #         trip_infos_vsl_lc.remove(trip)
 
         while len(trip_infos) > len(trip_infos_vsl_lc):
             trip_infos.pop()
@@ -195,6 +202,17 @@ class GlobalPerformanceMeasurementsController:
 
         return float(trip_info.get("depart"))
 
+    def compare_gpms(self, noControl_GPM, vsl_lc_GPM):
+        return GlobalPerformanceMeasurement(
+            GlobalPerformanceMeasurement.VSL_LC_NoControl_COMP,
+            (vsl_lc_GPM.totalTravelTime - noControl_GPM.totalTravelTime) /noControl_GPM.totalTravelTime,
+            (vsl_lc_GPM.totalWaitingTime - noControl_GPM.totalWaitingTime) /noControl_GPM.totalWaitingTime,
+            (vsl_lc_GPM.numLC - noControl_GPM.numLC) /noControl_GPM.numLC,
+            (vsl_lc_GPM.fuelRate - noControl_GPM.fuelRate) /noControl_GPM.fuelRate,
+            (vsl_lc_GPM.co2Rate - noControl_GPM.co2Rate) /noControl_GPM.co2Rate,
+            (vsl_lc_GPM.noxRate - noControl_GPM.noxRate) /noControl_GPM.noxRate
+        )
+
 
 class GlobalPerformanceMeasurement(object):
 
@@ -202,6 +220,8 @@ class GlobalPerformanceMeasurement(object):
     VSL = "vsl"
     LC = "lc"
     VSL_LC = "vsl_lc"
+
+    VSL_LC_NoControl_COMP = "vsl_lc_noControl_comp"
 
     def __init__(self, type, totalTravelTime, totalWaitingTime, numLC, fuel, co2, nox):
         self.type = type
