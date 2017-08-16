@@ -14,6 +14,9 @@ class Incident(object):
     def set_lane(self, lane_id):
         self.lane_id = lane_id
 
+    def set_lane_position(self, lane_position):
+        self.lane_position = lane_position
+
 class IncidentSerializer(serializers.Serializer):
     position = LocationSerializer()
     accidentTime = serializers.FloatField()

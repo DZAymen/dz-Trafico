@@ -80,6 +80,7 @@ class TripManager:
             edge = self.__networkManager.get_edge(self.__networkManager.get_edgeId_from_geoCoord(incident.lon, incident.lat))
             lane = edge.getLane(incident.lane)
             incident.set_lane(lane.getID())
+            incident.set_lane_position(lane.getLength() - 20)
         return incidents
     # ---------------------------------------------------------------------------------------------------
 
