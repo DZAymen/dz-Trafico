@@ -8,6 +8,7 @@ class Sensor(object):
     __position = 0
     __measures_list = []
     __critical_speed = 0
+    critical_density = 60
     __high_level_speed = 0
 
     previous_step_speed = 0
@@ -28,7 +29,7 @@ class Sensor(object):
         speed = Converter.tokmh(traci.inductionloop.getLastStepMeanSpeed(str(self.__id)))
         density = self.__get_density()
         self.add_measure(speed, density)
-        return self.__check_measure(speed)
+        return self.__check_measure_density(density)
 
     def check_discharged_area(self):
         speed = Converter.tokmh(traci.inductionloop.getLastStepMeanSpeed(str(self.__id)))
@@ -36,12 +37,13 @@ class Sensor(object):
         self.add_measure(speed, density)
 
         print "-------Check discharged Area--------"
-        print speed
-        print self.__high_level_speed
-        print speed > self.__high_level_speed
-        if speed > self.__high_level_speed:
-            return True
-        return False
+        # print speed
+        # print self.__high_level_speed
+        # print speed > self.__high_level_speed
+        # if speed > self.__high_level_speed:
+        #     return True
+        # return False
+        return (not self.__check_measure_density(density))
 
     def add_measure(self, speed, density):
         self.__measures_list.append(Measure(speed))
@@ -52,16 +54,14 @@ class Sensor(object):
         self.previous_step_density = self.last_step_density
         self.last_step_density = density
 
-    def __check_measure(self, speed):
-
-        # print "-------- Edge ID --------"
-        # print self.__id
-        # print "-------- Speed --------"
-        # print speed
-        # print "-------- Critical_speed --------"
-        # print self.__critical_speed
-
+    def __check_measure_speed(self, speed):
         if (speed > 0) and (speed < self.__critical_speed):
+            # Congestion
+            return True
+        return False
+
+    def __check_measure_density(self, density):
+        if density > self.critical_density:
             # Congestion
             return True
         return False
