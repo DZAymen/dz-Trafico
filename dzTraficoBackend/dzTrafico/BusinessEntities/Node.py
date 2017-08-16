@@ -112,19 +112,42 @@ class Node(object):
                         len(vehicles) * right_lane_occupancy / (left_lane_occupancy + right_lane_occupancy)
                     ))
                     i = 0
+                    j = 0
+
+                    print "------recommendation------"
+                    print recommendation.change_to_either_way
+                    print "------Vehicles number------"
+                    print len(vehicles)
+                    
                     for vehicle_id in vehicles:
+                        print "------------------vehicles_number_turn_left--------------"
+                        print vehicles_number_turn_left
+                        if i == vehicles_number_turn_left:
+                            print "-------left-----"
+                            print j
+                            j = 0
                         if i < vehicles_number_turn_left:
-                            traci.vehicle.changeLane(vehicle_id, recommendation.lane + 1, 500000)
+                            if traci.vehicle.couldChangeLane(vehicle_id, recommendation.lane + 1):
+                                traci.vehicle.changeLane(vehicle_id, recommendation.lane + 1, 500000)
+                                j += 1
                             i += 1
                         else:
-                            traci.vehicle.changeLane(vehicle_id, recommendation.lane - 1, 500000)
+                            if traci.vehicle.couldChangeLane(vehicle_id, recommendation.lane - 1):
+                                traci.vehicle.changeLane(vehicle_id, recommendation.lane - 1, 500000)
+
+                    print "-------right------"
+                    print j
                 # Change vehicles position to target lane
                 else:
                     print "------recommendation------"
                     print recommendation.target_lane
                     print "------Vehicles number------"
                     print len(vehicles)
-
+                    j=0
                     for vehicle_id in vehicles:
-                        traci.vehicle.changeLane(vehicle_id, recommendation.target_lane, 500000)
+                        if traci.vehicle.couldChangeLane(vehicle_id, recommendation.target_lane - recommendation.lane):
+                            traci.vehicle.changeLane(vehicle_id, recommendation.target_lane, 500000)
+                            j+=1
                         #traci.vehicle.changeSublane(vehicle_id, recommendation.target_lane - recommendation.lane)
+                    print "number of vehicles changed position to target lane"
+                    print j
