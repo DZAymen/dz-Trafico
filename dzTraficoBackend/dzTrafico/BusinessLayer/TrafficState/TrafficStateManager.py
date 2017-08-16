@@ -21,7 +21,6 @@ class TrafficStateManager:
         self.simulation.start_simulation()
 
         for step in range(self.simulation.sim_duration):
-            traffic_state = []
             traci.switch(self.simulation.SIM)
             traci.simulationStep()
 
@@ -33,15 +32,20 @@ class TrafficStateManager:
             traci.simulationStep()
             self.simulation.check_incidents(step)
 
-            for sink in sinks:
-                for edgeState in sink[0].read_traffic_state():
-                    traffic_state.append(edgeState)
-
-            edgeStateSerializer = EdgeStateSerializer(traffic_state, many=True)
-            consumer.send(edgeStateSerializer.data)
+            traffic_state = self.read_traffic_state(sinks)
+            consumer.send(traffic_state)
 
         traci.close()
         traci.switch(self.simulation.SIM)
         traci.close()
 
         consumer.disconnect()
+
+    def read_traffic_state(self, sinks):
+        traffic_state = []
+        for sink in sinks:
+            for edgeState in sink[0].read_traffic_state():
+                traffic_state.append(edgeState)
+
+        edgeStateSerializer = EdgeStateSerializer(traffic_state, many=True)
+        return edgeStateSerializer.data
