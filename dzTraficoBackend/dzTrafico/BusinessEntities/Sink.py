@@ -23,6 +23,10 @@ class Sink(object):
                 sensors.append(sensor)
         return sensors
 
+    def change_lane(self):
+        for node in self.nodes:
+            node.change_lane()
+
     def read_traffic_state(self):
         traffic_state = []
         congestion_detected = False

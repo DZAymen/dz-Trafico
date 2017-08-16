@@ -32,6 +32,12 @@ class TrafficStateManager:
             traci.simulationStep()
             self.simulation.check_incidents(step)
 
+            # Check for LanChanges in nodes' recommendations
+            if self.simulation.sim_step_duration>1:
+                self.change_lane(sinks)
+
+            # Read traffic state in each time stamp
+            # Check for congestion
             res, rest = divmod(step, self.simulation.sim_step_duration)
             if rest == 0:
                 traffic_state = self.read_traffic_state(sinks)
@@ -51,3 +57,7 @@ class TrafficStateManager:
 
         edgeStateSerializer = EdgeStateSerializer(traffic_state, many=True)
         return edgeStateSerializer.data
+
+    def change_lane(self, sinks):
+        for sink in sinks:
+            sink[0].change_lane()

@@ -9,6 +9,8 @@ class Node(object):
     current_vsl = 0
     previous_vsl = 0
 
+    recommendations = []
+
     VSL_is_activated = False
 
     def __init__(self, edge, sensors):
