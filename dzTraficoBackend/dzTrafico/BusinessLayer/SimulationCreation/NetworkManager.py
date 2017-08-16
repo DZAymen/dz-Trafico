@@ -163,6 +163,9 @@ class NetworkManager:
         return Simulation.project_directory + "\\" + splitted_edges_filename
 
 
+    def get_edge_by_laneID(self, lane_id):
+        return self.net.getEdge(sumolib._laneID2edgeID(lane_id))
+
 class SplittedEdge:
 
     def __init__(self, edge_id, num_lanes, splits):
