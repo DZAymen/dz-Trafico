@@ -36,3 +36,6 @@ class TrafficAnalyzer:
 
         for node in lc_nodes:
             node.activate_LC()
+
+    def update_vsl(self, sink, node):
+        self.virtualRampMeteringController.update_vsl(sink, node)

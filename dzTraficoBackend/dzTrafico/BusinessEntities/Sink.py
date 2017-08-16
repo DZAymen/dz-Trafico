@@ -27,6 +27,11 @@ class Sink(object):
         for node in self.nodes:
             node.change_lane()
 
+    def update_vsl(self):
+        for node in self.nodes:
+            if node.VSL_is_activated:
+                Sink.trafficAnalyzer.update_vsl(self, node)
+
     def read_traffic_state(self):
         traffic_state = []
         congestion_detected = False

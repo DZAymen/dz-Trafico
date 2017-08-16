@@ -10,6 +10,7 @@ class Node(object):
     previous_vsl = 0
 
     recommendations = []
+    previous_nodes_of_discharged_area = []
 
     VSL_is_activated = False
 

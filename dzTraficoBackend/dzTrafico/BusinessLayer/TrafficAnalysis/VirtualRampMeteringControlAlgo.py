@@ -36,6 +36,8 @@ class VirtualRampMetering:
                 num_lc_controlled_sections + i
             )
 
+            node.previous_nodes_of_discharged_area = previous_nodes_of_discharged_area
+
             print "------------vsl_node-------------"
             print vsl_node.edge.getID()
             print "-------------previous_nodes_of_discharged_area------------"
@@ -143,3 +145,19 @@ class VirtualRampMetering:
 
     def round_to_base(self, x, base=5):
         return int(base * round(float(x) / base))
+
+    def update_vsl(self, sink, node):
+        previous_node = self.get_previous_nodes(
+                sink,
+                node,
+                1
+            )[-1]
+
+        speed = self.get_max_speed(
+            node,
+            node.previous_nodes_of_discharged_area,
+            previous_node
+        )
+
+        node.set_current_vsl(speed)
+        node.activate_VSL()

@@ -41,6 +41,7 @@ class TrafficStateManager:
             res, rest = divmod(step, self.simulation.sim_step_duration)
             if rest == 0:
                 traffic_state = self.read_traffic_state(sinks)
+                self.update_vsl(sinks)
                 consumer.send(traffic_state)
 
         traci.close()
@@ -61,3 +62,7 @@ class TrafficStateManager:
     def change_lane(self, sinks):
         for sink in sinks:
             sink[0].change_lane()
+
+    def update_vsl(self, sinks):
+        for sink in sinks:
+            sink[0].update_vsl()
