@@ -205,12 +205,12 @@ class GlobalPerformanceMeasurementsController:
     def compare_gpms(self, noControl_GPM, vsl_lc_GPM):
         return GlobalPerformanceMeasurement(
             GlobalPerformanceMeasurement.VSL_LC_NoControl_COMP,
-            (vsl_lc_GPM.totalTravelTime - noControl_GPM.totalTravelTime) /noControl_GPM.totalTravelTime,
-            (vsl_lc_GPM.totalWaitingTime - noControl_GPM.totalWaitingTime) /noControl_GPM.totalWaitingTime,
-            (vsl_lc_GPM.numLC - noControl_GPM.numLC) /noControl_GPM.numLC,
-            (vsl_lc_GPM.fuelRate - noControl_GPM.fuelRate) /noControl_GPM.fuelRate,
-            (vsl_lc_GPM.co2Rate - noControl_GPM.co2Rate) /noControl_GPM.co2Rate,
-            (vsl_lc_GPM.noxRate - noControl_GPM.noxRate) /noControl_GPM.noxRate
+            100 *(vsl_lc_GPM.totalTravelTime - noControl_GPM.totalTravelTime) /noControl_GPM.totalTravelTime,
+            100 *(vsl_lc_GPM.totalWaitingTime - noControl_GPM.totalWaitingTime) /noControl_GPM.totalWaitingTime,
+            100 *(vsl_lc_GPM.numLC - noControl_GPM.numLC) /noControl_GPM.numLC,
+            100 *(vsl_lc_GPM.fuelRate - noControl_GPM.fuelRate) /noControl_GPM.fuelRate,
+            100 *(vsl_lc_GPM.co2Rate - noControl_GPM.co2Rate) /noControl_GPM.co2Rate,
+            100 *(vsl_lc_GPM.noxRate - noControl_GPM.noxRate) /noControl_GPM.noxRate
         )
 
 
