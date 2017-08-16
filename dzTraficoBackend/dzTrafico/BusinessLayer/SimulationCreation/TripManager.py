@@ -78,10 +78,8 @@ class TripManager:
     def set_incident_lanes(self, incidents):
         for incident in incidents:
             edge = self.__networkManager.get_edge(self.__networkManager.get_edgeId_from_geoCoord(incident.lon, incident.lat))
-            lanes_ids = []
-            for lane in edge.getLanes():
-                lanes_ids.append(lane.getID())
-            incident.set_lanes(lanes_ids)
+            lane = edge.getLane(incident.lane)
+            incident.set_lane(lane.getID())
         return incidents
     # ---------------------------------------------------------------------------------------------------
 

@@ -3,8 +3,6 @@ from Location import Location, LocationSerializer
 
 class Incident(object):
 
-    lanes = []
-
     def __init__(self, lon, lat, accidentTime, accidentDuration, lane):
         self.lon = lon
         self.lat = lat
@@ -13,8 +11,8 @@ class Incident(object):
         self.accidentDuration = accidentDuration
         self.lane = lane
 
-    def set_lanes(self, lanes):
-        self.lanes = lanes
+    def set_lane(self, lane_id):
+        self.lane_id = lane_id
 
 class IncidentSerializer(serializers.Serializer):
     position = LocationSerializer()
