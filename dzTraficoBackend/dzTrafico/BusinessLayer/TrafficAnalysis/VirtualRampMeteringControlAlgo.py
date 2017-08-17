@@ -36,7 +36,7 @@ class VirtualRampMetering:
                 num_lc_controlled_sections + i
             )
 
-            node.previous_nodes_of_discharged_area = previous_nodes_of_discharged_area
+            vsl_node.previous_nodes_of_discharged_area = previous_nodes_of_discharged_area
 
             print "------------vsl_node-------------"
             print vsl_node.edge.getID()
