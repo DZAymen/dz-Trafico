@@ -137,11 +137,11 @@ class GlobalPerformanceMeasurementsController:
         #     if float(trip.get("depart")) < depart_vsl_lc:
         #         trip_infos_vsl_lc.remove(trip)
 
-        while len(trip_infos) > len(trip_infos_vsl_lc):
-            trip_infos.pop()
-
-        while len(trip_infos) < len(trip_infos_vsl_lc):
-            trip_infos_vsl_lc.pop()
+        # while len(trip_infos) > len(trip_infos_vsl_lc):
+        #     trip_infos.pop()
+        #
+        # while len(trip_infos) < len(trip_infos_vsl_lc):
+        #     trip_infos_vsl_lc.pop()
 
         return trip_infos, trip_infos_vsl_lc
 
@@ -161,20 +161,20 @@ class GlobalPerformanceMeasurementsController:
         print "----------- trips: " + str(type) + "-------------"
         print len(trip_infos)
 
-        #meanTravelTime /= len(trip_infos)
-        #meanWaitingTime /= len(trip_infos)
-
         fuelRate = fuel / routeLength
         co2Rate = co2 / routeLength
         noxRate = nox / routeLength
+
+        meanTravelTime = totalTravelTime/len(trip_infos)
+        meanWaintingTime = totalWaitingTime/len(trip_infos)
 
         # Get numLaneChange
         numLC = self.get_trip_infos_num_LaneChange(trip_infos, type)
 
         return GlobalPerformanceMeasurement(
             type,
-            totalTravelTime,
-            totalWaitingTime,
+            meanTravelTime,
+            meanWaintingTime,
             numLC,
             fuelRate,
             co2Rate,
@@ -192,7 +192,7 @@ class GlobalPerformanceMeasurementsController:
         root = self.get_root_node_file(lanechange_filename)
         for trip in trip_infos:
             numLC += len(root.findall("*[@id='" + str(trip.get("id")) + "']"))
-        return numLC
+        return float(numLC)/float(len(trip_infos))
 
     def get_incident_depart_time(self, root):
         trip_info = root.findall("*[@id='" + str(Simulation.incident_veh) + "']")[0]
@@ -205,8 +205,8 @@ class GlobalPerformanceMeasurementsController:
     def compare_gpms(self, noControl_GPM, vsl_lc_GPM):
         return GlobalPerformanceMeasurement(
             GlobalPerformanceMeasurement.VSL_LC_NoControl_COMP,
-            100 *(vsl_lc_GPM.totalTravelTime - noControl_GPM.totalTravelTime) /noControl_GPM.totalTravelTime,
-            100 *(vsl_lc_GPM.totalWaitingTime - noControl_GPM.totalWaitingTime) /noControl_GPM.totalWaitingTime,
+            100 *(vsl_lc_GPM.meanTravelTime - noControl_GPM.meanTravelTime) /noControl_GPM.meanTravelTime,
+            100 *(vsl_lc_GPM.meanWaintingTime - noControl_GPM.meanWaintingTime) /noControl_GPM.meanWaintingTime,
             100 *(vsl_lc_GPM.numLC - noControl_GPM.numLC) /noControl_GPM.numLC,
             100 *(vsl_lc_GPM.fuelRate - noControl_GPM.fuelRate) /noControl_GPM.fuelRate,
             100 *(vsl_lc_GPM.co2Rate - noControl_GPM.co2Rate) /noControl_GPM.co2Rate,
@@ -223,10 +223,10 @@ class GlobalPerformanceMeasurement(object):
 
     VSL_LC_NoControl_COMP = "vsl_lc_noControl_comp"
 
-    def __init__(self, type, totalTravelTime, totalWaitingTime, numLC, fuel, co2, nox):
+    def __init__(self, type, meanTravelTime, meanWaintingTime, numLC, fuel, co2, nox):
         self.type = type
-        self.totalTravelTime = totalTravelTime
-        self.totalWaitingTime = totalWaitingTime
+        self.meanTravelTime = meanTravelTime
+        self.meanWaintingTime = meanWaintingTime
         self.numLC = numLC
         self.fuelRate = fuel
         self.co2Rate = co2
@@ -235,8 +235,8 @@ class GlobalPerformanceMeasurement(object):
 class GlobalPerformanceMeasurementSerializer(serializers.Serializer):
 
     type = serializers.CharField()
-    totalTravelTime = serializers.FloatField()
-    totalWaitingTime = serializers.FloatField()
+    meanTravelTime = serializers.FloatField()
+    meanWaintingTime = serializers.FloatField()
     numLC = serializers.FloatField()
     fuelRate = serializers.FloatField()
     co2Rate = serializers.FloatField()
