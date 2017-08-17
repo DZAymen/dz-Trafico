@@ -19,8 +19,8 @@ class TrafficAnalyzer:
         # if there is a free lane
         if len(node.sensors) > len(congested_lanes):
             lc_nodes = self.laneChangeController.get_lc_nodes(sink, node, congested_lanes)
-            vsl_nodes = self.virtualRampMeteringController.get_vsl_nodes(sink, node, len(lc_nodes))
-            self.activate_vsl_control(vsl_nodes)
+            # vsl_nodes = self.virtualRampMeteringController.get_vsl_nodes(sink, node, len(lc_nodes))
+            # self.activate_vsl_control(vsl_nodes)
             self.activate_lc_control(lc_nodes)
 
     def activate_vsl_control(self, vsl_nodes):
