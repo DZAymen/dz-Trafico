@@ -8,9 +8,11 @@ class LCRecommendation:
 
     change_lane = True
     change_to_either_way = False
+    recommendation = 0
 
     def __init__(self, lane, recommendation):
         self.lane = lane
+        self.recommendation = recommendation
         if recommendation == self.TURN_RIGHT:
             self.target_lane = lane - 1
         elif recommendation == self.TURN_LEFT:
