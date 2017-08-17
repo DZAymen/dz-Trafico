@@ -101,19 +101,16 @@ class Node(object):
         for recommendation in self.recommendations:
             if recommendation.change_lane:
                 lane = self.edge.getLane(recommendation.lane)
+                edge_vehicles = traci.edge.getLastStepVehicleIDs(self.edge.getID())
+
+                for veh_id in edge_vehicles:
+                    traci.vehicle.setLaneChangeMode(veh_id, 512)
+
                 vehicles = traci.lane.getLastStepVehicleIDs(lane.getID())
                 # Change either way
                 if recommendation.change_to_either_way:
                     # Calculate the percentage of vehicles to change to left
-                    right_lane_occupancy = traci.lane.getLastStepOccupancy(
-                        self.edge.getLane(recommendation.lane - 1).getID()
-                    )
-                    left_lane_occupancy = traci.lane.getLastStepOccupancy(
-                        self.edge.getLane(recommendation.lane + 1).getID()
-                    )
-                    vehicles_number_turn_left = int(round(
-                        len(vehicles) * right_lane_occupancy / (left_lane_occupancy + right_lane_occupancy)
-                    ))
+
                     i = 0
                     j = 0
 
@@ -123,21 +120,57 @@ class Node(object):
                     print len(vehicles)
                     
                     for vehicle_id in vehicles:
-                        print "------------------vehicles_number_turn_left--------------"
-                        print vehicles_number_turn_left
-                        if i == vehicles_number_turn_left:
-                            print "-------left-----"
-                            print j
-                            j = 0
-                        if i < vehicles_number_turn_left:
-                            if traci.vehicle.couldChangeLane(vehicle_id, recommendation.lane + 1):
-                                traci.vehicle.changeLane(vehicle_id, recommendation.lane + 1, 500000)
-                                j += 1
-                            i += 1
-                        else:
-                            if traci.vehicle.couldChangeLane(vehicle_id, recommendation.lane - 1):
-                                traci.vehicle.changeLane(vehicle_id, recommendation.lane - 1, 500000)
+                        # Turn Left
+                        print "----Change to left? " + str(traci.vehicle.couldChangeLane(vehicle_id, recommendation.lane + 1)) + "   veh_id-->" +str(vehicle_id)
+                        print "----Change to right? " + str(traci.vehicle.couldChangeLane(vehicle_id,recommendation.lane - 1)) + "   veh_id-->" + str(vehicle_id)
 
+                        if traci.vehicle.couldChangeLane(vehicle_id, recommendation.lane + 1):
+                            traci.vehicle.changeLane(vehicle_id, recommendation.lane + 1, 500000)
+                            # traci.vehicle.changeSublane(vehicle_id, 100)
+                            print "--------Change to Left--------> " + str(vehicle_id)
+                            i +=1
+                        # Turn Right
+                        elif traci.vehicle.couldChangeLane(vehicle_id, recommendation.lane - 1):
+                            traci.vehicle.changeLane(vehicle_id, recommendation.lane - 1, 500000)
+                            # traci.vehicle.changeSublane(vehicle_id, -100)
+                            j +=1
+                            print "--------Change to Right--------> " + str(vehicle_id)
+                        else:
+                            right_lane_occupancy = traci.lane.getLastStepOccupancy(
+                                self.edge.getLane(recommendation.lane - 1).getID()
+                            )
+                            left_lane_occupancy = traci.lane.getLastStepOccupancy(
+                                self.edge.getLane(recommendation.lane + 1).getID()
+                            )
+
+                            print "--- occup:" + str(right_lane_occupancy>left_lane_occupancy)
+                            if right_lane_occupancy>left_lane_occupancy:
+                                traci.vehicle.changeLane(vehicle_id, recommendation.lane + 1, 500000)
+                                print "--------Change to Left--------> " + str(vehicle_id)
+                            else:
+                                traci.vehicle.changeLane(vehicle_id, recommendation.lane - 1, 500000)
+                                print "--------Change to Right--------> " + str(vehicle_id)
+                            # if i>j:
+                            #     traci.vehicle.changeLane(vehicle_id, recommendation.lane + 1, 500000)
+                            # else:
+                            #     traci.vehicle.changeLane(vehicle_id, recommendation.lane - 1, 500000)
+                        # print "------------------vehicles_number_turn_left--------------"
+                        # print vehicles_number_turn_left
+                        # # if i == vehicles_number_turn_left:
+                        #     # print "-------left-----"
+                        #     # print j
+                        #     # j = 0
+                        # if i < vehicles_number_turn_left:
+                        #     # if traci.vehicle.couldChangeLane(vehicle_id, recommendation.lane + 1):
+                        #     traci.vehicle.changeLane(vehicle_id, recommendation.lane + 1, 500000)
+                        #     # j += 1
+                        #     i += 1
+                        # else:
+                        #     # if traci.vehicle.couldChangeLane(vehicle_id, recommendation.lane - 1):
+                        #     traci.vehicle.changeLane(vehicle_id, recommendation.lane - 1, 500000)
+
+                    print "-------left-----"
+                    print i
                     print "-------right------"
                     print j
                 # Change vehicles position to target lane
@@ -150,7 +183,12 @@ class Node(object):
                     for vehicle_id in vehicles:
                         if traci.vehicle.couldChangeLane(vehicle_id, recommendation.target_lane - recommendation.lane):
                             traci.vehicle.changeLane(vehicle_id, recommendation.target_lane, 500000)
-                            j+=1
+                            # traci.vehicle.changeSublane(vehicle_id, recommendation.target_lane - recommendation.lane)
+                            print "--------Change to target--------> " \
+                                  + "from " +str(recommendation.lane) \
+                                  + " to " + str(recommendation.target_lane) \
+                                  + str(vehicle_id)
+                        # j+=1
                         #traci.vehicle.changeSublane(vehicle_id, recommendation.target_lane - recommendation.lane)
-                    print "number of vehicles changed position to target lane"
-                    print j
+                    # print "number of vehicles changed position to target lane"
+                    # print j
