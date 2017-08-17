@@ -1,5 +1,6 @@
 import os, sumolib, subprocess
 import traci
+from dzTrafico.Helpers.Converter import Converter
 
 class Simulation:
     #Simulation without vsl and lc control
@@ -115,8 +116,10 @@ class Simulation:
                 "-c", Simulation.project_directory + Simulation.__sumocfg_file,
                 "--summary", Simulation.project_directory + self.simulation_summary_filename,
                 "--lanechange-output", Simulation.project_directory + self.lanechange_summary_filename,
-                "-a", Simulation.project_directory + self.edge_dump_additional_filename + ','
-                      + Simulation.project_directory + Simulation.__sensors_file,
+                "-a", Simulation.project_directory + self.edge_dump_additional_filename
+                      # + ','
+                      # + Simulation.project_directory + Simulation.__sensors_file
+                ,
                 "--tripinfo-output", Simulation.project_directory + self.trip_output,
                 "--device.emissions.probability", "1"
             ],
@@ -156,6 +159,7 @@ class Simulation:
                 if len(vehicles)>0:
                     edge_id = traci.lane.getEdgeID(incident.lane_id)
                     traci.vehicle.setStop(vehID=vehicles[0],edgeID=edge_id, laneIndex=incident.lane, pos=incident.lane_position, duration=incident.accidentDuration * 1000)
+                    traci.edge.setMaxSpeed(traci.lane.getEdgeID(incident.lane_id), Converter.toms(45))
                     return vehicles[0]
 
     def add_inflows(self, inFlowPoints):
