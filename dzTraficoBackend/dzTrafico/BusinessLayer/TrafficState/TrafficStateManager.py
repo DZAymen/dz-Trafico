@@ -1,8 +1,7 @@
 from dzTrafico.BusinessLayer.SimulationManager import SimulationManager
-from dzTrafico.BusinessEntities.Simulation import Simulation
+from dzTrafico.BusinessEntities.Sink import Sink
 from dzTrafico.BusinessEntities.EdgeState import EdgeStateSerializer
 import traci
-import threading
 
 class TrafficStateManager:
     __trafficStateManager = None
@@ -23,17 +22,14 @@ class TrafficStateManager:
         for step in range(self.simulation.sim_duration):
             traci.switch(self.simulation.SIM)
             traci.simulationStep()
-
-            veh_id = self.simulation.check_incidents(step)
-            if veh_id is not None and Simulation.incident_veh is None:
-                Simulation.incident_veh = veh_id
+            self.simulation.check_incidents(step)
 
             traci.switch(self.simulation.SIM_VSL_LC)
             traci.simulationStep()
             self.simulation.check_incidents(step)
 
             # Check for LanChanges in nodes' recommendations
-            if self.simulation.sim_step_duration>1:
+            if self.simulation.sim_step_duration>1 and step<2050 :
                 self.change_lane(sinks)
 
             # Read traffic state in each time stamp
@@ -41,8 +37,13 @@ class TrafficStateManager:
             res, rest = divmod(step, self.simulation.sim_step_duration)
             if rest == 0:
                 traffic_state = self.read_traffic_state(sinks)
-                self.update_vsl(sinks)
+                # self.update_vsl(sinks)
                 consumer.send(traffic_state)
+
+            if step == 450:
+                node = sinks[0][0].get_node_by_edgeID("196547668#1")
+                Sink.trafficAnalyzer.notify_congestion_detected(sinks[0][0], node, [1])
+                Sink.flag = False
 
         traci.close()
         traci.switch(self.simulation.SIM)

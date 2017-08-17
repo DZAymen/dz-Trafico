@@ -106,6 +106,7 @@ class SimulationManager:
 
     # ----------------------------------------- Simulation Config ---------------------------------------
     def update_config(self, data):
+        Sink.flag = True
         LaneChange.Xi = data["xi"]
         VirtualRampMetering.num_vsl_controlled_sections = data["num_vsl_sections"]
         VirtualRampMetering.V_min = data["v_min"]

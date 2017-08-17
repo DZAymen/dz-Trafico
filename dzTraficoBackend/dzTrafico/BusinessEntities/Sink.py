@@ -4,6 +4,7 @@ class Sink(object):
 
     id = 0
     trafficAnalyzer = None
+    flag = True
 
     def __init__(self):
         self.id = Sink.id
@@ -49,12 +50,13 @@ class Sink(object):
             # else:
             congested_lanes = node.check_congested_lanes()
             congestion_detected = len(congested_lanes)>0
-            if congestion_detected:
+            if congestion_detected and Sink.flag:
                 print "--------notify_congestion_detected----------"
                 print node.edge.getID()
                 print congested_lanes
 
                 Sink.trafficAnalyzer.notify_congestion_detected(self, node, congested_lanes)
+                Sink.flag = False
 
             traffic_state.append(
                 EdgeState(
@@ -67,3 +69,8 @@ class Sink(object):
                 )
             )
         return traffic_state
+
+    def get_node_by_edgeID(self, edge_id):
+        for node in self.nodes:
+            if node.edge.getID() == edge_id:
+                return node
