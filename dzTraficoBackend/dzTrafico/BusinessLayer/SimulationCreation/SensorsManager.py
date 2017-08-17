@@ -78,6 +78,7 @@ class SensorsManager():
                                         pos=str(sensor.get_sensor_position()),
                                         freq=str(1000),
                                         file="sensors.output.xml")
+            root.append(sensor_node)
         for sensor in incident_sensors:
             sensor_node = etree.Element("inductionLoop",
                                         id=str(sensor.get_sensor_id()),
@@ -95,7 +96,14 @@ class SensorsManager():
         for incident in incidents:
             edge = self.__networkManager.get_edge_by_laneID(incident.lane_id)
             lanes = edge.getLanes()
-            lanes.remove(edge.getLane(incident.lane))
+            print lanes
+            print incident.lane
+            print lanes[incident.lane]
+            for lane in lanes:
+                if lane.getID == incident.lane_id:
+                    lanes.remove(lane)
+                    break
+            print lanes
             for lane in lanes:
                 sensors.append(
                     Sensor(
