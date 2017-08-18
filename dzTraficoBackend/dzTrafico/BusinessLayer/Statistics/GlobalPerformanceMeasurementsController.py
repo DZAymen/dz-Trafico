@@ -143,6 +143,9 @@ class GlobalPerformanceMeasurementsController:
         # while len(trip_infos) < len(trip_infos_vsl_lc):
         #     trip_infos_vsl_lc.pop()
 
+        trip_infos = self.clear_trips(trip_infos)
+        trip_infos_vsl_lc = self.clear_trips(trip_infos_vsl_lc)
+
         return trip_infos, trip_infos_vsl_lc
 
     def get_trip_infos_GPM(self, trip_infos, type):
@@ -213,6 +216,17 @@ class GlobalPerformanceMeasurementsController:
             100 *(vsl_lc_GPM.noxRate - noControl_GPM.noxRate) /noControl_GPM.noxRate
         )
 
+    def clear_trips(self, trip_infos):
+        concerned_trips = []
+        for trip in trip_infos:
+            if self.simulation.statistics_vehicles.count(trip.get("id")):
+                concerned_trips.append(trip)
+
+        print "------ Clear Trips -------"
+        print len(trip_infos)
+        print len(self.simulation.statistics_vehicles)
+        print len(concerned_trips)
+        return concerned_trips
 
 class GlobalPerformanceMeasurement(object):
 
