@@ -21,7 +21,7 @@ class TrafficAnalyzer:
             lc_nodes = self.laneChangeController.get_lc_nodes(sink, node, congested_lanes)
             # vsl_nodes = self.virtualRampMeteringController.get_vsl_nodes(sink, node, len(lc_nodes))
             # self.activate_vsl_control(vsl_nodes)
-            self.activate_lc_control(lc_nodes)
+            return lc_nodes
 
     def activate_vsl_control(self, vsl_nodes):
 
@@ -29,13 +29,6 @@ class TrafficAnalyzer:
 
         for node in vsl_nodes:
             node.activate_VSL()
-
-    def activate_lc_control(self, lc_nodes):
-
-        print "-------Activate LC CONTROL-------"
-
-        for node in lc_nodes:
-            node.activate_LC()
 
     def update_vsl(self, sink, node):
         self.virtualRampMeteringController.update_vsl(sink, node)

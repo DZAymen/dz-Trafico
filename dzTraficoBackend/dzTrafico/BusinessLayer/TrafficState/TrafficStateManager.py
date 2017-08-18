@@ -15,6 +15,9 @@ class TrafficStateManager:
         return TrafficStateManager.__trafficStateManager
 
     def start(self, consumer):
+        lc_nodes = []
+
+
         self.simulation = self.__simulationManager.get_simulation()
         sinks = self.simulation.get_sinks()
         Lc_is_active = False
@@ -24,6 +27,7 @@ class TrafficStateManager:
             traci.switch(self.simulation.SIM)
             traci.simulationStep()
             self.simulation.check_incidents(step)
+            self.set_sumo_LC_Model(lc_nodes, 528)
 
             traci.switch(self.simulation.SIM_VSL_LC)
             traci.simulationStep()
@@ -45,7 +49,8 @@ class TrafficStateManager:
             if step == incident.accidentTime:
                 edge_incident_id = traci.lane.getEdgeID(incident.lane_id)
                 node = sinks[0][0].get_node_by_edgeID(edge_incident_id)
-                Sink.trafficAnalyzer.notify_congestion_detected(sinks[0][0], node, [incident.lane])
+                lc_nodes = Sink.trafficAnalyzer.notify_congestion_detected(sinks[0][0], node, [incident.lane])
+                self.activate_lc_control(lc_nodes)
                 Lc_is_active = True
 
             if step > incident.accidentTime:
@@ -78,3 +83,16 @@ class TrafficStateManager:
     def update_vsl(self, sinks):
         for sink in sinks:
             sink[0].update_vsl()
+
+
+    def activate_lc_control(self, lc_nodes):
+
+        print "-------Activate LC CONTROL-------"
+
+        for node in lc_nodes:
+            node.activate_LC()
+
+    def set_sumo_LC_Model(self, lc_nodes, mode):
+        for node in lc_nodes:
+            for veh_id in traci.edge.getLastStepVehicleIDs(node.edge.getID()):
+                traci.vehicle.setLaneChangeMode(veh_id, mode)
