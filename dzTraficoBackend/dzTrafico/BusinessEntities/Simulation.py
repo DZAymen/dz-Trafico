@@ -47,6 +47,8 @@ class Simulation:
     sim_duration = 0
     sim_step_duration = 1
 
+    statistics_vehicles = []
+
     def __init__(self):
         simulations_directory = os.path.join(os.path.normpath(os.getcwd()), "dzTrafico\\SimulationFiles")
         Simulation.project_directory = simulations_directory + "\\" + \
@@ -159,7 +161,7 @@ class Simulation:
                 if len(vehicles)>0:
                     edge_id = traci.lane.getEdgeID(incident.lane_id)
                     traci.vehicle.setStop(vehID=vehicles[0],edgeID=edge_id, laneIndex=incident.lane, pos=incident.lane_position, duration=incident.accidentDuration * 1000)
-                    traci.edge.setMaxSpeed(traci.lane.getEdgeID(incident.lane_id), Converter.toms(45))
+                    traci.edge.setMaxSpeed(traci.lane.getEdgeID(incident.lane_id), Converter.toms(60))
                     return vehicles[0]
 
     def add_inflows(self, inFlowPoints):
@@ -182,3 +184,10 @@ class Simulation:
 
     def get_sinks(self):
         return self.__sinks
+
+    def check_statistics_vehicles(self):
+        incident = self.__incidents[0]
+        edge_id = traci.lane.getEdgeID(incident.lane_id)
+        for veh_id in traci.edge.getLastStepVehicleIDs(edge_id):
+            if not self.statistics_vehicles.count(veh_id):
+                self.statistics_vehicles.append(veh_id)
