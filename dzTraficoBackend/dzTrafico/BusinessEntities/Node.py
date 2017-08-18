@@ -101,10 +101,10 @@ class Node(object):
         for recommendation in self.recommendations:
             if recommendation.change_lane:
                 lane = self.edge.getLane(recommendation.lane)
-                edge_vehicles = traci.edge.getLastStepVehicleIDs(self.edge.getID())
-
-                for veh_id in edge_vehicles:
-                    traci.vehicle.setLaneChangeMode(veh_id, 512)
+                # edge_vehicles = traci.edge.getLastStepVehicleIDs(self.edge.getID())
+                #
+                # for veh_id in edge_vehicles:
+                #     traci.vehicle.setLaneChangeMode(veh_id, 512)
 
                 vehicles = traci.lane.getLastStepVehicleIDs(lane.getID())
                 # Change either way
@@ -125,14 +125,14 @@ class Node(object):
                         print "----Change to right? " + str(traci.vehicle.couldChangeLane(vehicle_id,recommendation.lane - 1)) + "   veh_id-->" + str(vehicle_id)
 
                         if traci.vehicle.couldChangeLane(vehicle_id, recommendation.lane + 1):
-                            traci.vehicle.changeLane(vehicle_id, recommendation.lane + 1, 500000)
-                            # traci.vehicle.changeSublane(vehicle_id, 100)
+                            # traci.vehicle.changeLane(vehicle_id, recommendation.lane + 1, 500000)
+                            traci.vehicle.changeSublane(vehicle_id, 100)
                             print "--------Change to Left--------> " + str(vehicle_id)
                             i +=1
                         # Turn Right
                         elif traci.vehicle.couldChangeLane(vehicle_id, recommendation.lane - 1):
-                            traci.vehicle.changeLane(vehicle_id, recommendation.lane - 1, 500000)
-                            # traci.vehicle.changeSublane(vehicle_id, -100)
+                            # traci.vehicle.changeLane(vehicle_id, recommendation.lane - 1, 500000)
+                            traci.vehicle.changeSublane(vehicle_id, -100)
                             j +=1
                             print "--------Change to Right--------> " + str(vehicle_id)
                         else:
@@ -145,10 +145,12 @@ class Node(object):
 
                             print "--- occup:" + str(right_lane_occupancy>left_lane_occupancy)
                             if right_lane_occupancy>left_lane_occupancy:
-                                traci.vehicle.changeLane(vehicle_id, recommendation.lane + 1, 500000)
+                                # traci.vehicle.changeLane(vehicle_id, recommendation.lane + 1, 500000)
+                                traci.vehicle.changeSublane(vehicle_id, 100)
                                 print "--------Change to Left--------> " + str(vehicle_id)
                             else:
-                                traci.vehicle.changeLane(vehicle_id, recommendation.lane - 1, 500000)
+                                # traci.vehicle.changeLane(vehicle_id, recommendation.lane - 1, 500000)
+                                traci.vehicle.changeSublane(vehicle_id, -100)
                                 print "--------Change to Right--------> " + str(vehicle_id)
                             # if i>j:
                             #     traci.vehicle.changeLane(vehicle_id, recommendation.lane + 1, 500000)
@@ -182,8 +184,8 @@ class Node(object):
                     j=0
                     for vehicle_id in vehicles:
                         if traci.vehicle.couldChangeLane(vehicle_id, recommendation.target_lane - recommendation.lane):
-                            traci.vehicle.changeLane(vehicle_id, recommendation.target_lane, 500000)
-                            # traci.vehicle.changeSublane(vehicle_id, recommendation.target_lane - recommendation.lane)
+                            # traci.vehicle.changeLane(vehicle_id, recommendation.target_lane, 500000)
+                            traci.vehicle.changeSublane(vehicle_id, recommendation.target_lane - recommendation.lane)
                             print "--------Change to target--------> " \
                                   + "from " +str(recommendation.lane) \
                                   + " to " + str(recommendation.target_lane) \
