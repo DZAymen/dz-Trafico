@@ -3,6 +3,9 @@ import traci
 from dzTrafico.Helpers.Converter import Converter
 
 class Simulation:
+
+    LCMode = 597
+
     #Simulation without vsl and lc control
     SIM = "sim"
     # Simulation with vsl and lc control
@@ -124,7 +127,9 @@ class Simulation:
                 ,
                 "--tripinfo-output", Simulation.project_directory + self.trip_output,
                 "--device.emissions.probability", "1",
-                "--lateral-resolution", "0.8"
+                "--lateral-resolution", "0.8",
+                "--collision.action", "none",
+                "--collision.stoptime", "10"
             ],
             label=self.SIM
         )
@@ -137,8 +142,11 @@ class Simulation:
                 "-a", Simulation.project_directory + self.edge_dump_additional_vsl_lc_filename + ','
                       + Simulation.project_directory + Simulation.__sensors_file,
                 "--tripinfo-output", Simulation.project_directory + self.trip_output_vsl_lc,
-                "--device.emissions.probability", "1",
-                "--lateral-resolution", "0.8"
+                "--device.emissions.probability", "1"
+                ,
+                "--lateral-resolution", "0.8",
+                "--collision.action", "none",
+                "--collision.stoptime", "10"
             ],
             label=self.SIM_VSL_LC
         )

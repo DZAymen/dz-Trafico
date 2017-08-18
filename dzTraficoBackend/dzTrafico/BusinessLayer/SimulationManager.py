@@ -118,6 +118,7 @@ class SimulationManager:
         VirtualRampMetering.critical_density = data["critical_density"]
         Sensor.critical_density = data["critical_density_sensor"]
         Simulation.sim_step_duration = data["sim_step_duration"]
+        Simulation.LCMode = data["lc_mode"]
 
     # ---------------------------------------------------------------------------------------------------
 

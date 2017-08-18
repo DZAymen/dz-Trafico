@@ -27,7 +27,7 @@ class TrafficStateManager:
             traci.switch(self.simulation.SIM)
             traci.simulationStep()
             self.simulation.check_incidents(step)
-            self.set_sumo_LC_Model(lc_nodes, 528)
+            # self.set_sumo_LC_Model(lc_nodes, 528)
 
             traci.switch(self.simulation.SIM_VSL_LC)
             traci.simulationStep()
@@ -56,6 +56,7 @@ class TrafficStateManager:
             if step > incident.accidentTime:
                 self.simulation.check_statistics_vehicles()
 
+            self.set_sumo_LC_Model(lc_nodes, self.simulation.LCMode)
 
         traci.close()
         traci.switch(self.simulation.SIM)
