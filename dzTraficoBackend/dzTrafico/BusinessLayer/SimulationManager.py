@@ -30,7 +30,11 @@ class SimulationManager:
     # -------------------------------- Net file creation ------------------------------------------------
     #Call SimulationCreator.set_map method to create the map
     def set_map(self, map_box):
-        SimulationManager.__simulationCreator.create_network_file(map_box)
+        self.__simulation = Simulation()
+        self.__simulationCreator = SimulationCreator()
+        self.__trafficAnalyzer = TrafficAnalyzer(self.__simulation)
+        self.__statisticsManager = StatisticsManager(self.__simulation)
+        self.__simulationCreator.create_network_file(map_box)
     # ---------------------------------------------------------------------------------------------------
 
     # -------------------------------- Flows definition -------------------------------------------------
@@ -106,7 +110,6 @@ class SimulationManager:
 
     # ----------------------------------------- Simulation Config ---------------------------------------
     def update_config(self, data):
-        Sink.flag = True
         LaneChange.Xi = data["xi"]
         VirtualRampMetering.num_vsl_controlled_sections = data["num_vsl_sections"]
         VirtualRampMetering.V_min = data["v_min"]
