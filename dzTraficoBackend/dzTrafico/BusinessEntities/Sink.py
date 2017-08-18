@@ -4,7 +4,6 @@ class Sink(object):
 
     id = 0
     trafficAnalyzer = None
-    flag = True
 
     def __init__(self):
         self.id = Sink.id
@@ -48,15 +47,16 @@ class Sink(object):
             #         print "--------deactivate_VSL----------"
             #         print node.edge.getID()
             # else:
-            congested_lanes = node.check_congested_lanes()
-            congestion_detected = len(congested_lanes)>0
-            if congestion_detected and Sink.flag:
-                print "--------notify_congestion_detected----------"
-                print node.edge.getID()
-                print congested_lanes
 
-                Sink.trafficAnalyzer.notify_congestion_detected(self, node, congested_lanes)
-                Sink.flag = False
+            congested_lanes = node.check_congested_lanes()
+            # congestion_detected = len(congested_lanes)>0
+            # if congestion_detected and Sink.flag:
+            #     print "--------notify_congestion_detected----------"
+            #     print node.edge.getID()
+            #     print congested_lanes
+            #
+            #     Sink.trafficAnalyzer.notify_congestion_detected(self, node, congested_lanes)
+            #     Sink.flag = False
 
             traffic_state.append(
                 EdgeState(
