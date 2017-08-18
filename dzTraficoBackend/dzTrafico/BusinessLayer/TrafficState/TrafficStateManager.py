@@ -1,6 +1,7 @@
 from dzTrafico.BusinessLayer.SimulationManager import SimulationManager
 from dzTrafico.BusinessEntities.Sink import Sink
 from dzTrafico.BusinessEntities.EdgeState import EdgeStateSerializer
+from dzTrafico.BusinessLayer.Statistics.GlobalPerformanceMeasurementsController import GlobalPerformanceMeasurementSerializer
 import traci
 
 class TrafficStateManager:
@@ -16,7 +17,7 @@ class TrafficStateManager:
     def start(self, consumer):
         self.simulation = self.__simulationManager.get_simulation()
         sinks = self.simulation.get_sinks()
-
+        Lc_is_active = False
         self.simulation.start_simulation()
 
         for step in range(self.simulation.sim_duration):
@@ -29,7 +30,8 @@ class TrafficStateManager:
             self.simulation.check_incidents(step)
 
             # Check for LanChanges in nodes' recommendations
-            if self.simulation.sim_step_duration>1 and step<2050 :
+            incident = self.simulation.get_incidents()[0]
+            if Lc_is_active and self.simulation.sim_step_duration>1 and step<(incident.accidentTime+incident.accidentDuration) :
                 self.change_lane(sinks)
 
             # Read traffic state in each time stamp
@@ -40,14 +42,23 @@ class TrafficStateManager:
                 # self.update_vsl(sinks)
                 consumer.send(traffic_state)
 
-            if step == 450:
-                node = sinks[0][0].get_node_by_edgeID("196547668#1")
-                Sink.trafficAnalyzer.notify_congestion_detected(sinks[0][0], node, [1])
-                Sink.flag = False
+            if step == incident.accidentTime:
+                edge_incident_id = traci.lane.getEdgeID(incident.lane_id)
+                node = sinks[0][0].get_node_by_edgeID(edge_incident_id)
+                Sink.trafficAnalyzer.notify_congestion_detected(sinks[0][0], node, [incident.lane])
+                Lc_is_active = True
+
+            if step > incident.accidentTime:
+                self.simulation.check_statistics_vehicles()
+
 
         traci.close()
         traci.switch(self.simulation.SIM)
         traci.close()
+
+        gpms = self.__simulationManager.get_simulation_gpm_results()
+        serializer = GlobalPerformanceMeasurementSerializer(gpms, many=True)
+        consumer.send(serializer.data)
 
         consumer.disconnect()
 
