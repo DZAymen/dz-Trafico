@@ -92,12 +92,12 @@ class Node(object):
     def set_current_recommendations(self, recommendations):
         self.recommendations = recommendations
 
-    def activate_LC(self):
+    def activate_LC(self, congested_lane_id):
         #self.LC_is_activated = True
         print "----------- Lane Change -----------"
         print self.edge.getID()
 
-        self.change_lane()
+        self.change_lane(congested_lane_id)
 
     def change_lane(self, congested_lane_id):
         for recommendation in self.recommendations:
@@ -127,7 +127,7 @@ class Node(object):
                         #     traci.vehicle.changeSublane(vehicle_id, self.vehs[vehicle_id])
                         #     self.vehs.pop(vehicle_id)
                         #     continue
-                        traci.lane.setDisallowed(congested_lane_id, traci.vehicle.getVehicleClass(vehicle_id))
+                        # traci.lane.setDisallowed(congested_lane_id, traci.vehicle.getVehicleClass(vehicle_id))
 
                         if traci.vehicle.couldChangeLane(vehicle_id, recommendation.lane + 1)\
                                 and traci.vehicle.couldChangeLane(vehicle_id, recommendation.lane - 1):

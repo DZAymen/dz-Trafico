@@ -52,7 +52,7 @@ class TrafficStateManager:
                 edge_incident_id = traci.lane.getEdgeID(incident.lane_id)
                 node = sinks[0][0].get_node_by_edgeID(edge_incident_id)
                 lc_nodes = Sink.trafficAnalyzer.notify_congestion_detected(sinks[0][0], node, [incident.lane])
-                self.activate_lc_control(lc_nodes)
+                self.activate_lc_control(lc_nodes, incident.lane_id)
                 Lc_is_active = True
 
             if step > incident.accidentTime:
@@ -88,12 +88,12 @@ class TrafficStateManager:
             sink[0].update_vsl()
 
 
-    def activate_lc_control(self, lc_nodes):
+    def activate_lc_control(self, lc_nodes, congested_lane_id):
 
         print "-------Activate LC CONTROL-------"
 
         for node in lc_nodes:
-            node.activate_LC()
+            node.activate_LC(congested_lane_id)
 
     def set_sumo_LC_Model(self, lc_nodes, mode):
         for node in lc_nodes:
