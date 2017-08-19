@@ -2,6 +2,7 @@ from dzTrafico.BusinessLayer.SimulationManager import SimulationManager
 from dzTrafico.BusinessEntities.Sink import Sink
 from dzTrafico.BusinessEntities.EdgeState import EdgeStateSerializer
 from dzTrafico.BusinessLayer.Statistics.GlobalPerformanceMeasurementsController import GlobalPerformanceMeasurementSerializer
+from dzTrafico.BusinessLayer.TrafficAnalysis.TrafficAnalyzer import TrafficAnalyzer
 import traci
 
 class TrafficStateManager:
@@ -21,9 +22,11 @@ class TrafficStateManager:
         self.simulation = self.__simulationManager.get_simulation()
         sinks = self.simulation.get_sinks()
         Lc_is_active = False
+
         self.simulation.start_simulation()
 
         for step in range(self.simulation.sim_duration):
+
             traci.switch(self.simulation.SIM)
             traci.simulationStep()
             self.simulation.check_incidents(step)
@@ -35,7 +38,7 @@ class TrafficStateManager:
 
             # Check for LanChanges in nodes' recommendations
             incident = self.simulation.get_incidents()[0]
-            if Lc_is_active and self.simulation.sim_step_duration>1 and step<(incident.accidentTime+incident.accidentDuration) :
+            if Lc_is_active and self.simulation.sim_step_duration>1 and step<(incident.accidentTime+incident.accidentDuration):
                 self.change_lane(sinks)
 
             # Read traffic state in each time stamp
@@ -43,14 +46,15 @@ class TrafficStateManager:
             res, rest = divmod(step, self.simulation.sim_step_duration)
             if rest == 0:
                 traffic_state = self.read_traffic_state(sinks)
-                # self.update_vsl(sinks)
+                if TrafficAnalyzer.isVSLControlActivated:
+                    self.update_vsl(sinks)
                 consumer.send(traffic_state)
 
             if step == incident.accidentTime:
                 edge_incident_id = traci.lane.getEdgeID(incident.lane_id)
                 node = sinks[0][0].get_node_by_edgeID(edge_incident_id)
                 lc_nodes = Sink.trafficAnalyzer.notify_congestion_detected(sinks[0][0], node, [incident.lane])
-                Lc_is_active = True
+                Lc_is_active = TrafficAnalyzer.isLCControlActivated
 
             if step > incident.accidentTime:
                 self.simulation.check_statistics_vehicles()
