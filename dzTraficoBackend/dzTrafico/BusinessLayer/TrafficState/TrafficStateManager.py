@@ -24,6 +24,8 @@ class TrafficStateManager:
         self.simulation.start_simulation()
 
         for step in range(self.simulation.sim_duration):
+            print "************* STEP #", step, " ***************"
+
             traci.switch(self.simulation.SIM)
             traci.simulationStep()
             self.simulation.check_incidents(step)
@@ -36,7 +38,7 @@ class TrafficStateManager:
             # Check for LanChanges in nodes' recommendations
             incident = self.simulation.get_incidents()[0]
             if Lc_is_active and self.simulation.sim_step_duration>1 and step<(incident.accidentTime+incident.accidentDuration) :
-                self.change_lane(sinks)
+                self.change_lane(sinks, incident.lane_id)
 
             # Read traffic state in each time stamp
             # Check for congestion
@@ -56,7 +58,7 @@ class TrafficStateManager:
             if step > incident.accidentTime:
                 self.simulation.check_statistics_vehicles()
 
-            self.set_sumo_LC_Model(lc_nodes, self.simulation.LCMode)
+            # self.set_sumo_LC_Model(lc_nodes, self.simulation.LCMode)
 
         traci.close()
         traci.switch(self.simulation.SIM)
@@ -77,9 +79,9 @@ class TrafficStateManager:
         edgeStateSerializer = EdgeStateSerializer(traffic_state, many=True)
         return edgeStateSerializer.data
 
-    def change_lane(self, sinks):
+    def change_lane(self, sinks, congested_lane_id):
         for sink in sinks:
-            sink[0].change_lane()
+            sink[0].change_lane(congested_lane_id)
 
     def update_vsl(self, sinks):
         for sink in sinks:
