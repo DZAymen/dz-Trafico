@@ -128,8 +128,9 @@ class Simulation:
                 "--tripinfo-output", Simulation.project_directory + self.trip_output,
                 "--device.emissions.probability", "1",
                 "--lateral-resolution", "0.8",
-                "--collision.action", "none",
-                "--collision.stoptime", "10"
+                "--collision.action", "none"
+                # ,
+                # "--collision.stoptime", "10"
             ],
             label=self.SIM
         )
@@ -145,8 +146,9 @@ class Simulation:
                 "--device.emissions.probability", "1"
                 ,
                 "--lateral-resolution", "0.8",
-                "--collision.action", "none",
-                "--collision.stoptime", "10"
+                "--collision.action", "none"
+                # ,
+                # "--collision.stoptime", "10"
             ],
             label=self.SIM_VSL_LC
         )
@@ -171,7 +173,7 @@ class Simulation:
                 if len(vehicles)>0:
                     edge_id = traci.lane.getEdgeID(incident.lane_id)
                     traci.vehicle.setStop(vehID=vehicles[0],edgeID=edge_id, laneIndex=incident.lane, pos=incident.lane_position, duration=incident.accidentDuration * 1000)
-                    traci.edge.setMaxSpeed(traci.lane.getEdgeID(incident.lane_id), Converter.toms(60))
+                    # traci.edge.setMaxSpeed(traci.lane.getEdgeID(incident.lane_id), Converter.toms(60))
                     return vehicles[0]
 
     def add_inflows(self, inFlowPoints):
