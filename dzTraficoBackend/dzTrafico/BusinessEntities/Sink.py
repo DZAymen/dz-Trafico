@@ -23,9 +23,9 @@ class Sink(object):
                 sensors.append(sensor)
         return sensors
 
-    def change_lane(self):
+    def change_lane(self, congested_lane_id):
         for node in self.nodes:
-            node.change_lane()
+            node.change_lane(congested_lane_id)
 
     def update_vsl(self):
         for node in self.nodes:

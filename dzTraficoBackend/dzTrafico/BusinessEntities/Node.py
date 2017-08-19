@@ -99,7 +99,7 @@ class Node(object):
 
         self.change_lane()
 
-    def change_lane(self):
+    def change_lane(self, congested_lane_id):
         for recommendation in self.recommendations:
             if recommendation.change_lane:
                 lane = self.edge.getLane(recommendation.lane)
@@ -127,6 +127,8 @@ class Node(object):
                         #     traci.vehicle.changeSublane(vehicle_id, self.vehs[vehicle_id])
                         #     self.vehs.pop(vehicle_id)
                         #     continue
+                        traci.lane.setDisallowed(congested_lane_id, traci.vehicle.getVehicleClass(vehicle_id))
+
                         if traci.vehicle.couldChangeLane(vehicle_id, recommendation.lane + 1)\
                                 and traci.vehicle.couldChangeLane(vehicle_id, recommendation.lane - 1):
 
