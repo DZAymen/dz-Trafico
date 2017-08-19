@@ -119,8 +119,8 @@ class SimulationManager:
         Sensor.critical_density = data["critical_density_sensor"]
         Simulation.sim_step_duration = data["sim_step_duration"]
 
-        self.__trafficAnalyzer.isVSLControlActivated = data["vslControl"]
-        self.__trafficAnalyzer.isLCControlActivated = data["lcControl"]
+        TrafficAnalyzer.isVSLControlActivated = data["vslControl"]
+        TrafficAnalyzer.isLCControlActivated = data["lcControl"]
 
     # ---------------------------------------------------------------------------------------------------
 
