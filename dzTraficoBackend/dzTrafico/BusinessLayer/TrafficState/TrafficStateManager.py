@@ -46,7 +46,8 @@ class TrafficStateManager:
             res, rest = divmod(step, self.simulation.sim_step_duration)
             if rest == 0:
                 traffic_state = self.read_traffic_state(sinks)
-                if TrafficAnalyzer.isVSLControlActivated:
+                if TrafficAnalyzer.isVSLControlActivated and step>incident.accidentTime:
+                        # and step<(incident.accidentTime+incident.accidentDuration) + 240
                     self.update_vsl(sinks)
                 consumer.send(traffic_state)
 
@@ -68,6 +69,8 @@ class TrafficStateManager:
         serializer = GlobalPerformanceMeasurementSerializer(gpms, many=True)
         consumer.send(serializer.data)
 
+        self.deativate_vsl(sinks)
+
         consumer.disconnect()
 
     def read_traffic_state(self, sinks):
@@ -86,6 +89,10 @@ class TrafficStateManager:
     def update_vsl(self, sinks):
         for sink in sinks:
             sink[0].update_vsl()
+
+    def deativate_vsl(self, sinks):
+        for sink in sinks:
+            sink[0].deativate_vsl()
 
     def set_sumo_LC_Model(self, lc_nodes, mode):
         for node in lc_nodes:
