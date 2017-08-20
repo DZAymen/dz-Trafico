@@ -54,6 +54,9 @@ class VirtualRampMetering:
                 1
             )[-1]
 
+            # Reset the previous VSL  to regular speed limit
+            vsl_node.reset_previous_speed()
+
             speed = self.get_max_speed(
                 vsl_node,
                 previous_nodes_of_discharged_area,

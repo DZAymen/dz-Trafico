@@ -55,6 +55,9 @@ class Node(object):
     def get_previous_vsl(self):
         return self.previous_vsl
 
+    def reset_previous_speed(self):
+        self.previous_vsl = self.initial_max_speed
+
     # --------------- Check congestion state ------------------------------------------
     def check_congested_lanes(self):
         congested_lanes = []
