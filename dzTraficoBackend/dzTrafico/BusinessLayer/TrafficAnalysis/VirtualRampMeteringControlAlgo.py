@@ -15,7 +15,9 @@ class VirtualRampMetering:
 
         vsl_nodes = self.get_previous_nodes(sink, first_vsl_node, self.num_vsl_controlled_sections - 1)
 
-        discharged_area_node = self.get_node_by_index(sink, node, 0)
+        # We consider that an incident occur at the end of the congested node
+        # discharged_area_node = self.get_node_by_index(sink, node, 0)
+        discharged_area_node = node
         i = 0
 
         print "-----------***************************************---------------"
@@ -33,7 +35,7 @@ class VirtualRampMetering:
             previous_nodes_of_discharged_area = self.get_previous_nodes(
                 sink,
                 discharged_area_node,
-                num_lc_controlled_sections + i
+                num_lc_controlled_sections + i + 1
             )
 
             vsl_node.previous_nodes_of_discharged_area = previous_nodes_of_discharged_area
