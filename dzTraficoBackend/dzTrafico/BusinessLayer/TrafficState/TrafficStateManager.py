@@ -18,10 +18,11 @@ class TrafficStateManager:
     def start(self, consumer):
         lc_nodes = []
 
-
         self.simulation = self.__simulationManager.get_simulation()
         sinks = self.simulation.get_sinks()
         Lc_is_active = False
+
+        self.deactivate_vsl(sinks)
 
         self.simulation.start_simulation()
 
@@ -60,7 +61,6 @@ class TrafficStateManager:
             if step > incident.accidentTime:
                 self.simulation.check_statistics_vehicles()
 
-
         traci.close()
         traci.switch(self.simulation.SIM)
         traci.close()
@@ -69,7 +69,6 @@ class TrafficStateManager:
         serializer = GlobalPerformanceMeasurementSerializer(gpms, many=True)
         consumer.send(serializer.data)
 
-        self.deativate_vsl(sinks)
 
         consumer.disconnect()
 
@@ -90,9 +89,9 @@ class TrafficStateManager:
         for sink in sinks:
             sink[0].update_vsl()
 
-    def deativate_vsl(self, sinks):
+    def deactivate_vsl(self, sinks):
         for sink in sinks:
-            sink[0].deativate_vsl()
+            sink[0].deactivate_vsl()
 
     def set_sumo_LC_Model(self, lc_nodes, mode):
         for node in lc_nodes:

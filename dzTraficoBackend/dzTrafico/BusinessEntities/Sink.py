@@ -32,7 +32,7 @@ class Sink(object):
             if node.VSL_is_activated:
                 Sink.trafficAnalyzer.update_vsl(self, node)
 
-    def deativate_vsl(self):
+    def deactivate_vsl(self):
         for node in self.nodes:
             node.deactivate_VSL()
 
