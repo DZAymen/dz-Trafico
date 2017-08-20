@@ -96,7 +96,7 @@ class VirtualRampMetering:
     def get_max_speed(self, node, previous_nodes_of_discharged_area, previous_node):
         # V- i(k)
         print "previous_vsl"
-        print node.get_previous_vsl()
+        print node.get_current_vsl()
 
         print "average_vehicle_density"
         print 1000 * self.get_average_vehicle_density(
@@ -104,7 +104,7 @@ class VirtualRampMetering:
                     previous_nodes_of_discharged_area
                 )
 
-        Vi4 = node.get_previous_vsl() + self.round_to_base(
+        Vi4 = node.get_current_vsl() + self.round_to_base(
             VirtualRampMetering.Ki * (
                 VirtualRampMetering.critical_density
                 - 1000*self.get_average_vehicle_density(
@@ -116,14 +116,13 @@ class VirtualRampMetering:
 
         Vi5 = max(
             Vi4,
-            node.get_previous_vsl() - VirtualRampMetering.Cv,
+            node.get_current_vsl() - VirtualRampMetering.Cv,
             previous_node.get_previous_vsl() - VirtualRampMetering.Cv
         )
 
-        print "-----------Vi4-----------------"
-        print Vi4
-        print "-----------Vi5-----------------"
-        print Vi5
+        print "Edge :===> ", node.edge.getID()
+        print "Vi4  :===> ", Vi4
+        print "Vi5  :===> ", Vi5
 
         if Vi5 > Converter.tokmh(node.edge.getSpeed()):
             return VirtualRampMetering.V_max
@@ -158,6 +157,9 @@ class VirtualRampMetering:
             node.previous_nodes_of_discharged_area,
             previous_node
         )
+
+        print "Previous VSL  :===> ", node.get_current_vsl()
+        print "New VSL  :===> ", speed
 
         node.set_current_vsl(speed)
         node.activate_VSL()
