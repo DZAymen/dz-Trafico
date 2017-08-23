@@ -25,7 +25,8 @@ class Sink(object):
 
     def change_lane(self):
         for node in self.nodes:
-            node.change_lane()
+            if node.LC_is_activated:
+                node.change_lane()
 
     def update_vsl(self):
         for node in self.nodes:
@@ -35,6 +36,10 @@ class Sink(object):
     def deactivate_vsl(self):
         for node in self.nodes:
             node.deactivate_VSL()
+
+    def deactivate_lc(self):
+        for node in self.nodes:
+            node.deactivate_LC()
 
     def read_traffic_state(self):
         traffic_state = []

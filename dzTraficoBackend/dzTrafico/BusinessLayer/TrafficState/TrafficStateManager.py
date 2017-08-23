@@ -23,6 +23,7 @@ class TrafficStateManager:
         Lc_is_active = False
 
         self.deactivate_vsl(sinks)
+        self.deactivate_lc(sinks)
 
         self.simulation.start_simulation()
 
@@ -92,6 +93,10 @@ class TrafficStateManager:
     def deactivate_vsl(self, sinks):
         for sink in sinks:
             sink[0].deactivate_vsl()
+
+    def deactivate_lc(self, sinks):
+        for sink in sinks:
+            sink[0].deactivate_lc()
 
     def set_sumo_LC_Model(self, lc_nodes, mode):
         for node in lc_nodes:

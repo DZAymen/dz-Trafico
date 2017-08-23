@@ -13,6 +13,7 @@ class Node(object):
     previous_nodes_of_discharged_area = []
 
     VSL_is_activated = False
+    LC_is_activated = False
 
     def __init__(self, edge, sensors):
         self.edge = edge
@@ -81,7 +82,7 @@ class Node(object):
 
     def deactivate_VSL(self):
         self.VSL_is_activated = False
-        traci.edge.setMaxSpeed(self.edge.getID(), Converter.toms(self.initial_max_speed))
+        # traci.edge.setMaxSpeed(self.edge.getID(), Converter.toms(self.initial_max_speed))
 
     def set_current_vsl(self, max_speed):
         self.previous_vsl = self.current_vsl
@@ -94,11 +95,14 @@ class Node(object):
         self.recommendations = recommendations
 
     def activate_LC(self):
-        #self.LC_is_activated = True
+        self.LC_is_activated = True
         print "----------- Lane Change -----------"
         print self.edge.getID()
 
         self.change_lane()
+
+    def deactivate_LC(self):
+        self.LC_is_activated = False
 
     def change_lane(self):
         for recommendation in self.recommendations:
