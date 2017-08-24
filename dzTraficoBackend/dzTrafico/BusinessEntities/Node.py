@@ -75,6 +75,11 @@ class Node(object):
             is_discharged = is_discharged and sensor.check_discharged_area()
         return is_discharged
 
+    def close_incident_lanes(self, congested_lanes):
+        # Set disallowed vehicles to enter lane incident
+        for lane in congested_lanes:
+            traci.lane.setDisallowed(self.edge.getLane(lane).getID(), "passenger")
+
     # --------------- VSL Control ------------------------------------------
     def activate_VSL(self):
         self.VSL_is_activated = True
@@ -104,14 +109,14 @@ class Node(object):
     def deactivate_LC(self):
         self.LC_is_activated = False
 
+    def set_sumo_LC_Model(self, mode):
+        for veh_id in traci.edge.getLastStepVehicleIDs(self.edge.getID()):
+            traci.vehicle.setLaneChangeMode(veh_id, mode)
+
     def change_lane(self):
         for recommendation in self.recommendations:
             if recommendation.change_lane:
                 lane = self.edge.getLane(recommendation.lane)
-                edge_vehicles = traci.edge.getLastStepVehicleIDs(self.edge.getID())
-
-                for veh_id in edge_vehicles:
-                    traci.vehicle.setLaneChangeMode(veh_id, 512)
 
                 vehicles = traci.lane.getLastStepVehicleIDs(lane.getID())
                 # Change either way
