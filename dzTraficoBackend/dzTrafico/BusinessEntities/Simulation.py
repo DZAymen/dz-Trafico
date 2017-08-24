@@ -174,7 +174,7 @@ class Simulation:
 
                     return vehicles[0]
 
-    def clean_incident(self, step):
+    def clean_incidents(self, step):
         for incident in self.__incidents:
             if step == incident.accidentTime+incident.accidentDuration:
                 traci.edge.setMaxSpeed(
