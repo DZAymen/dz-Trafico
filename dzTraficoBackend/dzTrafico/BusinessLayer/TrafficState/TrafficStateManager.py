@@ -31,12 +31,12 @@ class TrafficStateManager:
 
             traci.switch(self.simulation.SIM)
             traci.simulationStep()
-            self.simulation.check_incidents(step)
+            self.simulation.check_incidents(step, self.simulation.SIM)
             self.set_sumo_LC_Model(lc_nodes, 528)
 
             traci.switch(self.simulation.SIM_VSL_LC)
             traci.simulationStep()
-            self.simulation.check_incidents(step)
+            self.simulation.check_incidents(step, self.simulation.SIM_VSL_LC)
 
             # Check for LanChanges in nodes' recommendations
             incident = self.simulation.get_incidents()[0]
