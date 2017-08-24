@@ -33,7 +33,7 @@ class Sensor(object):
 
     def check_clear_lane(self):
         density = self.__get_density()
-        return (density == 0)
+        return (density == 0) or (density > 6)
 
     def add_measure(self, speed, density):
         self.__measures_list.append(Measure(speed))
