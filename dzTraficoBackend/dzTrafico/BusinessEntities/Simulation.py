@@ -42,6 +42,7 @@ class Simulation:
     __sensors_list = []
     __incidents = []
     __traffic_flows = []
+    __vehicle_types = []
 
     incident_veh = None
     sim_duration = 0
@@ -63,6 +64,7 @@ class Simulation:
         self.outFlowPoints = []
         self.__incidents = []
         self.__traffic_flows = []
+        self.__vehicle_types = []
 
         Simulation.project_directory = os.path.dirname(file_path) + "\\"
         Simulation.__network_file = os.path.basename(file_path)
@@ -154,7 +156,7 @@ class Simulation:
         for incident in incidents:
             self.__incidents.append(incident)
 
-    def check_incidents(self, step):
+    def check_incidents(self, step, sim_type):
         for incident in self.__incidents:
             if step == incident.accidentTime:
                 vehicles = traci.lane.getLastStepVehicleIDs(incident.lane_id)
@@ -162,6 +164,11 @@ class Simulation:
                     edge_id = traci.lane.getEdgeID(incident.lane_id)
                     traci.vehicle.setStop(vehID=vehicles[0],edgeID=edge_id, laneIndex=incident.lane, pos=incident.lane_position, duration=incident.accidentDuration * 1000)
                     traci.edge.setMaxSpeed(traci.lane.getEdgeID(incident.lane_id), Converter.toms(60))
+
+                    # Set disallowed vehicles to enter lane incident
+                    if sim_type == self.simulation.SIM_VSL_LC:
+                        traci.lane.setDisallowed(incident.lane_id, "passenger")
+
                     return vehicles[0]
 
     def add_inflows(self, inFlowPoints):
@@ -191,3 +198,6 @@ class Simulation:
         for veh_id in traci.edge.getLastStepVehicleIDs(edge_id):
             if not self.statistics_vehicles.count(veh_id):
                 self.statistics_vehicles.append(veh_id)
+
+    def add_vehicle_types(self, types):
+        self.__vehicle_types.extend(types)

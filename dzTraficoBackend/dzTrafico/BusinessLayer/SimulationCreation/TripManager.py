@@ -13,7 +13,7 @@ class TripManager:
 
     def __init__(self, networkManager):
         self.__networkManager = networkManager
-        self.vehicle_types_file_path = Simulation.project_directory + "\\..\\..\\data\\" + self.vehicle_types_filename
+        self.vehicle_types_file_path = Simulation.project_directory + "..\\..\\data\\" + self.vehicle_types_filename
 
     # -------------------------------- Flows definition -------------------------------------------------
     # This method defines flows from flowPoints
@@ -108,7 +108,6 @@ class TripManager:
                                   maxSpeed=str(vehicle_type.maxSpeed),
                                   minGap=str(vehicle_type.minGap),
                                   speedFactor=str(vehicle_type.speedFactor),
-                                  speedDev=str(vehicle_type.speedDev),
                                   sigma=str(vehicle_type.sigma),
                                   tau=str(vehicle_type.tau)
                                   )
@@ -172,8 +171,7 @@ class TripManager:
                         float(vtype.get('maxSpeed')),
                         float(vtype.get('length')),
                         float(vtype.get('minGap')),
-                        float(vtype.get('speedFactor')),
-                        float(vtype.get('speedDev')),
+                        vtype.get('speedFactor'),
                         float(vtype.get('accel')),
                         float(vtype.get('decel')),
                         float(vtype.get('sigma')),
