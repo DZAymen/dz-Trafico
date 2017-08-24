@@ -15,6 +15,8 @@ class Node(object):
     VSL_is_activated = False
     LC_is_activated = False
 
+    isCongested = False
+
     def __init__(self, edge, sensors):
         self.edge = edge
         self.sensors = sensors
@@ -70,15 +72,24 @@ class Node(object):
         return congested_lanes
 
     def check_if_discharged(self):
-        is_discharged = True
-        for sensor in self.sensors:
-            is_discharged = is_discharged and sensor.check_discharged_area()
-        return is_discharged
+        for lane in self.congested_lanes:
+            lane_id = self.edge.getLane(lane).getID()
+            for sensor in self.sensors:
+                if lane_id == sensor.get_sensor_lane():
+                    return sensor.check_clear_lane()
+        return False
 
     def close_incident_lanes(self, congested_lanes):
         # Set disallowed vehicles to enter lane incident
+        self.isCongested = True
+        self.congested_lanes = congested_lanes
         for lane in congested_lanes:
             traci.lane.setDisallowed(self.edge.getLane(lane).getID(), "passenger")
+
+    def open_incident_lanes(self):
+        # Set disallowed vehicles to enter lane incident
+        for lane in self.congested_lanes:
+            traci.lane.setDisallowed(self.edge.getLane(lane).getID(), "truck")
 
     # --------------- VSL Control ------------------------------------------
     def activate_VSL(self):

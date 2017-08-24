@@ -31,19 +31,9 @@ class Sensor(object):
         self.add_measure(speed, density)
         return self.__check_measure_density(density)
 
-    def check_discharged_area(self):
-        speed = Converter.tokmh(traci.inductionloop.getLastStepMeanSpeed(str(self.__id)))
+    def check_clear_lane(self):
         density = self.__get_density()
-        self.add_measure(speed, density)
-
-        print "-------Check discharged Area--------"
-        # print speed
-        # print self.__high_level_speed
-        # print speed > self.__high_level_speed
-        # if speed > self.__high_level_speed:
-        #     return True
-        # return False
-        return (not self.__check_measure_density(density))
+        return (density == 0)
 
     def add_measure(self, speed, density):
         self.__measures_list.append(Measure(speed))
