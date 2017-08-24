@@ -1,4 +1,5 @@
 from EdgeState import EdgeState
+from dzTrafico.BusinessLayer.TrafficAnalysis.TrafficAnalyzer import TrafficAnalyzer
 
 class Sink(object):
 
@@ -41,31 +42,30 @@ class Sink(object):
         for node in self.nodes:
             node.deactivate_LC()
 
+    def set_sumo_LC_Model(self, mode):
+        for node in self.nodes:
+            if node.LC_is_activated:
+                node.set_sumo_LC_Model(mode)
+
     def read_traffic_state(self):
         traffic_state = []
-        congestion_detected = False
         for node in self.nodes:
-            # if node.VSL_is_activated:
-            #
-            #     print "--------VSL_is_activated----------"
-            #     print node.edge.getID()
-            #
-            #     if node.check_if_discharged():
-            #         node.deactivate_VSL()
-            #
-            #         print "--------deactivate_VSL----------"
-            #         print node.edge.getID()
-            # else:
 
             congested_lanes = node.check_congested_lanes()
-            # congestion_detected = len(congested_lanes)>0
-            # if congestion_detected and Sink.flag:
-            #     print "--------notify_congestion_detected----------"
-            #     print node.edge.getID()
-            #     print congested_lanes
-            #
-            #     Sink.trafficAnalyzer.notify_congestion_detected(self, node, congested_lanes)
-            #     Sink.flag = False
+            congestion_detected = len(congested_lanes)>0
+            if congestion_detected and not TrafficAnalyzer.isCongestionDetected:
+                print "--------notify_congestion_detected----------"
+                print node.edge.getID()
+                print congested_lanes
+                if TrafficAnalyzer.isLCControlActivated:
+                    node.close_incident_lanes(congested_lanes)
+                Sink.trafficAnalyzer.notify_congestion_detected(self, node, congested_lanes)
+
+            elif TrafficAnalyzer.congestionExists and node.isCongested:
+                if node.check_if_discharged():
+                    Sink.trafficAnalyzer.clear_congestion()
+                    node.isCongested = False
+                    node.open_incident_lanes()
 
             traffic_state.append(
                 EdgeState(
