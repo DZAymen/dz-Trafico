@@ -174,13 +174,14 @@ class Simulation:
 
                     return vehicles[0]
 
-    def clean_incidents(self, step):
+    def clean_incident(self, step):
         for incident in self.__incidents:
             if step == incident.accidentTime+incident.accidentDuration:
                 traci.edge.setMaxSpeed(
                     traci.lane.getEdgeID(incident.lane_id),
                     self.initial_incident_lane_max_speed
                 )
+                traci.lane.setDisallowed(incident.lane_id, "truck")
 
     def add_inflows(self, inFlowPoints):
         self.inFlowPoints.append(inFlowPoints)
