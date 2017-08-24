@@ -121,6 +121,8 @@ class SimulationManager:
 
         TrafficAnalyzer.isVSLControlActivated = data["vslControl"]
         TrafficAnalyzer.isLCControlActivated = data["lcControl"]
+        TrafficAnalyzer.isCongestionDetected = False
+        TrafficAnalyzer.congestionExists = False
 
     # ---------------------------------------------------------------------------------------------------
 
