@@ -48,6 +48,8 @@ class Simulation:
     sim_duration = 0
     sim_step_duration = 1
 
+    initial_incident_lane_max_speed = 80
+
     statistics_vehicles = []
 
     def __init__(self):
@@ -162,6 +164,7 @@ class Simulation:
                 vehicles = traci.lane.getLastStepVehicleIDs(incident.lane_id)
                 if len(vehicles)>0:
                     edge_id = traci.lane.getEdgeID(incident.lane_id)
+                    self.initial_incident_lane_max_speed = traci.lane.getMaxSpeed(incident.lane_id)
                     traci.vehicle.setStop(vehID=vehicles[0],edgeID=edge_id, laneIndex=incident.lane, pos=incident.lane_position, duration=incident.accidentDuration * 1000)
                     traci.edge.setMaxSpeed(traci.lane.getEdgeID(incident.lane_id), Converter.toms(60))
 
@@ -170,6 +173,15 @@ class Simulation:
                         traci.lane.setDisallowed(incident.lane_id, "passenger")
 
                     return vehicles[0]
+
+    def clean_incident(self, step):
+        for incident in self.__incidents:
+            if step == incident.accidentTime+incident.accidentDuration:
+                traci.edge.setMaxSpeed(
+                    traci.lane.getEdgeID(incident.lane_id),
+                    self.initial_incident_lane_max_speed
+                )
+                traci.lane.setDisallowed(incident.lane_id, "truck")
 
     def add_inflows(self, inFlowPoints):
         self.inFlowPoints.append(inFlowPoints)
