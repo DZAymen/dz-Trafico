@@ -52,6 +52,9 @@ class Simulation:
 
     statistics_vehicles = []
 
+    LCMode_noControl = 528
+    LCMode_vsl_lc = 512
+
     def __init__(self):
         simulations_directory = os.path.join(os.path.normpath(os.getcwd()), "dzTrafico\\SimulationFiles")
         Simulation.project_directory = simulations_directory + "\\" + \
@@ -158,7 +161,7 @@ class Simulation:
         for incident in incidents:
             self.__incidents.append(incident)
 
-    def check_incidents(self, step, sim_type, isLCControlActivated=False):
+    def check_incidents(self, step):
         for incident in self.__incidents:
             if step == incident.accidentTime:
                 vehicles = traci.lane.getLastStepVehicleIDs(incident.lane_id)
@@ -166,22 +169,18 @@ class Simulation:
                     edge_id = traci.lane.getEdgeID(incident.lane_id)
                     self.initial_incident_lane_max_speed = traci.lane.getMaxSpeed(incident.lane_id)
                     traci.vehicle.setStop(vehID=vehicles[0],edgeID=edge_id, laneIndex=incident.lane, pos=incident.lane_position, duration=incident.accidentDuration * 1000)
-                    traci.edge.setMaxSpeed(traci.lane.getEdgeID(incident.lane_id), Converter.toms(60))
 
-                    # Set disallowed vehicles to enter lane incident
-                    if sim_type == self.SIM_VSL_LC and isLCControlActivated:
-                        traci.lane.setDisallowed(incident.lane_id, "passenger")
+                    traci.edge.setMaxSpeed(traci.lane.getEdgeID(incident.lane_id), Converter.toms(60))
 
                     return vehicles[0]
 
-    def clean_incident(self, step):
+    def clean_incidents(self, step):
         for incident in self.__incidents:
             if step == incident.accidentTime+incident.accidentDuration:
                 traci.edge.setMaxSpeed(
                     traci.lane.getEdgeID(incident.lane_id),
                     self.initial_incident_lane_max_speed
                 )
-                traci.lane.setDisallowed(incident.lane_id, "truck")
 
     def add_inflows(self, inFlowPoints):
         self.inFlowPoints.append(inFlowPoints)
