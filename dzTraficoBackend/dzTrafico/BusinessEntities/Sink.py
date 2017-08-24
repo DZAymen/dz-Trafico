@@ -65,7 +65,6 @@ class Sink(object):
                 if node.check_if_discharged():
                     Sink.trafficAnalyzer.clear_congestion()
                     node.isCongested = False
-                    node.open_incident_lanes()
 
             traffic_state.append(
                 EdgeState(

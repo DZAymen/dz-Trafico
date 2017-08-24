@@ -86,11 +86,6 @@ class Node(object):
         for lane in congested_lanes:
             traci.lane.setDisallowed(self.edge.getLane(lane).getID(), "passenger")
 
-    def open_incident_lanes(self):
-        # Set disallowed vehicles to enter lane incident
-        for lane in self.congested_lanes:
-            traci.lane.setDisallowed(self.edge.getLane(lane).getID(), "truck")
-
     # --------------- VSL Control ------------------------------------------
     def activate_VSL(self):
         self.VSL_is_activated = True
