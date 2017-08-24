@@ -156,7 +156,7 @@ class Simulation:
         for incident in incidents:
             self.__incidents.append(incident)
 
-    def check_incidents(self, step, sim_type):
+    def check_incidents(self, step, sim_type, isLCControlActivated=False):
         for incident in self.__incidents:
             if step == incident.accidentTime:
                 vehicles = traci.lane.getLastStepVehicleIDs(incident.lane_id)
@@ -166,7 +166,7 @@ class Simulation:
                     traci.edge.setMaxSpeed(traci.lane.getEdgeID(incident.lane_id), Converter.toms(60))
 
                     # Set disallowed vehicles to enter lane incident
-                    if sim_type == self.SIM_VSL_LC:
+                    if sim_type == self.SIM_VSL_LC and isLCControlActivated:
                         traci.lane.setDisallowed(incident.lane_id, "passenger")
 
                     return vehicles[0]
