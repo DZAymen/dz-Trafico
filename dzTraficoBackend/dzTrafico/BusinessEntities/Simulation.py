@@ -166,7 +166,7 @@ class Simulation:
                     traci.edge.setMaxSpeed(traci.lane.getEdgeID(incident.lane_id), Converter.toms(60))
 
                     # Set disallowed vehicles to enter lane incident
-                    if sim_type == self.simulation.SIM_VSL_LC:
+                    if sim_type == self.SIM_VSL_LC:
                         traci.lane.setDisallowed(incident.lane_id, "passenger")
 
                     return vehicles[0]
