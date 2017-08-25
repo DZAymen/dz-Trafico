@@ -33,7 +33,8 @@ class Sensor(object):
 
     def check_clear_lane(self):
         density = self.__get_density()
-        return (density == 0) or (density > 6)
+        speed = Converter.tokmh(traci.lane.getLastStepMeanSpeed(self.__lane))
+        return (density == 0) or (speed > 15)
 
     def add_measure(self, speed, density):
         self.__measures_list.append(Measure(speed))
