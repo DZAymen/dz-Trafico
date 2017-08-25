@@ -16,6 +16,10 @@ class LaneChange:
             recommendations = self.get_lane_change_recommendations(congested_lanes, node)
             node.set_current_recommendations(recommendations)
 
+        # Set LCRecommendation for congested edge
+        recommendations = self.get_lane_change_recommendations(congested_lanes, congested_node)
+        congested_node.set_current_recommendations(recommendations)
+
         return lc_nodes
 
     def get_previous_nodes(self, sink, node, nodes_number):
