@@ -10,6 +10,8 @@ class TrafficAnalyzer:
 
     isVSLControlActivated = False
     isLCControlActivated = False
+    isCongestionDetected = False
+    congestionExists = False
 
     def __init__(self, simulation):
         self.__simulation = simulation
@@ -18,6 +20,9 @@ class TrafficAnalyzer:
 
         lc_nodes = []
         vsl_nodes = []
+
+        TrafficAnalyzer.isCongestionDetected = True
+        TrafficAnalyzer.congestionExists = True
 
         # vsl_nodes = self.jamTailProtectionController.get_vsl_nodes(sink, node)
         # self.activate_vsl_control(vsl_nodes)
@@ -54,3 +59,6 @@ class TrafficAnalyzer:
 
     def update_vsl(self, sink, node):
         self.virtualRampMeteringController.update_vsl(sink, node)
+
+    def clear_congestion(self):
+        TrafficAnalyzer.congestionExists = False
