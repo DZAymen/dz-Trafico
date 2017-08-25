@@ -119,12 +119,58 @@ class Node(object):
         for veh_id in traci.edge.getLastStepVehicleIDs(self.edge.getID()):
             traci.vehicle.setLaneChangeMode(veh_id, mode)
 
+    def incident_change_lane(self):
+        three = 1
+        for recommendation in self.recommendations:
+            if recommendation.change_lane:
+                lane = self.edge.getLane(recommendation.lane)
+
+                vehicles = traci.lane.getLastStepVehicleIDs(lane.getID())
+
+                vehicles.remove(vehicles[-1])
+                vehicles.remove(vehicles[-1])
+
+                # Change either way
+                if recommendation.change_to_either_way:
+                    for vehicle_id in vehicles:
+                        # Turn Left
+                        right_lane_occupancy = traci.lane.getLastStepOccupancy(
+                            self.edge.getLane(recommendation.lane - 1).getID()
+                        )
+                        left_lane_occupancy = traci.lane.getLastStepOccupancy(
+                            self.edge.getLane(recommendation.lane + 1).getID()
+                        )
+                        if right_lane_occupancy > left_lane_occupancy:
+                            if traci.vehicle.couldChangeLane(vehicle_id, recommendation.lane + 1):
+                                traci.vehicle.changeLane(vehicle_id, recommendation.lane + 1, 500000)
+                            elif three == 3:
+                                traci.vehicle.changeLane(vehicle_id, recommendation.lane + 1, 500000)
+                                three = 1
+                            else:
+                                three += 1
+
+                        # Turn Right
+                        elif traci.vehicle.couldChangeLane(vehicle_id, recommendation.lane - 1):
+                            traci.vehicle.changeLane(vehicle_id, recommendation.lane - 1, 500000)
+                        elif three == 3:
+                            traci.vehicle.changeLane(vehicle_id, recommendation.lane - 1, 500000)
+                            three = 1
+                        else:
+                            three += 1
+
+                # Change vehicles position to target lane
+                else:
+                    for vehicle_id in vehicles:
+                        if traci.vehicle.couldChangeLane(vehicle_id, recommendation.target_lane - recommendation.lane):
+                            traci.vehicle.changeLane(vehicle_id, recommendation.target_lane, 500000)
+
     def change_lane(self):
         for recommendation in self.recommendations:
             if recommendation.change_lane:
                 lane = self.edge.getLane(recommendation.lane)
 
                 vehicles = traci.lane.getLastStepVehicleIDs(lane.getID())
+
                 # Change either way
                 if recommendation.change_to_either_way:
                     # Calculate the percentage of vehicles to change to left
