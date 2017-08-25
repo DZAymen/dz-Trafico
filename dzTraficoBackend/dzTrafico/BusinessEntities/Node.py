@@ -127,8 +127,10 @@ class Node(object):
 
                 vehicles = traci.lane.getLastStepVehicleIDs(lane.getID())
 
-                vehicles.remove(vehicles[-1])
-                vehicles.remove(vehicles[-1])
+                if len(vehicles)>1:
+                    vehicles.remove(vehicles[-1])
+                if len(vehicles) > 1:
+                    vehicles.remove(vehicles[-1])
 
                 # Change either way
                 if recommendation.change_to_either_way:
@@ -143,7 +145,7 @@ class Node(object):
                         if right_lane_occupancy > left_lane_occupancy:
                             if traci.vehicle.couldChangeLane(vehicle_id, recommendation.lane + 1):
                                 traci.vehicle.changeLane(vehicle_id, recommendation.lane + 1, 500000)
-                            elif three == 3:
+                            elif three == 20:
                                 traci.vehicle.changeLane(vehicle_id, recommendation.lane + 1, 500000)
                                 three = 1
                             else:
@@ -152,7 +154,7 @@ class Node(object):
                         # Turn Right
                         elif traci.vehicle.couldChangeLane(vehicle_id, recommendation.lane - 1):
                             traci.vehicle.changeLane(vehicle_id, recommendation.lane - 1, 500000)
-                        elif three == 3:
+                        elif three == 20:
                             traci.vehicle.changeLane(vehicle_id, recommendation.lane - 1, 500000)
                             three = 1
                         else:

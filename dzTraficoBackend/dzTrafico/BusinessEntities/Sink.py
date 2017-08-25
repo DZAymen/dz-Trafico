@@ -29,6 +29,11 @@ class Sink(object):
             if node.LC_is_activated:
                 node.change_lane()
 
+    def incident_change_lane(self):
+        for node in self.nodes:
+            if node.isCongested:
+                node.incident_change_lane()
+
     def update_vsl(self):
         for node in self.nodes:
             if node.VSL_is_activated:

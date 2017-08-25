@@ -36,22 +36,17 @@ class TrafficStateManager:
             self.set_sumo_LC_Model(sinks, self.simulation.LCMode_noControl)
 
             # Changelane in accident edge
-            node = sinks[0][0].get_node_by_edgeID("196547668#2.6250")
-            node.set_current_recommendations([
-                LCRecommendation(
-                    1,
-                    LCRecommendation.CHANGE_TO_EITHER_WAY
-                )
-            ])
-
             if TrafficAnalyzer.congestionExists and self.simulation.sim_step_duration > 1:
-                node.incident_change_lane()
+                self.incident_change_lane(sinks)
 
             traci.switch(self.simulation.SIM_VSL_LC)
             traci.simulationStep()
             self.simulation.check_incidents(step, self.simulation.SIM_VSL_LC)
             self.simulation.clean_incidents(step)
             self.set_sumo_LC_Model(sinks, self.simulation.LCMode_vsl_lc)
+
+            if TrafficAnalyzer.congestionExists and self.simulation.sim_step_duration > 1:
+                self.incident_change_lane(sinks)
 
             # Check for LanChanges in nodes' recommendations
             if TrafficAnalyzer.congestionExists and TrafficAnalyzer.isLCControlActivated and self.simulation.sim_step_duration>1:
@@ -93,6 +88,10 @@ class TrafficStateManager:
     def change_lane(self, sinks):
         for sink in sinks:
             sink[0].change_lane()
+
+    def incident_change_lane(self, sinks):
+        for sink in sinks:
+            sink[0].incident_change_lane()
 
     def update_vsl(self, sinks):
         for sink in sinks:
