@@ -79,11 +79,12 @@ class Node(object):
                     return sensor.check_clear_lane()
         return False
 
-    def close_incident_lanes(self, congested_lanes):
-        # Set disallowed vehicles to enter lane incident
-        self.isCongested = True
+    def set_congested_lanes(self, congested_lanes):
         self.congested_lanes = congested_lanes
-        for lane in congested_lanes:
+
+    def close_incident_lanes(self):
+        # Set disallowed vehicles to enter lane incident
+        for lane in self.congested_lanes:
             traci.lane.setDisallowed(self.edge.getLane(lane).getID(), "passenger")
 
     # --------------- VSL Control ------------------------------------------

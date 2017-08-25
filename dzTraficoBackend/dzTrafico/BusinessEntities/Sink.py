@@ -62,11 +62,13 @@ class Sink(object):
                 print "--------notify_congestion_detected----------"
                 print node.edge.getID()
                 print congested_lanes
+                node.isCongested = True
+                node.set_congested_lanes(congested_lanes)
                 if TrafficAnalyzer.isLCControlActivated:
-                    node.close_incident_lanes(congested_lanes)
+                    node.close_incident_lanes()
                 Sink.trafficAnalyzer.notify_congestion_detected(self, node, congested_lanes)
 
-            elif TrafficAnalyzer.congestionExists and node.isCongested:
+            elif TrafficAnalyzer.congestionExists and node.isCongested and TrafficAnalyzer.isLCControlActivated:
                 if node.check_if_discharged():
                     Sink.trafficAnalyzer.clear_congestion()
                     node.isCongested = False

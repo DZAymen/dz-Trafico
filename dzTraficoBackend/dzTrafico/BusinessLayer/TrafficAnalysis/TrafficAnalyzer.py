@@ -30,8 +30,7 @@ class TrafficAnalyzer:
         # if there is a free lane
         if len(node.sensors) > len(congested_lanes):
 
-            if TrafficAnalyzer.isLCControlActivated or TrafficAnalyzer.isVSLControlActivated:
-                lc_nodes = self.laneChangeController.get_lc_nodes(sink, node, congested_lanes)
+            lc_nodes = self.laneChangeController.get_lc_nodes(sink, node, congested_lanes)
 
             if TrafficAnalyzer.isLCControlActivated:
                 self.activate_lc_control(lc_nodes)
