@@ -123,17 +123,13 @@ def add_vehicle_types_percentages(request):
 
 @api_view(['POST'])
 def set_sensors_distance(request):
-    simulationManager.split_network_edges(request.data["distance"])
-    simulationManager.add_sensors(request.data["distance"])
+    simulationManager.set_sensors_distance(request.data["distance"])
 
     return Response(status.HTTP_202_ACCEPTED)
 
 
 @api_view(['POST'])
 def update_configuration_state(request):
-    sim_duration = request.data["simDuration"]
-    simulationManager.create_simulation(sim_duration)
-
     simulationManager.update_config(request.data)
 
     return Response(status.HTTP_202_ACCEPTED)

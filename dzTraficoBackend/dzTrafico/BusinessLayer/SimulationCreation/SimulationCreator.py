@@ -1,6 +1,6 @@
 from dzTrafico.BusinessEntities.Simulation import Simulation
 from NetworkManager import NetworkManager
-from dzTrafico.BusinessEntities.Sensor import Sensor
+from dzTrafico.BusinessLayer.TrafficAnalysis.LaneChangeControlAlgo import LaneChange
 from TripManager import TripManager
 from dzTrafico.BusinessLayer.SimulationCreation.SensorsManager import SensorsManager
 
@@ -23,10 +23,10 @@ class SimulationCreator:
         SimulationCreator.__simulation.set_network_file(network_file_path)
 
     # Generate a new network file including splitted edges
-    def split_network_edges(self, distance):
+    def split_network_edges(self):
         SimulationCreator.__networkManager.generate_network_file_with_splitted_edges(
             SimulationCreator.__simulation.get_flows(),
-            distance
+            SimulationCreator.__simulation.get_sensors_distance()
         )
     # ---------------------------------------------------------------------------------------------------
 
@@ -63,7 +63,12 @@ class SimulationCreator:
     # ---------------------------------------------------------------------------------------------------
 
     # ------------------------------------- Add sensors -------------------------------------------------
-    def create_sensors(self, sensors_distance):
+    def set_sensors_distance(self, distance):
+        SimulationCreator.__simulation.set_sensors_distance(distance)
+
+    def create_sensors(self):
+        LaneChange.EdgeLength = SimulationCreator.__simulation.get_sensors_distance()
+
         self.sinks, self.sensors, self.sensors_file = SimulationCreator.__sensorsManager.create_sensors(
             SimulationCreator.__simulation.get_flows(),
             SimulationCreator.__simulation.get_incidents()
@@ -79,4 +84,3 @@ class SimulationCreator:
         SimulationCreator.__simulation.create_sumo_config_file()
         return SimulationCreator.__simulation
     # ---------------------------------------------------------------------------------------------------
-

@@ -87,27 +87,27 @@ class SimulationManager:
     # ---------------------------------------------------------------------------------------------------
 
     # ------------------------------------- Add sensors -------------------------------------------------
-    def add_sensors(self, sensors_distance):
-        LaneChange.EdgeLength = sensors_distance
+    def set_sensors_distance(self, distance):
+        SimulationManager.__simulationCreator.set_sensors_distance(distance)
 
+    def add_sensors(self):
         Sink.trafficAnalyzer = SimulationManager.__trafficAnalyzer
-        SimulationManager.__simulationCreator.create_sensors(sensors_distance)
+        SimulationManager.__simulationCreator.create_sensors()
     # ---------------------------------------------------------------------------------------------------
 
     # ------------------------------------- Simulation Creation -----------------------------------------
     # Split network edges
     # && update network file
     # && generate route file
-    def split_network_edges(self, sensors_distance):
+    def split_network_edges(self):
         self.generate_flows()
-        SimulationManager.__simulationCreator.split_network_edges(sensors_distance)
+        SimulationManager.__simulationCreator.split_network_edges()
         SimulationManager.__simulationCreator.add_incidents(SimulationManager.incidents)
         self.generate_flows()
         self.generate_routes()
 
-    def create_simulation(self, sim_duration):
+    def create_simulation(self):
         SimulationManager.__simulation = SimulationManager.__simulationCreator.createSimulation()
-        SimulationManager.__simulation.set_duration(sim_duration)
     # ---------------------------------------------------------------------------------------------------
 
     # ----------------------------------------- Simulation Config ---------------------------------------
@@ -120,6 +120,7 @@ class SimulationManager:
         VirtualRampMetering.critical_density = data["critical_density"]
         Sensor.critical_density = data["critical_density_sensor"]
         Simulation.sim_step_duration = data["sim_step_duration"]
+        SimulationManager.__simulation.set_duration(data["simDuration"])
 
         TrafficAnalyzer.isVSLControlActivated = data["vslControl"]
         TrafficAnalyzer.isLCControlActivated = data["lcControl"]

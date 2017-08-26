@@ -56,6 +56,7 @@ class Simulation:
     LCMode_vsl_lc = 512
 
     __map_box = None
+    __sensors_distance = 0
 
     def __init__(self):
         simulations_directory = os.path.join(os.path.normpath(os.getcwd()), "dzTrafico\\SimulationFiles")
@@ -223,3 +224,9 @@ class Simulation:
 
     def get_map_box(self):
         return self.__map_box
+
+    def set_sensors_distance(self, distance):
+        self.__sensors_distance = distance
+
+    def get_sensors_distance(self):
+        return self.__sensors_distance
