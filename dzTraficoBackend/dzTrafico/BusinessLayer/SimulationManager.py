@@ -34,7 +34,9 @@ class SimulationManager:
         self.__simulationCreator = SimulationCreator()
         self.__trafficAnalyzer = TrafficAnalyzer(self.__simulation)
         self.__statisticsManager = StatisticsManager(self.__simulation)
-        self.__simulationCreator.create_network_file(map_box)
+        # self.__simulationCreator.create_network_file(map_box)
+        self.__simulationCreator.set_map_box(map_box)
+
     # ---------------------------------------------------------------------------------------------------
 
     # -------------------------------- Flows definition -------------------------------------------------

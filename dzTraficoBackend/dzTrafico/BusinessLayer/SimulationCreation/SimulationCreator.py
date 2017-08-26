@@ -12,9 +12,14 @@ class SimulationCreator:
     __tripManager = TripManager(__networkManager)
 
     # -------------------------------- Net file creation ------------------------------------------------
+    def set_map_box(self, mapBox):
+        SimulationCreator.__simulation.set_map_box(mapBox)
+
     #Call NetworkManager to create map.net.xml
-    def create_network_file(self, mapBox):
-        network_file_path = SimulationCreator.__networkManager.get_network_file(mapBox)
+    def create_network_file(self):
+        network_file_path = SimulationCreator.__networkManager.get_network_file(
+            SimulationCreator.__simulation.get_map_box()
+        )
         SimulationCreator.__simulation.set_network_file(network_file_path)
 
     # Generate a new network file including splitted edges
@@ -74,3 +79,4 @@ class SimulationCreator:
         SimulationCreator.__simulation.create_sumo_config_file()
         return SimulationCreator.__simulation
     # ---------------------------------------------------------------------------------------------------
+

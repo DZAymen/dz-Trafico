@@ -55,6 +55,8 @@ class Simulation:
     LCMode_noControl = 597
     LCMode_vsl_lc = 512
 
+    __map_box = None
+
     def __init__(self):
         simulations_directory = os.path.join(os.path.normpath(os.getcwd()), "dzTrafico\\SimulationFiles")
         Simulation.project_directory = simulations_directory + "\\" + \
@@ -215,3 +217,9 @@ class Simulation:
 
     def add_vehicle_types(self, types):
         self.__vehicle_types.extend(types)
+
+    def set_map_box(self, map_box):
+        self.__map_box = map_box
+
+    def get_map_box(self):
+        return self.__map_box
