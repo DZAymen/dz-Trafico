@@ -38,8 +38,6 @@ class TrafficStateManager:
 
             # Changelane in accident edge
             if TrafficAnalyzer.congestionExists and self.simulation.sim_step_duration > 1:
-                print step
-                print "incident change lane"
                 self.incident_change_lane(sinks)
 
             traci.switch(self.simulation.SIM_VSL_LC)
@@ -49,7 +47,6 @@ class TrafficStateManager:
             self.set_sumo_LC_Model(sinks, self.simulation.LCMode_vsl_lc)
 
             if TrafficAnalyzer.congestionExists and self.simulation.sim_step_duration > 1:
-                print "incident change lane"
                 self.incident_change_lane(sinks)
 
             # Check for LanChanges in nodes' recommendations

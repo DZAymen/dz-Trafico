@@ -128,9 +128,9 @@ class Node(object):
 
                 vehicles = traci.lane.getLastStepVehicleIDs(lane.getID())
 
-                if len(vehicles)>1:
+                if len(vehicles)>0:
                     vehicles.remove(vehicles[-1])
-                if len(vehicles) > 1:
+                if len(vehicles) > 0:
                     vehicles.remove(vehicles[-1])
 
                 # Change either way
