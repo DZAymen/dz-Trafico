@@ -17,9 +17,11 @@ class SimulationCreator:
 
     #Call NetworkManager to create map.net.xml
     def create_network_file(self):
+        project_directory = SimulationCreator.__networkManager.create_project_directory()
         network_file_path = SimulationCreator.__networkManager.get_network_file(
             SimulationCreator.__simulation.get_map_box()
         )
+        SimulationCreator.__simulation.set_project_directory_path(project_directory)
         SimulationCreator.__simulation.set_network_file(network_file_path)
 
     # Generate a new network file including splitted edges
@@ -79,6 +81,9 @@ class SimulationCreator:
     # ---------------------------------------------------------------------------------------------------
 
     # ------------------------------------- Simulation Creation -----------------------------------------
+    def set_sim_duration(self, duration):
+        SimulationCreator.__simulation.set_duration(duration)
+
     #Create Simulation Config file 'map.sumocfg'
     def createSimulation(self):
         SimulationCreator.__simulation.create_sumo_config_file()
