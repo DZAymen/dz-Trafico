@@ -34,7 +34,6 @@ class SimulationManager:
         self.__simulationCreator = SimulationCreator()
         self.__trafficAnalyzer = TrafficAnalyzer(self.__simulation)
         self.__statisticsManager = StatisticsManager(self.__simulation)
-        # self.__simulationCreator.create_network_file(map_box)
         self.__simulationCreator.set_map_box(map_box)
 
     # ---------------------------------------------------------------------------------------------------
@@ -106,8 +105,18 @@ class SimulationManager:
         self.generate_flows()
         self.generate_routes()
 
-    def create_simulation(self):
+    def create_simulation(self, consumer):
+        print "download map"
+        consumer.send("download map")
+        self.__simulationCreator.create_network_file()
+        consumer.send("map is downloaded")
+        print "map downloaded"
+        self.split_network_edges()
+        consumer.send("Network is splitted")
+        self.add_sensors()
+        consumer.send("Sensors are added correctly")
         SimulationManager.__simulation = SimulationManager.__simulationCreator.createSimulation()
+        consumer.send("Simulation is created successfully")
     # ---------------------------------------------------------------------------------------------------
 
     # ----------------------------------------- Simulation Config ---------------------------------------
@@ -120,7 +129,7 @@ class SimulationManager:
         VirtualRampMetering.critical_density = data["critical_density"]
         Sensor.critical_density = data["critical_density_sensor"]
         Simulation.sim_step_duration = data["sim_step_duration"]
-        SimulationManager.__simulation.set_duration(data["simDuration"])
+        SimulationManager.__simulationCreator.set_sim_duration(data["simDuration"])
 
         TrafficAnalyzer.isVSLControlActivated = data["vslControl"]
         TrafficAnalyzer.isLCControlActivated = data["lcControl"]
