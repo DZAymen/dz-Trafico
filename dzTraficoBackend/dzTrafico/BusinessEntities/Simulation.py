@@ -212,11 +212,12 @@ class Simulation:
         return self.__sinks
 
     def check_statistics_vehicles(self):
-        incident = self.__incidents[0]
-        edge_id = traci.lane.getEdgeID(incident.lane_id)
-        for veh_id in traci.edge.getLastStepVehicleIDs(edge_id):
-            if not self.statistics_vehicles.count(veh_id):
-                self.statistics_vehicles.append(veh_id)
+        if len(self.__incidents)>0:
+            incident = self.__incidents[0]
+            edge_id = traci.lane.getEdgeID(incident.lane_id)
+            for veh_id in traci.edge.getLastStepVehicleIDs(edge_id):
+                if not self.statistics_vehicles.count(veh_id):
+                    self.statistics_vehicles.append(veh_id)
 
     def add_vehicle_types(self, types):
         self.__vehicle_types.extend(types)
