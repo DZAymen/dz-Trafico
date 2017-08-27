@@ -29,26 +29,27 @@ class SensorsManager():
             # Add sensors for each edge
             sink = Sink()
             for edge in edges:
-                #Get lanes number
-                lanes_num = edge.getLaneNumber()
-                sensors = []
-                #for each lane
-                for j in range(0,lanes_num):
-                    #We create a sensor
-                    sensors.append(
-                        Sensor(
-                            edge.getLane(j).getID(),
-                            -1,
-                            edge.getSpeed() * 0.25,
-                            edge.getSpeed() * 0.65
+                if edge.getLength()>5:
+                    #Get lanes number
+                    lanes_num = edge.getLaneNumber()
+                    sensors = []
+                    #for each lane
+                    for j in range(0,lanes_num):
+                        #We create a sensor
+                        sensors.append(
+                            Sensor(
+                                edge.getLane(j).getID(),
+                                -1,
+                                edge.getSpeed() * 0.25,
+                                edge.getSpeed() * 0.65
+                            )
+                        )
+                    sink.add_node(
+                        Node(
+                            edge,
+                            sensors
                         )
                     )
-                sink.add_node(
-                    Node(
-                        edge,
-                        sensors
-                    )
-                )
             sink_sensors = sink.get_sensors()
             if len(sink_sensors) > 0:
                 sinks.append(sink)
