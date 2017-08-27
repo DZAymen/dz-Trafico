@@ -3,6 +3,7 @@ from dzTrafico.BusinessEntities.Simulation import Simulation
 from sumolib.net.generator.network import Split
 import subprocess, os, sumolib
 import lxml.etree as etree
+from datetime import datetime
 
 class NetworkManager:
 
@@ -10,9 +11,19 @@ class NetworkManager:
     __network_file_path = ""
     net = None
 
+    def create_project_directory(self):
+        directory_path = os.path.join(os.path.normpath(os.getcwd()), "dzTrafico")
+
+        directory_name = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+        self.project_directory_path = os.path.join(directory_path,"SimulationFiles", directory_name)
+        os.makedirs(self.project_directory_path)
+
+        return self.project_directory_path
+
+
     def convert_map_to_network_file(self, osm_file_path):
         #Return network file path
-        self.__network_file_path = os.path.dirname(osm_file_path) + "\\map.net.xml"
+        self.__network_file_path = self.project_directory_path + "\map.net.xml"
         subprocess.call("netconvert --osm-files " + osm_file_path + " -o " + self.__network_file_path)
         return self.__network_file_path
 
@@ -26,7 +37,13 @@ class NetworkManager:
         return self.__network_file_path
 
     def get_network_file(self, map_box):
-        self.osm_file_path = NetworkManager.__mapManager.download_map(map_box)
+        directory_path = os.path.join(os.path.normpath(os.getcwd()), "dzTrafico")
+        self.osm_file_path = os.path.join(
+            directory_path,"data", "maps",
+            "osm.map"+"_".join(map(str, map_box.get_coords())) + ".xml"
+        )
+        if not os.path.isfile(self.osm_file_path):
+            self.osm_file_path = NetworkManager.__mapManager.download_map(map_box, self.osm_file_path)
         return self.convert_map_to_network_file(self.osm_file_path)
 
     def initialize_net(self):
@@ -72,7 +89,8 @@ class NetworkManager:
                                       to=str(flow.end_edge),
                                       begin=str(flow.depart_time),
                                       end=str(flow.end_depart_time),
-                                      number="1"
+                                      number="1",
+                                      via=str(flow.via_edges)
                                       )
             flow_node.set("from", str(flow.start_edge))
             root.append(flow_node)

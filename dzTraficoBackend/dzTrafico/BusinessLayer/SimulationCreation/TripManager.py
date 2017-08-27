@@ -64,7 +64,8 @@ class TripManager:
                                       to=str(flow.end_edge),
                                       begin=str(flow.depart_time),
                                       end=str(flow.end_depart_time),
-                                      vehsPerHour=str(flow.vehicles_per_hour)
+                                      vehsPerHour=str(flow.vehicles_per_hour),
+                                      via=str(flow.via_edges),
                                       )
             flow_node.set("from",str(flow.start_edge))
             root.append(flow_node)
