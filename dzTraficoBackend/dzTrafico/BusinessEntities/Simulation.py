@@ -67,6 +67,9 @@ class Simulation:
     def set_osm_file(self, file_path):
         Simulation.__osm_file = file_path
 
+    def set_project_directory_path(self, project_directory):
+        Simulation.project_directory = project_directory + "\\"
+
     def set_network_file(self, file_path):
         self.inFlowPoints = []
         self.outFlowPoints = []
@@ -74,8 +77,7 @@ class Simulation:
         self.__traffic_flows = []
         self.__vehicle_types = []
 
-        Simulation.project_directory = os.path.dirname(file_path) + "\\"
-        Simulation.__network_file = os.path.basename(file_path)
+        Simulation.__network_file = file_path
 
     def set_route_file(self, route_file_path):
         Simulation.__route_file = route_file_path
