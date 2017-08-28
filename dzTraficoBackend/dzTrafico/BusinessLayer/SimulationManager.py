@@ -30,6 +30,7 @@ class SimulationManager:
     # -------------------------------- Net file creation ------------------------------------------------
     #Call SimulationCreator.set_map method to create the map
     def set_map(self, map_box):
+        SimulationManager.incidents = []
         self.__simulation = Simulation()
         self.__simulationCreator = SimulationCreator()
         self.__trafficAnalyzer = TrafficAnalyzer(self.__simulation)

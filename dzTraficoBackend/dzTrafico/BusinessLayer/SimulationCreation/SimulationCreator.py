@@ -5,11 +5,16 @@ from TripManager import TripManager
 from dzTrafico.BusinessLayer.SimulationCreation.SensorsManager import SensorsManager
 
 class SimulationCreator:
-
     __simulation = Simulation()
     __networkManager = NetworkManager()
     __sensorsManager = SensorsManager(__networkManager)
     __tripManager = TripManager(__networkManager)
+
+    def __init__(self):
+        SimulationCreator.__simulation = Simulation()
+        SimulationCreator.__networkManager = NetworkManager()
+        SimulationCreator.__sensorsManager = SensorsManager(SimulationCreator.__networkManager)
+        SimulationCreator.__tripManager = TripManager(SimulationCreator.__networkManager)
 
     # -------------------------------- Net file creation ------------------------------------------------
     def set_map_box(self, mapBox):

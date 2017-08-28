@@ -8,6 +8,8 @@ class SensorsManager():
 
     def __init__(self, networkManager):
         self.__networkManager = networkManager
+        Sink.id = 0
+        Sensor.id = 1
 
     def create_sensors(self, flows, incidents):
 

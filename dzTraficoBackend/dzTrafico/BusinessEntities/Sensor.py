@@ -3,7 +3,7 @@ import traci
 
 class Sensor(object):
 
-    __id = 1
+    id = 1
     __lane = ""
     __position = 0
     __measures_list = []
@@ -18,8 +18,8 @@ class Sensor(object):
     last_step_density = 0
 
     def __init__(self, lane, position, critical_speed, high_level_speed):
-        self.__id = Sensor.__id
-        Sensor.__id += 1
+        self.__id = Sensor.id
+        Sensor.id += 1
         self.__lane = lane
         self.__position = position
         self.__critical_speed = Converter.tokmh(critical_speed)

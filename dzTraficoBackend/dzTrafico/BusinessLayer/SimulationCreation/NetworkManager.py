@@ -109,7 +109,9 @@ class NetworkManager:
         )
         # Get routes from this file
         routes = []
-        route_file = etree.parse(Simulation.project_directory + "\\" + tmp_route_file)
+        route_file = etree.parse(
+            os.path.join(Simulation.project_directory,tmp_route_file)
+        )
         root = route_file.getroot()
         vehs = root.getchildren()
         for veh in vehs:
