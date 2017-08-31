@@ -116,7 +116,8 @@ class VirtualRampMetering:
                     node,
                     previous_nodes_of_discharged_area
                 )
-            )
+            ),
+            base=10
         )
 
         Vi5 = max(
@@ -147,7 +148,7 @@ class VirtualRampMetering:
                 sum += node.get_current_density() * node.edge.getLength()/1000
         return sum / ( len(nodes) * concerned_node.edge.getLength() )
 
-    def round_to_base(self, x, base=5):
+    def round_to_base(self, x, base):
         return int(base * round(float(x) / base))
 
     def update_vsl(self, sink, node):
