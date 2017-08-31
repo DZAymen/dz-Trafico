@@ -89,3 +89,4 @@ class Sink(object):
         for node in self.nodes:
             if node.edge.getID() == edge_id:
                 return node
+        return None
