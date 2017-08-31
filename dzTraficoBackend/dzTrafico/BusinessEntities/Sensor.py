@@ -86,6 +86,11 @@ class Sensor(object):
         lane_length = traci.lane.getLength(self.__lane)
         return (vehs_number * (1000 / lane_length))
 
+    @staticmethod
+    def set_critical_density(density):
+        Sensor.critical_density = density/3
+
+
 class Measure(object):
 
     __speed = 0
