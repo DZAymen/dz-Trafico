@@ -52,7 +52,7 @@ class Sensor(object):
         return False
 
     def __check_measure_density(self, density):
-        if density > self.critical_density:
+        if density > self.critical_density and traci.lane.getLength(self.__lane)>200:
             # Congestion
             return True
         return False
