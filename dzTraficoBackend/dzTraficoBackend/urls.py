@@ -25,4 +25,5 @@ urlpatterns = [
 
     #Simulation Results Routes _________________________________________________________________
     url(r'^api/statistics/gpm$', StatisticsService.get_simulation_gpm_results),
+    url(r'^api/statistics/incidentflowstats$', StatisticsService.get_incident_flow_stats),
 ]
