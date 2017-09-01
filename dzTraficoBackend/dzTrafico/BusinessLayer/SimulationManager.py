@@ -144,4 +144,7 @@ class SimulationManager:
     # ------------------------------------ Simulation Results -------------------------------------------
     def get_simulation_gpm_results(self):
         return SimulationManager.__statisticsManager.get_GPMs()
+
+    def get_incident_flow(self):
+        return SimulationManager.__statisticsManager.get_incident_flow()
     # ---------------------------------------------------------------------------------------------------

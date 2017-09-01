@@ -13,3 +13,12 @@ def get_simulation_gpm_results(request):
     # return a json format of gpm_results
     serializer = GlobalPerformanceMeasurementSerializer(gpm_results, many=True)
     return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_incident_flow_stats(request):
+    incident_flow_stats = simulationManager.get_incident_flow()
+
+    # Plot flow stats
+
+
+    return Response(status.HTTP_200_OK)
