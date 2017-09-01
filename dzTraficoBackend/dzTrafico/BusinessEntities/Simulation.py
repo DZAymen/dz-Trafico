@@ -11,6 +11,8 @@ class Simulation:
     simulation_summary_filename = "summary.xml"
     simulation_summary_vsl_lc_filename = "summary_vsl_lc.xml"
 
+    incident_sensors_output = "incident.sensors.output.xml"
+
     trip_output = "trip.output.xml"
     trip_output_vsl_lc = "trip.output.vsl_lc.xml"
 
@@ -223,7 +225,7 @@ class Simulation:
             incident = self.__incidents[0]
             edge_id = traci.lane.getEdgeID(incident.lane_id)
             for veh_id in traci.edge.getLastStepVehicleIDs(edge_id):
-                if traci.vehicle.getLaneIndex(veh_id) != incident.lane:
+                if traci.vehicle.getLaneIndex(veh_id) != incident.lane and traci.vehicle.getLanePosition(veh_id) > incident.lane_position:
                     traci.vehicle.setLaneChangeMode(veh_id, Simulation.LCMode_default)
                     traci.vehicle.changeLane(
                         veh_id,
