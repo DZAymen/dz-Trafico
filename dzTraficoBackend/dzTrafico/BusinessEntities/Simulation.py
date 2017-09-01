@@ -54,6 +54,7 @@ class Simulation:
 
     LCMode_noControl = 597
     LCMode_vsl_lc = 512
+    LCMode_default = 597
 
     __map_box = None
     __sensors_distance = 0
@@ -216,6 +217,19 @@ class Simulation:
             for veh_id in traci.edge.getLastStepVehicleIDs(edge_id):
                 if not self.statistics_vehicles.count(veh_id):
                     self.statistics_vehicles.append(veh_id)
+
+    def reset_vehicles_behaviour(self):
+        if len(self.__incidents)>0:
+            incident = self.__incidents[0]
+            edge_id = traci.lane.getEdgeID(incident.lane_id)
+            for veh_id in traci.edge.getLastStepVehicleIDs(edge_id):
+                if traci.vehicle.getLaneIndex(veh_id) != incident.lane:
+                    traci.vehicle.setLaneChangeMode(veh_id, Simulation.LCMode_default)
+                    traci.vehicle.changeLane(
+                        veh_id,
+                        traci.vehicle.getLaneIndex(veh_id),
+                        1500
+                    )
 
     def add_vehicle_types(self, types):
         self.__vehicle_types.extend(types)

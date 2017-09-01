@@ -137,6 +137,8 @@ class SimulationManager:
         TrafficAnalyzer.isCongestionDetected = False
         TrafficAnalyzer.congestionExists = False
 
+        Simulation.LCMode_vsl_lc = data["lc_mode"]
+
     # ---------------------------------------------------------------------------------------------------
 
     # ------------------------------------ Simulation Results -------------------------------------------
