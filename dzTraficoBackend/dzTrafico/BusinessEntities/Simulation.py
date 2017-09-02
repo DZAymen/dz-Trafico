@@ -62,6 +62,13 @@ class Simulation:
     __sensors_distance = 0
 
     def __init__(self):
+
+        self.inFlowPoints = []
+        self.outFlowPoints = []
+        self.__incidents = []
+        self.__traffic_flows = []
+        self.__vehicle_types = []
+
         simulations_directory = os.path.join(os.path.normpath(os.getcwd()), "dzTrafico\\SimulationFiles")
         Simulation.project_directory = simulations_directory + "\\" + \
                                          [directory for directory in os.listdir(simulations_directory)][-1]
