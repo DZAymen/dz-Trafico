@@ -183,6 +183,7 @@ class Simulation:
                 if len(vehicles)>0:
                     edge_id = traci.lane.getEdgeID(incident.lane_id)
                     self.initial_incident_lane_max_speed = traci.lane.getMaxSpeed(incident.lane_id)
+                    traci.vehicle.changeLane(vehicles[0], incident.lane, 500000)
                     traci.vehicle.setStop(vehID=vehicles[0],edgeID=edge_id, laneIndex=incident.lane, pos=incident.lane_position, duration=incident.accidentDuration * 1000)
                     if sim_type == self.SIM:
                         traci.edge.setMaxSpeed(traci.lane.getEdgeID(incident.lane_id), Converter.toms(60))
