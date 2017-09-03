@@ -4,6 +4,8 @@ from random import randint
 
 class Node(object):
 
+    COMPLIANCE_PERCENTAGE = 1
+
     sensors = []
     edge = None
     initial_max_speed = 0
@@ -171,10 +173,19 @@ class Node(object):
                         right_lane = self.edge.getLane(recommendation.target_lane-1)
                         left_lane = self.edge.getLane(recommendation.target_lane+1)
                         target_lane = self.edge.getLane(recommendation.target_lane)
-                    for veh in vehicles:
+
+                    for vehicle_id in vehicles:
                         # if traci.vehicle.couldChangeLane(vehicle_id, recommendation.target_lane - recommendation.lane):
+                        traci.vehicle.changeLane(vehicle_id, recommendation.target_lane, 500000)
+                        # elif five == 5:
                         #     traci.vehicle.changeLane(vehicle_id, recommendation.target_lane, 500000)
-                        if len(self.edge.getLanes()) > 2:
+                        #     five = 1
+                        # else:
+                        #     five += 1
+
+                        vehs = traci.lane.getLastStepVehicleIDs(target_lane.getID())
+                        veh = vehs[randint(0, len(vehs) - 1)]
+                        if len(self.edge.getLanes()) > 2 and recommendation.target_lane == 1:
                             current_lane_occupancy = traci.lane.getLastStepOccupancy(
                                 target_lane.getID()
                             )
@@ -188,24 +199,60 @@ class Node(object):
                             if recommendation.target_lane - recommendation.lane > 0:
                                 # Get current lane vehicles
                                 if current_lane_occupancy > left_lane_occupancy:
+                                    # traci.vehicle.changeLane(veh, recommendation.target_lane + 1, 500000)
                                     if traci.vehicle.couldChangeLane(veh, recommendation.target_lane + 1):
                                         traci.vehicle.changeLane(veh, recommendation.target_lane + 1, 500000)
-                                    # elif three == 20:
-                                    #     traci.vehicle.changeLane(veh, recommendation.lane + 1, 500000)
-                                    #     three = 1
-                                    # else:
-                                    #     three += 1
+                                    elif ten == 10:
+                                        traci.vehicle.changeLane(veh, recommendation.target_lane + 1, 500000)
+                                        ten = 1
+                                    else:
+                                        ten += 1
+
                             elif current_lane_occupancy > right_lane_occupancy:
+                                # traci.vehicle.changeLane(veh, recommendation.target_lane - 1, 500000)
+
                                 if traci.vehicle.couldChangeLane(veh, recommendation.target_lane - 1):
                                     traci.vehicle.changeLane(veh, recommendation.target_lane - 1, 500000)
-                                # elif three == 20:
-                                #     traci.vehicle.changeLane(veh, recommendation.lane - 1, 500000)
-                                #     three = 1
-                                # else:
-                                #     three += 1
+                                elif ten == 10:
+                                    traci.vehicle.changeLane(veh, recommendation.target_lane - 1, 500000)
+                                    ten = 1
+                                else:
+                                    ten += 1
 
-                        elif traci.vehicle.couldChangeLane(veh, recommendation.target_lane + 1):
-                            traci.vehicle.changeLane(veh, recommendation.target_lane, 500000)
+                        # # if traci.vehicle.couldChangeLane(vehicle_id, recommendation.target_lane - recommendation.lane):
+                        # #     traci.vehicle.changeLane(vehicle_id, recommendation.target_lane, 500000)
+                        # if len(self.edge.getLanes()) > 2:
+                        #     current_lane_occupancy = traci.lane.getLastStepOccupancy(
+                        #         target_lane.getID()
+                        #     )
+                        #     right_lane_occupancy = traci.lane.getLastStepOccupancy(
+                        #         right_lane.getID()
+                        #     )
+                        #     left_lane_occupancy = traci.lane.getLastStepOccupancy(
+                        #         left_lane.getID()
+                        #     )
+                        #     # Turn to left
+                        #     if recommendation.target_lane - recommendation.lane > 0:
+                        #         # Get current lane vehicles
+                        #         if current_lane_occupancy > left_lane_occupancy:
+                        #             if traci.vehicle.couldChangeLane(veh, recommendation.target_lane + 1):
+                        #                 traci.vehicle.changeLane(veh, recommendation.target_lane + 1, 500000)
+                        #             # elif three == 20:
+                        #             #     traci.vehicle.changeLane(veh, recommendation.lane + 1, 500000)
+                        #             #     three = 1
+                        #             # else:
+                        #             #     three += 1
+                        #     elif current_lane_occupancy > right_lane_occupancy:
+                        #         if traci.vehicle.couldChangeLane(veh, recommendation.target_lane - 1):
+                        #             traci.vehicle.changeLane(veh, recommendation.target_lane - 1, 500000)
+                        #         # elif three == 20:
+                        #         #     traci.vehicle.changeLane(veh, recommendation.lane - 1, 500000)
+                        #         #     three = 1
+                        #         # else:
+                        #         #     three += 1
+                        #
+                        # elif traci.vehicle.couldChangeLane(veh, recommendation.target_lane + 1):
+                        #     traci.vehicle.changeLane(veh, recommendation.target_lane, 500000)
 
     def change_lane(self):
         for recommendation in self.recommendations:
@@ -213,7 +260,7 @@ class Node(object):
                 lane = self.edge.getLane(recommendation.lane)
 
                 vehicles = traci.lane.getLastStepVehicleIDs(lane.getID())
-
+                vehicles = self.get_compliant_vehicles(vehicles, Node.COMPLIANCE_PERCENTAGE)
                 # Change either way
                 if recommendation.change_to_either_way:
                     # Calculate the percentage of vehicles to change to left
@@ -257,24 +304,6 @@ class Node(object):
                             else:
                                 traci.vehicle.changeLane(vehicle_id, recommendation.lane - 1, 500000)
                                 print "--------Change to Right--------> " + str(vehicle_id)
-                            # if i>j:
-                            #     traci.vehicle.changeLane(vehicle_id, recommendation.lane + 1, 500000)
-                            # else:
-                            #     traci.vehicle.changeLane(vehicle_id, recommendation.lane - 1, 500000)
-                        # print "------------------vehicles_number_turn_left--------------"
-                        # print vehicles_number_turn_left
-                        # # if i == vehicles_number_turn_left:
-                        #     # print "-------left-----"
-                        #     # print j
-                        #     # j = 0
-                        # if i < vehicles_number_turn_left:
-                        #     # if traci.vehicle.couldChangeLane(vehicle_id, recommendation.lane + 1):
-                        #     traci.vehicle.changeLane(vehicle_id, recommendation.lane + 1, 500000)
-                        #     # j += 1
-                        #     i += 1
-                        # else:
-                        #     # if traci.vehicle.couldChangeLane(vehicle_id, recommendation.lane - 1):
-                        #     traci.vehicle.changeLane(vehicle_id, recommendation.lane - 1, 500000)
 
                     print "-------left-----"
                     print i
@@ -286,101 +315,60 @@ class Node(object):
                     print recommendation.target_lane
                     print "------Vehicles number------"
                     print len(vehicles)
-                    j=0
+                    ten = 1
+                    five = 1
                     if len(self.edge.getLanes())>2:
-                        ten = 1
                         right_lane = self.edge.getLane(recommendation.target_lane-1)
                         left_lane = self.edge.getLane(recommendation.target_lane+1)
                         target_lane = self.edge.getLane(recommendation.target_lane)
                     vehicles = traci.lane.getLastStepVehicleIDs(lane.getID())
+                    vehicles = self.get_compliant_vehicles(vehicles, Node.COMPLIANCE_PERCENTAGE)
 
                     for vehicle_id in vehicles:
-                        if traci.vehicle.couldChangeLane(vehicle_id, recommendation.target_lane - recommendation.lane):
-                            traci.vehicle.changeLane(vehicle_id, recommendation.target_lane, 500000)
-                        # traci.vehicle.changeSublane(vehicle_id, recommendation.target_lane - recommendation.lane)
-                        print "--------Change to target--------> " \
-                              + "from " +str(recommendation.lane) \
-                              + " to " + str(recommendation.target_lane) \
-                              + str(vehicle_id)
-                        # Check the lane with less occupancy to
+                        # if traci.vehicle.couldChangeLane(vehicle_id, recommendation.target_lane - recommendation.lane):
+                        traci.vehicle.changeLane(vehicle_id, recommendation.target_lane, 500000)
+                        # elif five == 5:
+                        #     traci.vehicle.changeLane(vehicle_id, recommendation.target_lane, 500000)
+                        #     five = 1
+                        # else:
+                        #     five += 1
 
                         vehs = traci.lane.getLastStepVehicleIDs(target_lane.getID())
-                        for veh in vehs:
-                            if len(self.edge.getLanes()) > 2:
-                                current_lane_occupancy = traci.lane.getLastStepOccupancy(
-                                    target_lane.getID()
-                                )
-                                right_lane_occupancy = traci.lane.getLastStepOccupancy(
-                                    right_lane.getID()
-                                )
-                                left_lane_occupancy = traci.lane.getLastStepOccupancy(
-                                    left_lane.getID()
-                                )
-                                # Turn to left
-                                if recommendation.target_lane - recommendation.lane>0:
-                                    # Get current lane vehicles
-                                    if current_lane_occupancy> left_lane_occupancy:
-                                        if traci.vehicle.couldChangeLane(veh, recommendation.target_lane + 1):
-                                            traci.vehicle.changeLane(veh, recommendation.target_lane + 1, 500000)
-                                elif current_lane_occupancy> right_lane_occupancy:
-                                    if traci.vehicle.couldChangeLane(veh, recommendation.target_lane - 1):
-                                        traci.vehicle.changeLane(veh, recommendation.target_lane - 1, 500000)
-                                    elif ten == 10:
-                                        traci.vehicle.changeLane(veh, recommendation.lane - 1, 500000)
-                                        ten = 1
-                                    else:
-                                        ten += 1
+                        veh = vehs[randint(0, len(vehs)-1)]
+                        if len(self.edge.getLanes()) > 2 and recommendation.target_lane == 1:
+                            current_lane_occupancy = traci.lane.getLastStepOccupancy(
+                                target_lane.getID()
+                            )
+                            right_lane_occupancy = traci.lane.getLastStepOccupancy(
+                                right_lane.getID()
+                            )
+                            left_lane_occupancy = traci.lane.getLastStepOccupancy(
+                                left_lane.getID()
+                            )
+                            # Turn to left
+                            if recommendation.target_lane - recommendation.lane>0:
+                                # Get current lane vehicles
+                                if current_lane_occupancy> left_lane_occupancy:
+                                    if traci.vehicle.couldChangeLane(veh, recommendation.target_lane + 1):
+                                        traci.vehicle.changeLane(veh, recommendation.target_lane + 1, 500000)
+                                        print "clear middle lane, v ==> ", veh
+                            elif current_lane_occupancy> right_lane_occupancy:
+                                if traci.vehicle.couldChangeLane(veh, recommendation.target_lane - 1):
+                                    traci.vehicle.changeLane(veh, recommendation.target_lane - 1, 500000)
+                                    print "clear middle lane, v ==> ", veh
+                                elif ten == 10:
+                                    traci.vehicle.changeLane(veh, recommendation.target_lane - 1, 500000)
+                                    ten = 1
+                                    print "clear middle lane, v ==> ", veh, "  ten == ", ten
+                                else:
+                                    print "ten == ", ten
+                                    ten += 1
 
-                            elif traci.vehicle.couldChangeLane(veh, recommendation.target_lane + 1):
-                                traci.vehicle.changeLane(veh, recommendation.target_lane + 1, 500000)
-
-                                    # if len(self.edge.getLanes())>2:
-                        #     current_lane_occupancy = traci.lane.getLastStepOccupancy(
-                        #         target_lane.getID()
-                        #     )
-                        #     right_lane_occupancy = traci.lane.getLastStepOccupancy(
-                        #         right_lane.getID()
-                        #     )
-                        #     left_lane_occupancy = traci.lane.getLastStepOccupancy(
-                        #         left_lane.getID()
-                        #     )
-                        #     # Turn to left
-                        #     if recommendation.target_lane - recommendation.lane>0:
-                        #         # Get current lane vehicles
-                        #         while current_lane_occupancy> left_lane_occupancy:
-                        #             vehs = traci.lane.getLastStepVehicleIDs(target_lane.getID())
-                        #             rand = randint(0, len(vehs)-1)
-                        #             if traci.vehicle.couldChangeLane(vehs[rand], recommendation.target_lane + 1):
-                        #                 traci.vehicle.changeLane(vehs[rand], recommendation.target_lane + 1, 500000)
-                        #             elif ten == 10:
-                        #                 traci.vehicle.changeLane(vehs[rand], recommendation.target_lane + 1, 500000)
-                        #                 ten = 1
-                        #             else:
-                        #                 ten += 1
-                        #
-                        #             # Update current_lane_occupancy
-                        #             current_lane_occupancy = traci.lane.getLastStepOccupancy(
-                        #                 target_lane.getID()
-                        #             )
-                        #             left_lane_occupancy = traci.lane.getLastStepOccupancy(
-                        #                 left_lane.getID()
-                        #             )
-                        #     else:
-                        #         while current_lane_occupancy> right_lane_occupancy:
-                        #             vehs = traci.lane.getLastStepVehicleIDs(target_lane.getID())
-                        #             rand = randint(0, len(vehs)-1)
-                        #             if traci.vehicle.couldChangeLane(vehs[rand], recommendation.target_lane - 1):
-                        #                 traci.vehicle.changeLane(vehs[rand], recommendation.target_lane - 1, 500000)
-                        #             elif ten == 10:
-                        #                 traci.vehicle.changeLane(vehs[rand], recommendation.target_lane - 1, 500000)
-                        #                 ten = 1
-                        #             else:
-                        #                 ten += 1
-                        #
-                        #             # Update current_lane_occupancy
-                        #             current_lane_occupancy = traci.lane.getLastStepOccupancy(
-                        #                 target_lane.getID()
-                        #             )
-                        #             right_lane_occupancy = traci.lane.getLastStepOccupancy(
-                        #                 right_lane.getID()
-                        #             )
+    def get_compliant_vehicles(self, vehicles, percentage):
+        compliant_vehs = []
+        num_compliant_vehs = int(round(len(vehicles)*percentage))
+        for i in range(0, num_compliant_vehs):
+            veh = vehicles[randint(0, len(vehicles)-1)]
+            vehicles.remove(veh)
+            compliant_vehs.append(veh)
+        return compliant_vehs
