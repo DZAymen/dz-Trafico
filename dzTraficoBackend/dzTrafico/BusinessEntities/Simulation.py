@@ -177,6 +177,7 @@ class Simulation:
             self.__incidents.append(incident)
 
     def check_incidents(self, step, sim_type):
+        clear = False
         for incident in self.__incidents:
             if step == incident.accidentTime:
                 vehicles = traci.lane.getLastStepVehicleIDs(incident.lane_id)
@@ -189,6 +190,9 @@ class Simulation:
                         traci.edge.setMaxSpeed(traci.lane.getEdgeID(incident.lane_id), Converter.toms(60))
                     else:
                         traci.edge.setMaxSpeed(traci.lane.getEdgeID(incident.lane_id), Converter.toms(60))
+            if step > incident.accidentTime+incident.accidentDuration:
+                clear = True
+        return clear
 
     def clean_incidents(self, step):
         for incident in self.__incidents:
