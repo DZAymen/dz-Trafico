@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from dzTrafico.BusinessLayer.SimulationManager import SimulationManager
 from dzTrafico.BusinessLayer.Statistics.GlobalPerformanceMeasurementsController import GlobalPerformanceMeasurementSerializer
+from matplotlib.pyplot import plot
 
 simulationManager = SimulationManager.get_instance()
 
@@ -16,9 +17,10 @@ def get_simulation_gpm_results(request):
 
 @api_view(['GET'])
 def get_incident_flow_stats(request):
-    incident_flow_stats = simulationManager.get_incident_flow()
+    incident_flow_stats, time = simulationManager.get_incident_flow()
 
     # Plot flow stats
-
+    print time, incident_flow_stats
+    plot(time, incident_flow_stats)
 
     return Response(status.HTTP_200_OK)
