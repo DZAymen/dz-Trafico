@@ -22,12 +22,11 @@ class TrafficStateManager:
         self.simulation = self.__simulationManager.get_simulation()
         sinks = self.simulation.get_sinks()
 
-        self.deactivate_vsl(sinks)
         self.deactivate_lc(sinks)
         TrafficAnalyzer.isCongestionDetected = False
 
         self.simulation.start_simulation()
-
+        densities = []
         for step in range(self.simulation.sim_duration):
 
             traci.switch(self.simulation.SIM)
@@ -42,9 +41,12 @@ class TrafficStateManager:
 
             traci.switch(self.simulation.SIM_VSL_LC)
             traci.simulationStep()
-            self.simulation.check_incidents(step, self.simulation.SIM_VSL_LC)
+            incidentIsClear = self.simulation.check_incidents(step, self.simulation.SIM_VSL_LC)
             self.simulation.clean_incidents(step)
             self.set_sumo_LC_Model(sinks, self.simulation.LCMode_vsl_lc)
+
+            if step == 0 or (TrafficAnalyzer.isCongestionDetected and incidentIsClear):
+                self.deactivate_vsl(sinks)
 
             if TrafficAnalyzer.congestionExists:
                 self.incident_change_lane(sinks)
@@ -61,7 +63,11 @@ class TrafficStateManager:
                 if TrafficAnalyzer.isVSLControlActivated and TrafficAnalyzer.isCongestionDetected:
                     self.update_vsl(sinks)
                 consumer.send(traffic_state)
-
+                if len(self.simulation.get_incidents())>0:
+                    for state in traffic_state:
+                        if state['edge_id'] == traci.lane.getEdgeID(self.simulation.get_incidents()[0].lane_id):
+                            densities.append(state['density'])
+                            print step, "  ", state['density']
 
             if TrafficAnalyzer.isCongestionDetected:
                 self.simulation.check_statistics_vehicles()
@@ -71,12 +77,11 @@ class TrafficStateManager:
         traci.switch(self.simulation.SIM)
         traci.close()
 
+        print densities
+
         gpms = self.__simulationManager.get_simulation_gpm_results()
         serializer = GlobalPerformanceMeasurementSerializer(gpms, many=True)
         consumer.send(serializer.data)
-
-
-        consumer.disconnect()
 
     def read_traffic_state(self, sinks):
         traffic_state = []
