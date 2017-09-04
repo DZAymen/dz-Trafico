@@ -169,7 +169,7 @@ class Node(object):
 
                 # Change vehicles position to target lane
                 else:
-                    if len(self.edge.getLanes())>2:
+                    if len(self.edge.getLanes())>2 and recommendation.target_lane == 1:
                         ten = 1
                         right_lane = self.edge.getLane(recommendation.target_lane-1)
                         left_lane = self.edge.getLane(recommendation.target_lane+1)
@@ -320,7 +320,7 @@ class Node(object):
                     print len(vehicles)
                     ten = 1
                     five = 1
-                    if len(self.edge.getLanes())>2:
+                    if len(self.edge.getLanes())>2 and recommendation.target_lane == 1:
                         right_lane = self.edge.getLane(recommendation.target_lane-1)
                         left_lane = self.edge.getLane(recommendation.target_lane+1)
                         target_lane = self.edge.getLane(recommendation.target_lane)
