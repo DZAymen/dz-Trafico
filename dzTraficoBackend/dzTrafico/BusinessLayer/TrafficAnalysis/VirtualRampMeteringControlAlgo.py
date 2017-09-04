@@ -140,13 +140,16 @@ class VirtualRampMetering:
     def get_average_vehicle_density(self, concerned_node, nodes, previous=False):
         # the sum of edges' density * each one length / the sum of node.edge.getLength()
         sum = 0
+        length_sum = 0
         if previous:
             for node in nodes:
                 sum += node.get_previous_density() * node.edge.getLength()/1000
         else:
             for node in nodes:
                 sum += node.get_current_density() * node.edge.getLength()/1000
-        return sum / ( len(nodes) * concerned_node.edge.getLength() )
+        for node in nodes:
+            length_sum += node.edge.getLength()
+        return sum / length_sum
 
     def round_to_base(self, x, base):
         return int(base * round(float(x) / base))
