@@ -2,6 +2,7 @@ from dzTrafico.BusinessLayer.SimulationCreation.SimulationCreator import Simulat
 from dzTrafico.BusinessEntities.Simulation import Simulation
 from dzTrafico.BusinessEntities.Sink import Sink
 from dzTrafico.BusinessEntities.Sensor import Sensor
+from dzTrafico.BusinessEntities.Node import Node
 from dzTrafico.BusinessLayer.TrafficAnalysis.TrafficAnalyzer import TrafficAnalyzer
 from dzTrafico.BusinessLayer.Statistics.StatisticsManager import StatisticsManager
 from dzTrafico.BusinessLayer.TrafficAnalysis.LaneChangeControlAlgo import LaneChange
@@ -138,6 +139,7 @@ class SimulationManager:
         TrafficAnalyzer.congestionExists = False
 
         Simulation.LCMode_vsl_lc = data["lc_mode"]
+        Node.COMPLIANCE_PERCENTAGE = data["driver_compliance"]
 
     # ---------------------------------------------------------------------------------------------------
 

@@ -5,6 +5,7 @@ from random import randint
 class Node(object):
 
     COMPLIANCE_PERCENTAGE = 1
+    black_list_vehs = []
 
     sensors = []
     edge = None
@@ -260,7 +261,9 @@ class Node(object):
                 lane = self.edge.getLane(recommendation.lane)
 
                 vehicles = traci.lane.getLastStepVehicleIDs(lane.getID())
+                print "Driver compliance == > ", len(vehicles)
                 vehicles = self.get_compliant_vehicles(vehicles, Node.COMPLIANCE_PERCENTAGE)
+                print "Driver compliance --- == > ", len(vehicles)
                 # Change either way
                 if recommendation.change_to_either_way:
                     # Calculate the percentage of vehicles to change to left
@@ -366,9 +369,13 @@ class Node(object):
 
     def get_compliant_vehicles(self, vehicles, percentage):
         compliant_vehs = []
+        for veh in self.black_list_vehs:
+            if vehicles.count(veh):
+                vehicles.remove(veh)
         num_compliant_vehs = int(round(len(vehicles)*percentage))
         for i in range(0, num_compliant_vehs):
             veh = vehicles[randint(0, len(vehicles)-1)]
             vehicles.remove(veh)
             compliant_vehs.append(veh)
+        self.black_list_vehs.extend(vehicles)
         return compliant_vehs
