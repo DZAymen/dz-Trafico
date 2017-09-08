@@ -64,10 +64,11 @@ class TripManager:
                                       to=str(flow.end_edge),
                                       begin=str(flow.depart_time),
                                       end=str(flow.end_depart_time),
-                                      vehsPerHour=str(flow.vehicles_per_hour),
-                                      via=str(flow.via_edges),
+                                      vehsPerHour=str(flow.vehicles_per_hour)
                                       )
             flow_node.set("from",str(flow.start_edge))
+            if flow.via_edges != "":
+                flow_node.set("via", str(flow.via_edges))
             root.append(flow_node)
             i += 1
         et = etree.ElementTree(root)

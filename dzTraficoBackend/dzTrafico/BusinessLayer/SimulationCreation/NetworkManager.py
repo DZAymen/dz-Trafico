@@ -89,10 +89,11 @@ class NetworkManager:
                                       to=str(flow.end_edge),
                                       begin=str(flow.depart_time),
                                       end=str(flow.end_depart_time),
-                                      number="1",
-                                      via=str(flow.via_edges)
+                                      number="1"
                                       )
             flow_node.set("from", str(flow.start_edge))
+            if flow.via_edges != "":
+                flow_node.set("via", str(flow.via_edges))
             root.append(flow_node)
             i += 1
         et = etree.ElementTree(root)
