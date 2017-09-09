@@ -20,7 +20,7 @@ class TrafficStateManager:
             TrafficStateManager.__trafficStateManager = TrafficStateManager()
         return TrafficStateManager.__trafficStateManager
 
-    def start(self, consumer):
+    def start(self, realTimeTrafficStateConsumer):
         self.control_vehs_dict = dict()
         self.no_control_vehs_dict = dict()
 
@@ -69,7 +69,7 @@ class TrafficStateManager:
                 traffic_state = self.read_traffic_state(sinks)
                 if TrafficAnalyzer.isVSLControlActivated and TrafficAnalyzer.isCongestionDetected:
                     self.update_vsl(sinks)
-                consumer.send(traffic_state)
+                realTimeTrafficStateConsumer.send(traffic_state)
                 if len(self.simulation.get_incidents())>0:
                     for state in traffic_state:
                         if state['edge_id'] == traci.lane.getEdgeID(self.simulation.get_incidents()[0].lane_id):
@@ -93,7 +93,7 @@ class TrafficStateManager:
 
         gpms = self.__simulationManager.get_simulation_gpm_results()
         serializer = GlobalPerformanceMeasurementSerializer(gpms, many=True)
-        consumer.send(serializer.data)
+        realTimeTrafficStateConsumer.send(serializer.data)
 
     def read_traffic_state(self, sinks):
         traffic_state = []
