@@ -8,7 +8,8 @@ import { Arrival } from '../../../domain/arrival';
 @Injectable()
 export class ArrivalPointsService {
 
-  private apiURL = 'http://127.0.0.1:8000/api/creation/trafficflow/arrivals';
+  //private apiURL = "http://127.0.0.1:8000/api/creation/trafficflow/arrivals";
+  private apiURL = "api/arrivals";
   private headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(private http: Http) { }
@@ -16,7 +17,7 @@ export class ArrivalPointsService {
   getArrivalPoints(): Promise<Arrival[]> {
      return this.http.get(this.apiURL)
                 .toPromise()
-                .then(response => response.json() as Arrival[])
+                .then(response => response.json().data as Arrival[])
                 .catch(this.handleError);
   }
 
@@ -38,7 +39,7 @@ export class ArrivalPointsService {
      return this.http
                 .post(this.apiURL, arrival, {headers: this.headers})
                 .toPromise()
-                .then(res => res.json() as Arrival)
+                .then(res => res.json().data as Arrival)
                 .catch(this.handleError);
 
   }

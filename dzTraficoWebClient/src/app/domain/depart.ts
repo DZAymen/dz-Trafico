@@ -1,6 +1,7 @@
 import { Location } from './location';
 
 export class Depart {
+  id: number;
   position: Location;
   departTime: number;
   flow: number;

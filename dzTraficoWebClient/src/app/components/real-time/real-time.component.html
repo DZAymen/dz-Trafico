@@ -1,0 +1,19 @@
+
+<div class="ui-g-12">
+ <div class="content-block">
+      <div class="card card-stats">
+          <div class="card-header card-header-icon" data-background-color="blue">
+              <i class="material-icons fa fa-flag"></i>
+          </div>
+          <div class="card-content">
+               <h4 class="card-title">Liste des points de départ</h4>
+               <p-dataTable [value]="departPoints">
+                   <p-column field="id" header="id"></p-column>
+                   <p-column field="position.lat" header="Point de depart"></p-column>
+                   <p-column field="flow" header="Débit"></p-column>
+                   <p-column field="departTime" header="Temps de départ"></p-column>
+               </p-dataTable>
+         </div>
+      </div>
+ </div>
+</div>

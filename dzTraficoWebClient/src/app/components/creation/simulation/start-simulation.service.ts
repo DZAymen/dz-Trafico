@@ -8,7 +8,7 @@ import { SimulationConfig } from '../../../domain/simul-config';
 @Injectable()
 export class StartSimulationService {
 
-  private apiURL = 'api/sensors';
+  private apiURL =  "http://127.0.0.1:8000/api/creation/state";
   private headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(private http: Http) { }

@@ -9,8 +9,8 @@ import { GMapModule, InputTextModule, ButtonModule, GrowlModule, DropdownModule,
        }  from 'primeng/primeng';
 
 // Imports for loading & configuring the in-memory web api
-// import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
-// import { TrafficFlowData }  from './data/trafficflow-data';
+import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { TrafficFlowData }  from './data/trafficflow-data';
 
 
 // Feature Components
@@ -26,7 +26,8 @@ import { CoreModule } from './core/core.module';
 
 // Routing
 import {routing} from './app.routing';
-import { StatisticsComponent } from './components/result/statistics/statistics.component';
+import { StatisticsComponent } from './components/statistics/statistics.component';
+import { RealTimeComponent } from './components/real-time/real-time.component';
 
 
 
@@ -37,14 +38,15 @@ import { StatisticsComponent } from './components/result/statistics/statistics.c
     TrafficComponent,
     VehicleComponent,
     SimulationComponent,
-    StatisticsComponent
+    StatisticsComponent,
+    RealTimeComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
     HttpModule,
-    // InMemoryWebApiModule.forRoot(TrafficFlowData),
+    InMemoryWebApiModule.forRoot(TrafficFlowData),
 
 
     SharedModule, CoreModule,
