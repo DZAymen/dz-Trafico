@@ -39,7 +39,7 @@ class TrafficStateManager:
             self.simulation.check_incidents(step, self.simulation.SIM)
             self.simulation.clean_incidents(step)
             self.set_sumo_LC_Model(sinks, self.simulation.LCMode_noControl)
-            self.check_departed_vehicles(step, self.no_control_vehs_dict)
+            # self.check_departed_vehicles(step, self.no_control_vehs_dict)
 
             # Changelane in accident edge
             if TrafficAnalyzer.congestionExists:
@@ -50,7 +50,7 @@ class TrafficStateManager:
             incidentIsClear = self.simulation.check_incidents(step, self.simulation.SIM_VSL_LC)
             self.simulation.clean_incidents(step)
             self.set_sumo_LC_Model(sinks, self.simulation.LCMode_vsl_lc)
-            self.check_departed_vehicles(step, self.control_vehs_dict)
+            # self.check_departed_vehicles(step, self.control_vehs_dict)
 
             if step == 0 or (TrafficAnalyzer.isCongestionDetected and incidentIsClear):
                 self.deactivate_vsl(sinks)
@@ -88,8 +88,8 @@ class TrafficStateManager:
 
         print densities
 
-        print "Control, numStops ===> ", self.get_num_stops(self.control_vehs_dict)
-        print "No Control, numStops ===> ", self.get_num_stops(self.no_control_vehs_dict)
+        # print "Control, numStops ===> ", self.get_num_stops(self.control_vehs_dict)
+        # print "No Control, numStops ===> ", self.get_num_stops(self.no_control_vehs_dict)
 
         gpms = self.__simulationManager.get_simulation_gpm_results()
         serializer = GlobalPerformanceMeasurementSerializer(gpms, many=True)
