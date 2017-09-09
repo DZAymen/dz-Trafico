@@ -2,14 +2,14 @@ import { InMemoryDbService } from 'angular-in-memory-web-api';
 export class TrafficFlowData implements InMemoryDbService {
   createDb() {
     let departs= [
-      {"id": 1, "departTime": 2012, "position":  {"lat": 36.7596737, "lng": 3.1365537},"flow": 0.4},
-      {"id": 2, "departTime": 2012, "position":  {"lat": 36.7596737, "lng": 3.1365537},"flow": 0.4},
-      {"id": 3, "departTime": 2012, "position":  {"lat": 36.7596737, "lng": 3.1365537},"flow": 0.4},
-      {"id": 4, "departTime": 2012, "position":  {"lat": 36.7596737, "lng": 3.1365537},"flow": 0.4}
+      // {"id": 1, "departTime": 2012, "position":  {"lat": 36.7596737, "lng": 3.1365537},"flow": 0.4},
+      // {"id": 2, "departTime": 2012, "position":  {"lat": 36.7596737, "lng": 3.1365537},"flow": 0.4},
+      // {"id": 3, "departTime": 2012, "position":  {"lat": 36.7596737, "lng": 3.1365537},"flow": 0.4},
+      // {"id": 4, "departTime": 2012, "position":  {"lat": 36.7596737, "lng": 3.1365537},"flow": 0.4}
     ];
     let arrivals= [
-      {"id": 1, "position":  {"lat": 36.7596737, "lng": 3.1365537}},
-      {"id": 2, "position":  {"lat": 36.7596737, "lng": 3.1365537}}
+      // {"id": 1, "position":  {"lat": 36.7596737, "lng": 3.1365537}},
+      // {"id": 2, "position":  {"lat": 36.7596737, "lng": 3.1365537}}
     ];
     let accidents= [
 

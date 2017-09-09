@@ -11,5 +11,6 @@ export class VehicleType {
 
   // SpeedDev: number;
   // speedFactor: number;
+  //length :number;
 
 }

@@ -22,9 +22,9 @@ declare var google: any;
 })
 export class TrafficComponent implements OnInit {
 
-  departPoints: Depart[];
-  arrivalPoints: Arrival[];
-  accidentPoints: Accident[];
+  departPoints: Depart[]=[];
+  arrivalPoints: Arrival[]=[];
+  accidentPoints: Accident[]=[];
 
   /* Map */
   map:any;
@@ -164,6 +164,7 @@ export class TrafficComponent implements OnInit {
         let depart= new Depart( this.position, this.departTime, this.flow);
         this.departPointService.create(depart)
           .then(dept => {
+            console.log(dept);
             this.departPoints.push(dept);
             this.drawMarker(dept,'depart');
           });
@@ -204,6 +205,7 @@ export class TrafficComponent implements OnInit {
     // }
 
     drawMarker(obj: any,type: string){
+      console.log(obj)
       this.overlays.push(new google.maps.Marker({
           position: {lat: this.selectedPosition.lat(), lng: this.selectedPosition.lng()},
           name: JSON.stringify({ _id: obj.id , _type: type}), // save the obj.id into marker.label to facilitate the suppression of the point

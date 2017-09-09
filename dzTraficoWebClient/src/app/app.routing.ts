@@ -6,7 +6,8 @@ import {MapComponent} from './components/creation/map/map.component';
 import {TrafficComponent} from './components/creation/traffic/traffic.component';
 import {VehicleComponent} from './components/creation/vehicle/vehicle.component';
 import {SimulationComponent} from './components/creation/simulation/simulation.component';
-import {StatisticsComponent} from './components/result/statistics/statistics.component';
+import {RealTimeComponent} from './components/real-time/real-time.component';
+import {StatisticsComponent} from './components/statistics/statistics.component';
 
 const appRoutes: Routes = [
   {
@@ -26,12 +27,16 @@ const appRoutes: Routes = [
     component: SimulationComponent
   },
   {
+    path: 'realtime',
+    component: RealTimeComponent
+  },
+  {
     path: 'result',
     component: StatisticsComponent
   },
    // { path: '**', component: PageNotFoundComponent }
   {
-    path: '', 
+    path: '',
     redirectTo: 'map',
     pathMatch: 'full' }
 ];
