@@ -105,14 +105,14 @@ class TripManager:
             root = etree.Element("vTypeDistribution", id="vtypedist")
 
         type_node = etree.Element("vType",
-                                  accel=str(vehicle_type.accel),
-                                  decel=str(vehicle_type.decel),
+                                  accel=str(vehicle_type.acceleration),
+                                  decel=str(vehicle_type.deceleration),
                                   length=str(vehicle_type.length),
+                                  height=str(vehicle_type.height),
+                                  width=str(vehicle_type.width),
                                   maxSpeed=str(vehicle_type.maxSpeed),
                                   minGap=str(vehicle_type.minGap),
-                                  speedFactor=str(vehicle_type.speedFactor),
-                                  sigma=str(vehicle_type.sigma),
-                                  tau=str(vehicle_type.tau)
+                                  speedFactor=str(vehicle_type.speedFactor)
                                   )
         type_node.set("id",str(current_type_id))
         root.append(type_node)
@@ -173,14 +173,14 @@ class TripManager:
                 vehicleType = VehicleType(
                         float(vtype.get('maxSpeed')),
                         float(vtype.get('length')),
+                        float(vtype.get('height')),
+                        float(vtype.get('width')),
                         float(vtype.get('minGap')),
-                        vtype.get('speedFactor'),
                         float(vtype.get('accel')),
-                        float(vtype.get('decel')),
-                        float(vtype.get('sigma')),
-                        float(vtype.get('tau')),
+                        float(vtype.get('decel'))
                     )
                 vehicleType.set_type_id(vtype.get('id'))
+                vehicleType.set_speed_factor(vtype.get('speedFactor'),)
                 vehicle_types.append(vehicleType)
             return vehicle_types
         else:

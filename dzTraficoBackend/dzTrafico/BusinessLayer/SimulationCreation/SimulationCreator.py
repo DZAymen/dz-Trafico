@@ -62,7 +62,7 @@ class SimulationCreator:
     # ---------------------------------- Vehicle types defintion ----------------------------------------
     def add_vehicle_type(self, vehicle_type):
         SimulationCreator.__tripManager.add_vehicle_type(vehicle_type)
-        SimulationCreator.__simulation.add_vehicle_types(vehicle_type)
+        SimulationCreator.__simulation.add_vehicle_types([vehicle_type])
 
     def set_vehicle_types_percentages(self, vehicle_types_percentages):
         SimulationCreator.__tripManager.set_vehicle_types_percentages(vehicle_types_percentages)
