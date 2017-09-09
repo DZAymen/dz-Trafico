@@ -54,6 +54,10 @@
                   </div>
                   <div *ngIf="accidentDialog">
                     <div class="ui-grid-row">
+                        <div class="ui-grid-col-4"><label for="debit">Num voie</label></div>
+                        <div class="ui-grid-col-8"><p-spinner [(ngModel)]="lane" [step]="1"></p-spinner></div>
+                    </div>
+                    <div class="ui-grid-row">
                         <div class="ui-grid-col-4"><label for="debit">Temps accident</label></div>
                         <div class="ui-grid-col-8"><p-spinner [(ngModel)]="accidentTime" [step]="100"></p-spinner></div>
                     </div>

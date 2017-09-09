@@ -1,16 +1,11 @@
 export class VehicleType {
 
   id: number;
-  accel: number;
-  decel: number;
-  sigma: number;
-  tau: number;
+  length :number;
+  width: number;
+  height:number;
   minGap: number;
-  impatience: number;
-  maxSpeed:number;
-
-  // SpeedDev: number;
-  // speedFactor: number;
-  //length :number;
-
+  acceleration: number;
+  deceleration: number;
+  maxSpeed: number;
 }

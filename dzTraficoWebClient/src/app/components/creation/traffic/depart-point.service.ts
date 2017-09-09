@@ -8,8 +8,8 @@ import { Depart } from '../../../domain/depart';
 @Injectable()
 export class DepartPointsService {
 
-  //private apiURL = "http://127.0.0.1:8000/api/creation/trafficflow/departs";
-  private apiURL = "api/departs";
+  private apiURL = "http://127.0.0.1:8000/api/creation/trafficflow/departs";
+  //private apiURL = "api/departs";
   private headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(private http: Http) { }
@@ -17,14 +17,14 @@ export class DepartPointsService {
   getDepartPoints(): Promise<Depart[]> {
      return this.http.get(this.apiURL)
                 .toPromise()
-                .then(response => response.json().data as Depart[])
+                .then(response => response.json() as Depart[])
                 .catch(this.handleError);
   }
 
   getDepartPointById(id: number): Promise<Depart>{
      return this.http.get(`${this.apiURL}/${id}`)
                .toPromise()
-               .then(response => response.json().data as Depart)
+               .then(response => response.json() as Depart)
                .catch(this.handleError);
   }
 
@@ -39,7 +39,7 @@ export class DepartPointsService {
      return this.http
                 .post(this.apiURL, depart, {headers: this.headers})
                 .toPromise()
-                .then(res => res.json().data as Depart)
+                .then(res => res.json() as Depart)
                 .catch(this.handleError);
   }
 

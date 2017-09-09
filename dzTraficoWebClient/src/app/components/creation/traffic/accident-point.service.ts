@@ -8,8 +8,8 @@ import { Accident } from '../../../domain/accident';
 @Injectable()
 export class AccidentPointsService {
 
-  //private apiURL = "http://127.0.0.1:8000/api/creation/incident";
-  private apiURL = "api/accidents";
+  private apiURL = "http://127.0.0.1:8000/api/creation/incident";
+  //private apiURL = "api/accidents";
   private headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(private http: Http) { }
@@ -17,14 +17,14 @@ export class AccidentPointsService {
   getAccidentPoints(): Promise<Accident[]> {
      return this.http.get(this.apiURL)
                 .toPromise()
-                .then(response => response.json().data as Accident[])
+                .then(response => response.json() as Accident[])
                 .catch(this.handleError);
   }
 
   getAccidentPointById(id: number): Promise<Accident>{
      return this.http.get(`${this.apiURL}/${id}`)
                .toPromise()
-               .then(response => response.json().data as Accident)
+               .then(response => response.json() as Accident)
                .catch(this.handleError);
   }
 
@@ -39,7 +39,7 @@ export class AccidentPointsService {
      return this.http
                 .post(this.apiURL, accident, {headers: this.headers})
                 .toPromise()
-                .then(res => res.json().data as Accident)
+                .then(res => res.json() as Accident)
                 .catch(this.handleError);
 
   }
