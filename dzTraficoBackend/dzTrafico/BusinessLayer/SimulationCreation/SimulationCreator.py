@@ -3,6 +3,7 @@ from NetworkManager import NetworkManager
 from dzTrafico.BusinessLayer.TrafficAnalysis.LaneChangeControlAlgo import LaneChange
 from TripManager import TripManager
 from dzTrafico.BusinessLayer.SimulationCreation.SensorsManager import SensorsManager
+from dzTrafico.BusinessEntities.Sink import Sink
 
 class SimulationCreator:
     __simulation = Simulation()
@@ -55,6 +56,7 @@ class SimulationCreator:
         #Calculate each incident edge_id before setting them in simulation instance
         incident_updated_lanes = SimulationCreator.__tripManager.set_incident_lanes(incidents)
         SimulationCreator.__simulation.add_incidents(incident_updated_lanes)
+        Sink.incidents = incident_updated_lanes
     # ---------------------------------------------------------------------------------------------------
 
     # ---------------------------------- Vehicle types defintion ----------------------------------------

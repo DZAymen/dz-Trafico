@@ -5,6 +5,7 @@ class Sink(object):
 
     id = 0
     trafficAnalyzer = None
+    incidents = []
 
     def __init__(self):
         self.id = Sink.id
@@ -57,7 +58,12 @@ class Sink(object):
         for node in self.nodes:
 
             congested_lanes = node.check_congested_lanes()
-            congestion_detected = len(congested_lanes)>0
+            for incident in self.incidents:
+                congestion_detected = len(congested_lanes) > 0 and node.edge.getID() == incident.edge.getID()
+                if congestion_detected:
+                    congested_lanes = [incident.lane]
+                    break
+
             if congestion_detected and not TrafficAnalyzer.isCongestionDetected:
                 print "--------notify_congestion_detected----------"
                 print node.edge.getID()
