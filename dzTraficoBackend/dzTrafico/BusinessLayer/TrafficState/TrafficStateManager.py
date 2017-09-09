@@ -1,3 +1,5 @@
+from numpy.distutils.system_info import numarray_info
+
 from dzTrafico.BusinessLayer.SimulationManager import SimulationManager
 from dzTrafico.BusinessEntities.Sink import Sink
 from dzTrafico.BusinessEntities.EdgeState import EdgeStateSerializer
@@ -10,6 +12,7 @@ from dzTrafico.BusinessEntities.LCRecommendation import LCRecommendation
 class TrafficStateManager:
     __trafficStateManager = None
     __simulationManager = SimulationManager.get_instance()
+    vehicles = []
 
     @staticmethod
     def get_instance():
@@ -18,6 +21,8 @@ class TrafficStateManager:
         return TrafficStateManager.__trafficStateManager
 
     def start(self, consumer):
+        self.control_vehs_dict = dict()
+        self.no_control_vehs_dict = dict()
 
         self.simulation = self.__simulationManager.get_simulation()
         sinks = self.simulation.get_sinks()
@@ -34,6 +39,7 @@ class TrafficStateManager:
             self.simulation.check_incidents(step, self.simulation.SIM)
             self.simulation.clean_incidents(step)
             self.set_sumo_LC_Model(sinks, self.simulation.LCMode_noControl)
+            self.check_departed_vehicles(step, self.no_control_vehs_dict)
 
             # Changelane in accident edge
             if TrafficAnalyzer.congestionExists:
@@ -44,6 +50,7 @@ class TrafficStateManager:
             incidentIsClear = self.simulation.check_incidents(step, self.simulation.SIM_VSL_LC)
             self.simulation.clean_incidents(step)
             self.set_sumo_LC_Model(sinks, self.simulation.LCMode_vsl_lc)
+            self.check_departed_vehicles(step, self.control_vehs_dict)
 
             if step == 0 or (TrafficAnalyzer.isCongestionDetected and incidentIsClear):
                 self.deactivate_vsl(sinks)
@@ -73,11 +80,16 @@ class TrafficStateManager:
                 self.simulation.check_statistics_vehicles()
                 self.simulation.reset_vehicles_behaviour()
 
+
+
         traci.close()
         traci.switch(self.simulation.SIM)
         traci.close()
 
         print densities
+
+        print "Control, numStops ===> ", self.get_num_stops(self.control_vehs_dict)
+        print "No Control, numStops ===> ", self.get_num_stops(self.no_control_vehs_dict)
 
         gpms = self.__simulationManager.get_simulation_gpm_results()
         serializer = GlobalPerformanceMeasurementSerializer(gpms, many=True)
@@ -126,3 +138,47 @@ class TrafficStateManager:
     def set_sumo_LC_Model(self, sinks, mode):
         for sink in sinks:
             sink[0].set_sumo_LC_Model(mode)
+
+    def check_departed_vehicles(self, step, vehs_dict):
+        # Add departed vehicles
+        for veh_id in traci.simulation.getDepartedIDList():
+            vehs_dict[veh_id] = Vehicle(veh_id)
+        # Remove arrived vehicles
+        for veh_id in traci.simulation.getArrivedIDList():
+            vehs_dict[veh_id].set_arrived()
+
+        for veh_id in vehs_dict:
+            print " Step #", step, " num_stops", vehs_dict[veh_id].measure_vehicle_variables(step)
+
+    def get_num_stops(self, vehs_dict):
+        num_stops = 0
+        for veh_id in vehs_dict:
+            # if vehs_dict[veh_id].arrived:
+            print vehs_dict[veh_id].arrived
+            print vehs_dict[veh_id].num_stops
+            num_stops += vehs_dict[veh_id].num_stops
+            print num_stops
+        return num_stops
+
+class Vehicle:
+
+    num_stops = 0
+
+    isStoppedLastStep = False
+    isStopeed = False
+
+    def __init__(self, id):
+        self.id = id
+        self.arrived = False
+
+    def set_arrived(self):
+        self.arrived = True
+
+    def measure_vehicle_variables(self, step):
+        if not self.arrived:
+            self.isStoppedLastStep = self.isStopeed
+            self.isStopeed = traci.vehicle.isStopped(self.id)
+
+            if self.isStopeed and not self.isStoppedLastStep:
+                self.num_stops += 1
+        return self.num_stops
