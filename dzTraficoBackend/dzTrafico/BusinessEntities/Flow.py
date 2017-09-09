@@ -3,7 +3,8 @@ from Location import Location, LocationSerializer
 
 class Flow(object):
     end_depart_time = 10000
-    via_edges = "26322664#2"
+    # via_edges = "26322664#2"
+    via_edges = ""
     def __init__(self, start, end, depart_time, flow_value):
         self.start_edge = start
         self.end_edge = end
