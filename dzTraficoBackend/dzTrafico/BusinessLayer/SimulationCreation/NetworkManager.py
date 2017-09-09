@@ -3,6 +3,7 @@ from dzTrafico.BusinessEntities.Simulation import Simulation
 from sumolib.net.generator.network import Split
 import subprocess, os, sumolib
 import lxml.etree as etree
+from datetime import datetime
 
 class NetworkManager:
 
@@ -10,9 +11,19 @@ class NetworkManager:
     __network_file_path = ""
     net = None
 
+    def create_project_directory(self):
+        directory_path = os.path.join(os.path.normpath(os.getcwd()), "dzTrafico")
+
+        directory_name = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+        self.project_directory_path = os.path.join(directory_path,"SimulationFiles", directory_name)
+        os.makedirs(self.project_directory_path)
+
+        return self.project_directory_path
+
+
     def convert_map_to_network_file(self, osm_file_path):
         #Return network file path
-        self.__network_file_path = os.path.dirname(osm_file_path) + "\\map.net.xml"
+        self.__network_file_path = self.project_directory_path + "\map.net.xml"
         subprocess.call("netconvert --osm-files " + osm_file_path + " -o " + self.__network_file_path)
         return self.__network_file_path
 
@@ -26,7 +37,13 @@ class NetworkManager:
         return self.__network_file_path
 
     def get_network_file(self, map_box):
-        self.osm_file_path = NetworkManager.__mapManager.download_map(map_box)
+        directory_path = os.path.join(os.path.normpath(os.getcwd()), "dzTrafico")
+        self.osm_file_path = os.path.join(
+            directory_path,"data", "maps",
+            "osm.map"+"_".join(map(str, map_box.get_coords())) + ".xml"
+        )
+        if not os.path.isfile(self.osm_file_path):
+            self.osm_file_path = NetworkManager.__mapManager.download_map(map_box, self.osm_file_path)
         return self.convert_map_to_network_file(self.osm_file_path)
 
     def initialize_net(self):
@@ -61,40 +78,89 @@ class NetworkManager:
     # Returns edges situated between start_edge and end_edge for each flow
     # We should fix the case of multi next edges
     def get_edges(self, flows):
-        edges = []
+        edges_list = []
+        # Generate a temp flows file
+        flows_filename = "flows.tmp.xml"
+        root = etree.Element("flowdefs")
+        i = 0
         for flow in flows:
-            current_edge = self.get_edge(flow.start_edge)
-            while True:
-                edges.append(current_edge)
-                if current_edge.getID() == flow.end_edge:
-                    break
-                #get_next_edge_id
-                #fix the special case of a many next edges
-                current_edge = current_edge.getToNode().getOutgoing()[0]
-        return edges
+            flow_node = etree.Element("flow",
+                                      id=str(i),
+                                      to=str(flow.end_edge),
+                                      begin=str(flow.depart_time),
+                                      end=str(flow.end_depart_time),
+                                      number="1"
+                                      )
+            flow_node.set("from", str(flow.start_edge))
+            if flow.via_edges != "":
+                flow_node.set("via", str(flow.via_edges))
+            root.append(flow_node)
+            i += 1
+        et = etree.ElementTree(root)
+        et.write(Simulation.project_directory + "\\" + flows_filename , pretty_print=True)
+
+        # Generate a temp routes file
+        network_file = "map.net.xml"
+        tmp_route_file = "rou.tmp.xml"
+
+        subprocess.call(
+            "duarouter -n " + Simulation.project_directory + "\\" + network_file
+            + " -f " + Simulation.project_directory + "\\" + flows_filename
+            + " -o " + Simulation.project_directory + "\\" + tmp_route_file
+        )
+        # Get routes from this file
+        routes = []
+        route_file = etree.parse(
+            os.path.join(Simulation.project_directory,tmp_route_file)
+        )
+        root = route_file.getroot()
+        vehs = root.getchildren()
+        for veh in vehs:
+            interm_routes = veh.getchildren()
+            for route in interm_routes:
+                routes.append(route)
+
+        # Delete temp files
+        # Get and parse edges from routes
+        for route in routes:
+            edges = []
+            edge_IDs = route.get("edges").split(' ')
+            for edge_ID in edge_IDs:
+                edges.append(self.get_edge(edge_ID))
+            edges_list.append(edges)
+
+        return edges_list
 
     # Split edges into equal segments
     # each one's length is almost equal sensors_distance
     def split_edges(self, primary_edges, sensors_distance):
         splitted_edges = []
-        for edge in primary_edges:
-            splits = []
-            sub_edges_num = int(edge.getLength() / sensors_distance)
-            for i in range(0, sub_edges_num):
-                splits.append(
-                    Split(
-                        distance = i * sensors_distance,
-                        lanes = []
-                    )
-                )
-            if len(splits) > 0:
-                splitted_edges.append(
-                    SplittedEdge(
-                        edge.getID(),
-                        edge.getLaneNumber(),
-                        splits
-                    )
-                )
+        already_splitted_edges = set()
+
+        print "------------primary_edges------------"
+        print primary_edges
+
+        for edges in primary_edges:
+            for edge in edges:
+                if not edge in already_splitted_edges:
+                    splits = []
+                    sub_edges_num = int(edge.getLength() / sensors_distance)
+                    for i in range(0, sub_edges_num):
+                        splits.append(
+                            Split(
+                                distance = i * sensors_distance,
+                                lanes = []
+                            )
+                        )
+                    if len(splits) > 0:
+                        splitted_edges.append(
+                            SplittedEdge(
+                                edge.getID(),
+                                edge.getLaneNumber(),
+                                splits
+                            )
+                        )
+                    already_splitted_edges.add(edge)
         return splitted_edges
 
     def create_splitted_edges_file(self, splitted_edges):
@@ -117,6 +183,9 @@ class NetworkManager:
         et.write(Simulation.project_directory + "\\" + splitted_edges_filename, pretty_print=True)
         return Simulation.project_directory + "\\" + splitted_edges_filename
 
+
+    def get_edge_by_laneID(self, lane_id):
+        return self.net.getEdge(sumolib._laneID2edgeID(lane_id))
 
 class SplittedEdge:
 

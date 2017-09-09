@@ -13,7 +13,7 @@ class TripManager:
 
     def __init__(self, networkManager):
         self.__networkManager = networkManager
-        self.vehicle_types_file_path = Simulation.project_directory + "\\..\\..\\data\\" + self.vehicle_types_filename
+        self.vehicle_types_file_path = Simulation.project_directory + "..\\..\\data\\" + self.vehicle_types_filename
 
     # -------------------------------- Flows definition -------------------------------------------------
     # This method defines flows from flowPoints
@@ -67,6 +67,8 @@ class TripManager:
                                       vehsPerHour=str(flow.vehicles_per_hour)
                                       )
             flow_node.set("from",str(flow.start_edge))
+            if flow.via_edges != "":
+                flow_node.set("via", str(flow.via_edges))
             root.append(flow_node)
             i += 1
         et = etree.ElementTree(root)
@@ -75,13 +77,14 @@ class TripManager:
     # ---------------------------------------------------------------------------------------------------
 
     # ---------------------------------- Incident lanes definition --------------------------------------
-    def set_incident_lanes(self, incident):
-        edge = self.__networkManager.get_edge(self.__networkManager.get_edgeId_from_geoCoord(incident.lon, incident.lat))
-        lanes_ids = []
-        for lane in edge.getLanes():
-            lanes_ids.append(lane.getID())
-        incident.set_lanes(lanes_ids)
-        return incident
+    def set_incident_lanes(self, incidents):
+        for incident in incidents:
+            edge = self.__networkManager.get_edge(self.__networkManager.get_edgeId_from_geoCoord(incident.lon, incident.lat))
+            lane = edge.getLane(incident.lane)
+            incident.set_edge(edge)
+            incident.set_lane(lane.getID())
+            incident.set_lane_position(lane.getLength() - 20)
+        return incidents
     # ---------------------------------------------------------------------------------------------------
 
     # ---------------------------------- Vehicle types defintion ----------------------------------------
@@ -108,7 +111,6 @@ class TripManager:
                                   maxSpeed=str(vehicle_type.maxSpeed),
                                   minGap=str(vehicle_type.minGap),
                                   speedFactor=str(vehicle_type.speedFactor),
-                                  speedDev=str(vehicle_type.speedDev),
                                   sigma=str(vehicle_type.sigma),
                                   tau=str(vehicle_type.tau)
                                   )
@@ -154,6 +156,8 @@ class TripManager:
 
             for vehicle in vehicles:
                 vehicle.set("type", vtypesdist_id)
+                vehicle.set("departSpeed", "random")
+                vehicle.set("departLane", "random")
 
             et = etree.ElementTree(map_route_root_node)
             et.write(Simulation.project_directory + "\\" + route_filename, pretty_print=True)
@@ -170,8 +174,7 @@ class TripManager:
                         float(vtype.get('maxSpeed')),
                         float(vtype.get('length')),
                         float(vtype.get('minGap')),
-                        float(vtype.get('speedFactor')),
-                        float(vtype.get('speedDev')),
+                        vtype.get('speedFactor'),
                         float(vtype.get('accel')),
                         float(vtype.get('decel')),
                         float(vtype.get('sigma')),
