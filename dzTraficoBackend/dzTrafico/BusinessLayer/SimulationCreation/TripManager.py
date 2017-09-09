@@ -81,6 +81,7 @@ class TripManager:
         for incident in incidents:
             edge = self.__networkManager.get_edge(self.__networkManager.get_edgeId_from_geoCoord(incident.lon, incident.lat))
             lane = edge.getLane(incident.lane)
+            incident.set_edge(edge)
             incident.set_lane(lane.getID())
             incident.set_lane_position(lane.getLength() - 20)
         return incidents
