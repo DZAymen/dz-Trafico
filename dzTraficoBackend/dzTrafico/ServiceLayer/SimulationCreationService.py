@@ -102,7 +102,10 @@ def add_vehicle_types(request):
         # Add vehicle type to vehicle types list
         simulationManager.add_vehicule_type(vehicleType)
 
-        return Response(data=vehicleTypeSerializer.data,status=status.HTTP_201_CREATED)
+        data = vehicleTypeSerializer.data
+        data['id'] = vehicleType.id
+
+        return Response(data=data, status=status.HTTP_201_CREATED)
 
     elif request.method == 'GET':
         vehicle_types = simulationManager.get_vehicle_types()

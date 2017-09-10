@@ -25,7 +25,7 @@ class VehicleType(object):
 
 class VehicleTypeSerializer(serializers.Serializer):
 
-    id = serializers.CharField(required=False)
+    id = serializers.CharField(read_only=True)
     maxSpeed = serializers.FloatField()
     length = serializers.FloatField(required=False)
     width = serializers.FloatField(required=False)
