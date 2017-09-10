@@ -68,6 +68,7 @@ class Simulation:
         self.__incidents = []
         self.__traffic_flows = []
         self.__vehicle_types = []
+        self.__sinks = []
 
         simulations_directory = os.path.join(os.path.normpath(os.getcwd()), "dzTrafico\\SimulationFiles")
         Simulation.project_directory = simulations_directory + "\\" + \
@@ -86,6 +87,7 @@ class Simulation:
         self.__incidents = []
         self.__traffic_flows = []
         self.__vehicle_types = []
+        self.__sinks = []
 
         Simulation.__network_file = file_path
 

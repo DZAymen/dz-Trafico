@@ -13,6 +13,7 @@ class TrafficStateManager:
     __trafficStateManager = None
     __simulationManager = SimulationManager.get_instance()
     vehicles = []
+    LC_consumer = None
 
     @staticmethod
     def get_instance():
@@ -61,6 +62,8 @@ class TrafficStateManager:
             # Check for LanChanges in nodes' recommendations
             if TrafficAnalyzer.congestionExists and TrafficAnalyzer.isLCControlActivated and self.simulation.sim_step_duration>1:
                 self.change_lane(sinks)
+                if self.LC_consumer is not None:
+                    self.LC_consumer.send(self.get_LC_recommendations(sinks))
 
             # Read traffic state in each time stamp
             # Check for congestion
@@ -159,6 +162,16 @@ class TrafficStateManager:
             num_stops += vehs_dict[veh_id].num_stops
             print num_stops
         return num_stops
+
+    def set_LC_consumer(self, consumer):
+        self.LC_consumer = consumer
+
+    def get_LC_recommendations(self, sinks):
+        lc_recommendations = []
+        for sink in sinks:
+            lc_recommendations.extend(sink[0].get_LC_recommendations())
+        return lc_recommendations
+
 
 class Vehicle:
 
