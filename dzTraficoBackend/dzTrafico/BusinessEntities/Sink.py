@@ -103,9 +103,9 @@ class Sink(object):
 
     def get_LC_recommendations(self):
         lc_recommendations = []
-        lanes = []
         index = 0
         for node in self.nodes:
+            lanes = []
             if node.LC_is_activated:
                 for r in node.recommendations:
                     lanes.append(
