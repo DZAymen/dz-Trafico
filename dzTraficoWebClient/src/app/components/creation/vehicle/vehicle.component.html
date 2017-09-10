@@ -62,7 +62,8 @@
                           <!-- affichage distribution des véhicules -->
                           <p-column field="percentage" header="% Pourcentage" [editable]="true">
                               <ng-template let-col let-vd="rowData" pTemplate="body">
-                                  <p-slider [(ngModel)]="vd[col.field]"  [style]="{'width':'100px'}"></p-slider>
+                                <div class="ui-grid-col-10"><p-slider [(ngModel)]="vd[col.field]"></p-slider></div>
+                                <div class="ui-grid-col-2">{{vd[col.field]}}</div>
                               </ng-template>
                           </p-column>
                       </p-dataTable>

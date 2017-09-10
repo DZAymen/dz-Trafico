@@ -8,8 +8,8 @@ import { VehicleType } from '../../../domain/vehicle-type';
 @Injectable()
 export class VehicleTypeService {
 
-  //private apiURL = "http://127.0.0.1:8000/api/creation/vehicletypes";
-  private apiURL= "api/vehicleTypes"
+  private apiURL = "http://127.0.0.1:8000/api/creation/vehicletypes";
+  //private apiURL= "api/vehicleTypes"
   private headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(private http: Http) { }
@@ -17,14 +17,14 @@ export class VehicleTypeService {
   getVehicleTypes(): Promise<VehicleType[]> {
      return this.http.get(this.apiURL)
                 .toPromise()
-                .then(response => response.json().data as VehicleType[])
+                .then(response => response.json() as VehicleType[])
                 .catch(this.handleError);
   }
 
   getVehicleTypeById(id: number): Promise<VehicleType>{
      return this.http.get(`${this.apiURL}/${id}`)
                .toPromise()
-               .then(response => response.json().data as VehicleType)
+               .then(response => response.json() as VehicleType)
                .catch(this.handleError);
   }
 
@@ -39,7 +39,7 @@ export class VehicleTypeService {
      return this.http
                 .post(this.apiURL, vType ,{headers: this.headers})
                 .toPromise()
-                .then(res => res.json().data as VehicleType)
+                .then(res => res.json() as VehicleType)
                 .catch(this.handleError);
 
   }

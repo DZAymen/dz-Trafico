@@ -41,11 +41,13 @@ export class VehicleComponent implements OnInit {
   }
 
   addVehicleType(){
-    this.vehicleTypeService.create(this.newType);
-
-      let newVDistri = new VehicleDistribution(this.newType);
-      this.vehiclesDistri.push(newVDistri);
-      console.log(this.vehiclesDistri);
+      this.vehicleTypeService.create(this.newType).then(
+        vehtype => {
+          let newVDistri = new VehicleDistribution(vehtype);
+          this.vehiclesDistri.push(newVDistri);
+          console.log(this.vehiclesDistri);
+        }
+      )
       this.dialogVisible = false;
       //this.newType= null;
   }
@@ -60,9 +62,9 @@ export class VehicleComponent implements OnInit {
     this.router.navigate(['/start']);
   }
 
-  private transformToDist(vTypes: VehicleType[]){
+  /*private transformToDist(vTypes: VehicleType[]){
       for (let vt of vTypes) {
         this.vehiclesDistri.push(new VehicleDistribution(vt));
       }
-  }
+  }*/
 }
