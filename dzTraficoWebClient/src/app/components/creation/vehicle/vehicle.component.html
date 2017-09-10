@@ -12,34 +12,33 @@
             <p-dialog showEffect="fade" [(visible)]="dialogVisible" header="Nv Type">
                 <div class="ui-grid ui-grid-pad ui-fluid">
                     <div class="ui-grid-row">
-                        <div class="ui-grid-col-4"><label for="accel">Acceleratin</label></div>
-                        <div class="ui-grid-col-8"><p-spinner [(ngModel)]="newType.accel" [step]="10"></p-spinner></div>
+                        <div class="ui-grid-col-4"><label for="Longueur">Longueur</label></div>
+                        <div class="ui-grid-col-8"><p-spinner [(ngModel)]="newType.length" [step]="10"></p-spinner></div>
                     </div>
                     <div class="ui-grid-row">
-                        <div class="ui-grid-col-4"><label for="decel">Declaration</label></div>
-                        <div class="ui-grid-col-8"><p-spinner [(ngModel)]="newType.decel" [step]="10"></p-spinner></div>
+                        <div class="ui-grid-col-4"><label for="Largeur">Largeur</label></div>
+                        <div class="ui-grid-col-8"><p-spinner [(ngModel)]="newType.width" [step]="10"></p-spinner></div>
                     </div>
                     <div class="ui-grid-row">
-                        <div class="ui-grid-col-4"><label for="impat">Impatience</label></div>
-                        <div class="ui-grid-col-8"><p-spinner [(ngModel)]="newType.impatience" [step]="10"></p-spinner></div>
+                        <div class="ui-grid-col-4"><label for="Hauteur">Hauteur</label></div>
+                        <div class="ui-grid-col-8"><p-spinner [(ngModel)]="newType.height" [step]="10"></p-spinner></div>
                     </div>
                     <div class="ui-grid-row">
-                        <div class="ui-grid-col-4"><label for="sigma">Sigma</label></div>
-                        <div class="ui-grid-col-8"><p-spinner [(ngModel)]="newType.sigma" [step]="10"></p-spinner></div>
-                    </div>
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-4"><label for="minGap">minGap</label></div>
+                        <div class="ui-grid-col-4"><label for="minGap">Min gap</label></div>
                         <div class="ui-grid-col-8"><p-spinner [(ngModel)]="newType.minGap" [step]="10"></p-spinner></div>
                     </div>
                     <div class="ui-grid-row">
-                        <div class="ui-grid-col-4"><label for="tau">Tau</label></div>
-                        <div class="ui-grid-col-8"><p-spinner [(ngModel)]="newType.tau" [step]="10"></p-spinner></div>
+                        <div class="ui-grid-col-4"><label for="Accélération">Accélération</label></div>
+                        <div class="ui-grid-col-8"><p-spinner [(ngModel)]="newType.acceleration" [step]="10"></p-spinner></div>
                     </div>
                     <div class="ui-grid-row">
-                        <div class="ui-grid-col-4"><label for="maxSpeeds">maxSpeed</label></div>
+                        <div class="ui-grid-col-4"><label for="Décélération">Décélération</label></div>
+                        <div class="ui-grid-col-8"><p-spinner [(ngModel)]="newType.deceleration" [step]="10"></p-spinner></div>
+                    </div>
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-4"><label for="Max speeds">Max speeds</label></div>
                         <div class="ui-grid-col-8"><p-spinner [(ngModel)]="newType.maxSpeed" [step]="10"></p-spinner></div>
                     </div>
-
                 </div>
                 <p-footer>
                     <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
@@ -58,8 +57,10 @@
                           </div>
                       </p-header>
                       <p-dataTable [value]="vehiclesDistri" dataKey="id">
+                          <!-- affichage des type de véhicules -->
                           <p-column *ngFor="let col of cols"[style]="{'width':'100px'}" [field]="col.field" [header]="col.header"></p-column>
-                          <p-column field="pourcentage" header="% Pourcentage" [editable]="true">
+                          <!-- affichage distribution des véhicules -->
+                          <p-column field="percentage" header="% Pourcentage" [editable]="true">
                               <ng-template let-col let-vd="rowData" pTemplate="body">
                                   <p-slider [(ngModel)]="vd[col.field]"  [style]="{'width':'100px'}"></p-slider>
                               </ng-template>

@@ -8,8 +8,8 @@ import { VehicleDistribution} from '../../../domain/vehicle-distrib';
 @Injectable()
 export class VehicleDistribService {
 
-  //private apiURL = "http://127.0.0.1:8000/api/creation/vehicletypespercentages";
-  private apiURL= "api/vehpourcentage"
+  private apiURL = "http://127.0.0.1:8000/api/creation/vehicletypespercentages";
+  //  private apiURL= "api/vehpourcentage"
   private headers = new Headers({'Content-Type': 'application/json'});
 
   constructor(private http: Http) { }
@@ -18,7 +18,7 @@ export class VehicleDistribService {
      return this.http
                 .post(this.apiURL, VehicleDistrib, {headers: this.headers})
                 .toPromise()
-                .then(res => res.json().data as VehicleDistribution)
+                .then(res => res.json() as VehicleDistribution)
                 .catch(this.handleError);
   }
 

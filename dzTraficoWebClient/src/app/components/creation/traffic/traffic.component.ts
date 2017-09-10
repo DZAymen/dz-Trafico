@@ -46,7 +46,7 @@ export class TrafficComponent implements OnInit {
   markerName: string;
   selectedPosition: any;
   flow:number; departTime: number;
-  accidentTime: number; accidentDuration: number;
+  lane: number; accidentTime: number; accidentDuration: number;
 
 
     constructor(
@@ -169,7 +169,7 @@ export class TrafficComponent implements OnInit {
             this.drawMarker(dept,'depart');
           });
       }else if (this.accidentDialog){
-        let accident= new Accident(this.position, this.accidentTime, this.accidentDuration);
+        let accident= new Accident(this.position, this.lane, this.accidentTime, this.accidentDuration);
         this.accidentPointService.create(accident)
           .then(acc => {
             this.accidentPoints.push(acc);
