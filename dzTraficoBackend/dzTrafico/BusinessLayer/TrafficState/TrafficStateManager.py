@@ -130,7 +130,7 @@ class TrafficStateManager:
     def update_vsl(self, sinks):
         vsl_values = []
         for sink in sinks:
-            vsl_values.append(sink[0].update_vsl())
+            vsl_values.extend(sink[0].update_vsl())
         return vsl_values
 
     def deactivate_vsl(self, sinks):
