@@ -1,4 +1,5 @@
 from EdgeState import EdgeState
+from rest_framework import serializers
 from dzTrafico.BusinessLayer.TrafficAnalysis.TrafficAnalyzer import TrafficAnalyzer
 
 class Sink(object):
@@ -99,3 +100,48 @@ class Sink(object):
             if node.edge.getID() == edge_id:
                 return node
         return None
+
+    def get_LC_recommendations(self):
+        lc_recommendations = []
+        lanes = []
+        index = 0
+        for node in self.nodes:
+            if node.LC_is_activated:
+                for r in node.recommendations:
+                    lanes.append(
+                        NodeLanesRcmd(
+                            r.lane,
+                            r.recommendation
+                        )
+                    )
+                lc_recommendations.extend(
+                    [
+                        NodeLCRcmd(
+                            index,
+                            lanes
+                        )
+                    ]
+                )
+                index += 1
+        nodeLCRcmdSerializer = NodeLCRcmdSerializer(lc_recommendations, many=True)
+        return nodeLCRcmdSerializer.data
+
+class NodeLCRcmd(object):
+    def __init__(self, id, lanes):
+        self.id = id
+        self.lanes = lanes
+
+class NodeLanesRcmd(object):
+    def __init__(self, lane, recommendation):
+        self.lane = lane
+        self.recommendation = recommendation
+
+class NodeLanesRcmdSerializer(serializers.Serializer):
+    lane = serializers.IntegerField()
+    recommendation = serializers.IntegerField()
+
+class NodeLCRcmdSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    lanes = NodeLanesRcmdSerializer(many=True)
+
+
