@@ -57,8 +57,10 @@
                           </div>
                       </p-header>
                       <p-dataTable [value]="vehiclesDistri" dataKey="id">
+                          <!-- affichage des type de véhicules -->
                           <p-column *ngFor="let col of cols"[style]="{'width':'100px'}" [field]="col.field" [header]="col.header"></p-column>
-                          <p-column field="pourcentage" header="% Pourcentage" [editable]="true">
+                          <!-- affichage distribution des véhicules -->
+                          <p-column field="percentage" header="% Pourcentage" [editable]="true">
                               <ng-template let-col let-vd="rowData" pTemplate="body">
                                   <p-slider [(ngModel)]="vd[col.field]"  [style]="{'width':'100px'}"></p-slider>
                               </ng-template>

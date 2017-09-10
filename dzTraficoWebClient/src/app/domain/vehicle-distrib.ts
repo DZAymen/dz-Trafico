@@ -2,10 +2,10 @@ import { VehicleType } from './vehicle-type';
 
 export class VehicleDistribution {
       vehicleType: VehicleType;
-      pourcentage: number;
+      percentage: number;
 
       constructor(vType: VehicleType ){
         this.vehicleType= vType;
-        this.pourcentage= 0;
+        this.percentage= 0;
       }
 }
