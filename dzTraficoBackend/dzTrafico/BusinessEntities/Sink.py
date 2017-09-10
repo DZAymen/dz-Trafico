@@ -111,7 +111,7 @@ class Sink(object):
 
     def get_LC_recommendations(self):
         lc_recommendations = []
-        index = VirtualRampMetering.num_vsl_controlled_sections
+        index = VirtualRampMetering.num_vsl_controlled_sections + 1
         for node in self.nodes:
             lanes = []
             if node.LC_is_activated:
