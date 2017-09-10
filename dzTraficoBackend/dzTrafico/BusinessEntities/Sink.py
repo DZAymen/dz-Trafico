@@ -1,6 +1,6 @@
 from EdgeState import EdgeState
 from rest_framework import serializers
-from dzTrafico.BusinessLayer.TrafficAnalysis.TrafficAnalyzer import TrafficAnalyzer
+from dzTrafico.BusinessLayer.TrafficAnalysis.TrafficAnalyzer import TrafficAnalyzer, VirtualRampMetering
 
 class Sink(object):
 
@@ -38,7 +38,7 @@ class Sink(object):
 
     def update_vsl(self):
         vsl = []
-        index = 0
+        index = 1
         for node in self.nodes:
             if node.VSL_is_activated:
                 Sink.trafficAnalyzer.update_vsl(self, node)
@@ -111,7 +111,7 @@ class Sink(object):
 
     def get_LC_recommendations(self):
         lc_recommendations = []
-        index = 0
+        index = VirtualRampMetering.num_vsl_controlled_sections
         for node in self.nodes:
             lanes = []
             if node.LC_is_activated:
