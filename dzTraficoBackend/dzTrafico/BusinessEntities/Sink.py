@@ -37,9 +37,17 @@ class Sink(object):
                 node.incident_change_lane()
 
     def update_vsl(self):
+        vsl = []
+        index = 0
         for node in self.nodes:
             if node.VSL_is_activated:
                 Sink.trafficAnalyzer.update_vsl(self, node)
+                vsl_node = dict()
+                vsl_node["id"] = index
+                vsl_node["vsl"] = node.get_current_vsl()
+                vsl.append(vsl_node)
+                index += 1
+        return  vsl
 
     def deactivate_vsl(self):
         for node in self.nodes:

@@ -14,6 +14,7 @@ class TrafficStateManager:
     __simulationManager = SimulationManager.get_instance()
     vehicles = []
     LC_consumer = None
+    VSL_consumer = None
 
     @staticmethod
     def get_instance():
@@ -71,7 +72,9 @@ class TrafficStateManager:
             if rest == 0:
                 traffic_state = self.read_traffic_state(sinks)
                 if TrafficAnalyzer.isVSLControlActivated and TrafficAnalyzer.isCongestionDetected:
-                    self.update_vsl(sinks)
+                    vsl_values = self.update_vsl(sinks)
+                    if self.VSL_consumer is not None:
+                        self.VSL_consumer.send(vsl_values)
                 realTimeTrafficStateConsumer.send(traffic_state)
                 if len(self.simulation.get_incidents())>0:
                     for state in traffic_state:
@@ -82,8 +85,6 @@ class TrafficStateManager:
             if TrafficAnalyzer.isCongestionDetected:
                 self.simulation.check_statistics_vehicles()
                 self.simulation.reset_vehicles_behaviour()
-
-
 
         traci.close()
         traci.switch(self.simulation.SIM)
@@ -127,8 +128,10 @@ class TrafficStateManager:
             sink[0].incident_change_lane()
 
     def update_vsl(self, sinks):
+        vsl_values = []
         for sink in sinks:
-            sink[0].update_vsl()
+            vsl_values.append(sink[0].update_vsl())
+        return vsl_values
 
     def deactivate_vsl(self, sinks):
         for sink in sinks:
@@ -165,6 +168,9 @@ class TrafficStateManager:
 
     def set_LC_consumer(self, consumer):
         self.LC_consumer = consumer
+
+    def set_VSL_consumer(self, consumer):
+        self.VSL_consumer = consumer
 
     def get_LC_recommendations(self, sinks):
         lc_recommendations = []
