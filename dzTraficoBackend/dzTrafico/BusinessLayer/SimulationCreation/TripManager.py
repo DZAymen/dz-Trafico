@@ -26,23 +26,24 @@ class TripManager:
     #Define Flows from FlowPoints
     def generate_flows(self, inFlowPoints, outFlowPoints):
         flows = []
-        outflows_sum = 0
-
-        # Calculate outflow sum
-        for outflowPoint in outFlowPoints:
-            outflows_sum += outflowPoint.flow
-
         for inflowPoint in inFlowPoints:
-            for outflowPoint in outFlowPoints:
+            for outflowPoint in self.get_outflow_points(inflowPoint.outs, outFlowPoints):
                 # set the start and end edges for a new flow
                 flows.append(
                     Flow(
                         self.__networkManager.get_edgeId_from_geoCoord(inflowPoint.lon, inflowPoint.lat),
                         self.__networkManager.get_edgeId_from_geoCoord(outflowPoint.lon, outflowPoint.lat),
                         inflowPoint.departTime,
-                        inflowPoint.flow * outflowPoint.flow / outflows_sum
+                        inflowPoint.get_left_flow(outflowPoint.percentage)
                     ))
         return flows
+
+    def get_outflow_points(self, outs, outFlowPoints):
+        outflows = []
+        for out in outs:
+            if out < len(outFlowPoints):
+                outflows.append(outFlowPoints[out])
+        return outflows
 
     def generate_route_file(self, flows_file_path):
         network_file = "map.net.xml"
