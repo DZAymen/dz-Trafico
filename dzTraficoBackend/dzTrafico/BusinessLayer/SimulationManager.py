@@ -149,4 +149,7 @@ class SimulationManager:
 
     def get_incident_flow(self):
         return SimulationManager.__statisticsManager.get_incident_flow()
+
+    def get_queue_measurements(self):
+        return SimulationManager.__statisticsManager.get_queue_measurements()
     # ---------------------------------------------------------------------------------------------------

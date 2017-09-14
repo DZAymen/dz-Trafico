@@ -18,6 +18,7 @@ def get_simulation_gpm_results(request):
 @api_view(['GET'])
 def get_incident_flow_stats(request):
     incident_flow_stats, time = simulationManager.get_incident_flow()
+    simulationManager.get_queue_measurements()
 
     # Plot flow stats
     print time, incident_flow_stats
