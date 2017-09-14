@@ -22,6 +22,12 @@ class InFlowPoint(object):
         self.position = Location(lon, lat)
         self.departTime = departTime
         self.flow = flow
+        self.left_flow = flow
+
+    def get_left_flow(self, percentage):
+        flow = percentage * self.left_flow
+        self.left_flow -= flow
+        return flow
 
 class InFlowPointSerializer(serializers.Serializer):
 
