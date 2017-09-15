@@ -27,6 +27,8 @@ class TripManager:
     def generate_flows(self, inFlowPoints, outFlowPoints):
         flows = []
         for inflowPoint in inFlowPoints:
+            inflowPoint.reset_flow_value()
+        for inflowPoint in inFlowPoints:
             for outflowPoint in self.get_outflow_points(inflowPoint.outs, outFlowPoints):
                 # set the start and end edges for a new flow
                 flows.append(

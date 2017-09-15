@@ -30,13 +30,21 @@ class InFlowPoint(object):
         self.left_flow -= flow
         return flow
 
+    def reset_flow_value(self):
+        self.left_flow = self.flow
+
+class OutSerializer(serializers.Serializer):
+    outIndex = serializers.IntegerField()
+
 class InFlowPointSerializer(serializers.Serializer):
 
     id = serializers.CharField(required=False)
     position = LocationSerializer()
     departTime = serializers.FloatField()
     flow = serializers.FloatField()
-    outs = serializers.IntegerField(many=True)
+    outs = serializers.ListField(
+        child = serializers.IntegerField(min_value=0, max_value=1000)
+    )
 
     def create(self, validated_data):
         return InFlowPoint(
