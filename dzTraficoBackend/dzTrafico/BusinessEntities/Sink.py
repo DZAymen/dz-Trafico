@@ -1,6 +1,8 @@
 from EdgeState import EdgeState
 from rest_framework import serializers
 from dzTrafico.BusinessLayer.TrafficAnalysis.TrafficAnalyzer import TrafficAnalyzer, VirtualRampMetering
+from dzTrafico.BusinessEntities.Location import LocationSerializer
+from dzTrafico.BusinessLayer.SimulationCreation.NetworkManager import NetworkManager
 
 class Sink(object):
 
@@ -90,10 +92,14 @@ class Sink(object):
                 if node.check_if_discharged():
                     Sink.trafficAnalyzer.clear_congestion()
                     node.isCongested = False
-
+            edge_coords = dict()
+            start, end = NetworkManager.get_edge_coords(node.edge)
+            edge_coords["start"] = LocationSerializer(start).data
+            edge_coords["end"] = LocationSerializer(end).data
             traffic_state.append(
                 EdgeState(
                     node.edge.getID(),
+                    edge_coords,
                     node.get_current_speed(),
                     node.get_current_vsl(),
                     node.get_current_density(),
