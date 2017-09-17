@@ -9,15 +9,16 @@
          <!-- Sidebar components -->
          <div class="sidebar" data-color='green' data-image="">
             <sidebar-cmp></sidebar-cmp>
-            <div class="sidebar-background" style="background-image: url(../assets/images/sidebar-2.jpg)"></div>
+            <div class="sidebar-background"></div>
         </div>
        </div>
      </ng-sidebar>
 
+    <div style="overflow:hidden">
      <header class="demo-header">
        <span (click)="toggleOpened()" class="fa fa-bars"></span>
        <span>Traffic Simulator</span>
      </header>
     <router-outlet></router-outlet>
-
+    </div>
 </ng-sidebar-container>

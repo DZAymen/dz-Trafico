@@ -35,7 +35,7 @@ export class TrafficComponent implements OnInit {
 
   /* Dialog */
   dialogVisible: boolean;
-  departDialog: boolean= false; accidentDialog: boolean= false;
+  departDialog: boolean= false; arrivalDialog: boolean =false; accidentDialog: boolean= false;
   removeMarker: boolean= false;
 
   selectedType: string;
@@ -46,6 +46,7 @@ export class TrafficComponent implements OnInit {
   markerName: string;
   selectedPosition: any;
   flow:number; departTime: number;
+  percentage: number;
   lane: number; accidentTime: number; accidentDuration: number;
 
 
@@ -91,11 +92,14 @@ export class TrafficComponent implements OnInit {
       if (type == 'depart'){
           this.departDialog= true;
           this.accidentDialog= false;
+          this.arrivalDialog=false;
       }
       else if (type == 'accident') {
           this.accidentDialog= true;
           this.departDialog= false;
+          this.arrivalDialog=false;
       }else{
+        this.arrivalDialog= true;
         this.departDialog= false;
         this.accidentDialog= false;
       }
@@ -175,7 +179,7 @@ export class TrafficComponent implements OnInit {
             this.drawMarker(acc,'accident');
         });
       }else{
-        let arrival= new Arrival(this.position);
+        let arrival= new Arrival(this.position, this.percentage);
         this.arrivalPointService.create(arrival)
           .then(arr => {
             this.arrivalPoints.push(arr);
@@ -183,25 +187,6 @@ export class TrafficComponent implements OnInit {
         });
       }
     }
-
-    // addPoint() {
-    //   if (this.departDialog) {
-    //     let depart= new Depart( this.position, this.departTime, this.flow);
-    //     this.departPointService.create(depart);
-    //     this.departPoints.push(depart);
-    //     this.drawMarker(depart,'depart');
-    //   }else if (this.accidentDialog){
-    //     let accident= new Accident(this.position, this.accidentTime, this.accidentDuration);
-    //     this.accidentPointService.create(accident);
-    //     this.accidentPoints.push(accident);
-    //     this.drawMarker(accident,'accident');
-    //   }else{
-    //     let arrival= new Arrival(this.position);
-    //     this.arrivalPointService.create(arrival);
-    //     this.arrivalPoints.push(arrival);
-    //     this.drawMarker(arrival, 'arrival');
-    //   }
-    // }
 
     drawMarker(obj: any,type: string){
       this.overlays.push(new google.maps.Marker({

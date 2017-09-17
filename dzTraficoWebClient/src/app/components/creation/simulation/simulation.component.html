@@ -11,26 +11,41 @@
 
       <div class="ui-g-5">
             <div style="margin-top:20px">
-              <!-- <img src="../../../../assets/images/sensor.png" alt=""> -->
-                  <p-panel header="Paramètrage de capteurs">
-                          <div class="ui-grid-row">
-                          <div class="ui-g-8"><label for="distance">Distance entre deux capteurs (m)</label></div>
-                          <div class="ui-g-2"><p-spinner [(ngModel)]="simulConfig.distance" [step]="10"></p-spinner></div>
-                      </div>
+                  <p-panel>
+                    <p-header>
+                        <span><i class="fa fa-wifi"></i></span>
+                         Capteurs de mesure
+                    </p-header>
                       <div class="ui-grid-row">
-                          <div class="ui-g-8"><label for="minGap">Temps écoulé entre deux mesure (s)</label></div>
-                          <div class="ui-g-2"><p-spinner [(ngModel)]="simulConfig.timeMesure" [step]="1"></p-spinner></div>
+                          <div class="ui-g-5"><label for="minGap">Temps de cycle de mesure (s)</label></div>
+                          <div class="ui-g-7"><p-spinner [(ngModel)]="simulConfig.sim_step_duration" [step]="1"></p-spinner></div>
                       </div>
                   </p-panel>
             </div>
 
             <div style="margin-top:20px">
-                  <p-panel header="Paramètrage du réseau routier">
+                 <p-panel>
+                      <p-header>
+                          <span><i class="fa fa-map-o"></i></span>
+                           Réseau routier
+                      </p-header>
                       <div class="ui-grid-row">
-                          <div class="ui-g-8"><label for="distance">Densité critique (veh/km)</label></div>
-                          <div class="ui-g-2"><p-spinner [(ngModel)]="simulConfig.densiteCritique" [step]="10"></p-spinner></div>
+                          <div class="ui-g-5"><label>Densité critique (veh/km)</label></div>
+                          <div class="ui-g-7"><p-spinner [(ngModel)]="simulConfig.critical_density" [step]="10"></p-spinner></div>
                       </div>
-                  </p-panel>
+                </p-panel>
+            </div>
+            <div style="margin-top:20px">
+                 <p-panel>
+                      <p-header>
+                          <span><i class="fa fa-group"></i></span>
+                          Conformité des conducteurs
+                      </p-header>
+                      <div class="ui-grid-row">
+                          <div class="ui-g-5"><label for="distance">Niveau de respect (%)</label></div>
+                          <div class="ui-g-7"><p-spinner [(ngModel)]="simulConfig.driver_compliance" [step]="10"></p-spinner></div>
+                      </div>
+                </p-panel>
             </div>
       </div>
 
@@ -38,40 +53,57 @@
 
       <div class="ui-g-6">
             <div style="margin-top:20px">
-                  <p-panel header="Paramètrage de l'algorithme">
+                  <p-panel>
+                    <p-header>
+                        <span><i class="fa fa-cogs"></i></span>
+                        Paramètres de l'Algorithme
+                    </p-header>
                       <div class="ui-grid-row">
-                          <div class="ui-g-6"><label for="distance">Ki</label></div>
-                          <div class="ui-g-4"><p-spinner [(ngModel)]="simulConfig.k" [step]="10"></p-spinner></div>
+                          <div class="ui-g-6"><label>Ki</label></div>
+                          <div class="ui-g-4"><p-spinner [(ngModel)]="simulConfig.ki" [step]="1"></p-spinner></div>
                       </div>
                       <div class="ui-grid-row">
-                          <div class="ui-g-6"><label for="minGap"> epsilone (m)</label></div>
-                          <div class="ui-g-4"><p-spinner [(ngModel)]="simulConfig.epsilone" [step]="1"></p-spinner></div>
+                          <div class="ui-g-6"><label> Ɛ (m)</label></div>
+                          <div class="ui-g-4"><p-spinner [(ngModel)]="simulConfig.xi" [step]="100"></p-spinner></div>
                       </div>
                       <div class="ui-grid-row">
-                          <div class="ui-g-6"><label for="minGap">Cv (km/h)</label></div>
-                          <div class="ui-g-4"><p-spinner [(ngModel)]="simulConfig.Cv" [step]="1"></p-spinner></div>
+                          <div class="ui-g-6"><label>Cv (km/h)</label></div>
+                          <div class="ui-g-4"><p-spinner [(ngModel)]="simulConfig.cv" [step]="10"></p-spinner></div>
                       </div>
                       <div class="ui-grid-row">
-                          <div class="ui-g-6"><label for="minGap">Vmin (km/h)</label></div>
-                          <div class="ui-g-4"><p-spinner [(ngModel)]="simulConfig.Vmin" [step]="1"></p-spinner></div>
+                          <div class="ui-g-6"><label>Vmin (km/h)</label></div>
+                          <div class="ui-g-4"><p-spinner [(ngModel)]="simulConfig.v_min" [step]="10"></p-spinner></div>
                       </div>
                       <div class="ui-grid-row">
-                          <div class="ui-g-6"><label for="minGap">Vmax (km/h)</label></div>
-                          <div class="ui-g-4"><p-spinner [(ngModel)]="simulConfig.Vmax" [step]="1"></p-spinner></div>
+                          <div class="ui-g-6"><label>Nombre de segment LDV</label></div>
+                          <div class="ui-g-4"><p-spinner [(ngModel)]="simulConfig.num_vsl_sections" [step]="10"></p-spinner></div>
                       </div>
                   </p-panel>
             </div>
+            <div style="margin-top:20px">
+                 <p-panel>
+                      <p-header>
+                          <span><i class="fa fa-group"></i></span>
+                          Durée de la simulation
+                      </p-header>
+                      <div class="ui-grid-row">
+                          <div class="ui-g-5"><label for="distance">Niveau de respect (s)</label></div>
+                          <div class="ui-g-7"><p-spinner [(ngModel)]="simulConfig.simDuration" [step]="100"></p-spinner></div>
+                      </div>
+                </p-panel>
+            </div>
+      </div>
+      <div class="card-footer">
+          <div style="float:right">
+              <button type="button" pButton label="lancer" icon="fa-arrow-right" (click)="configSimulation()"></button>
+          </div>
+          <div>
+              <button type="button" pButton label="précédent" icon="fa-arrow-left" (click)="prev()"></button>
+          </div>
       </div>
 </div>
 
-  <div class="card-footer">
-      <div style="float:right">
-          <button type="button" pButton label="lancer" icon="fa-arrow-right" (click)="lancerSimulation()"></button>
-      </div>
-      <div>
-          <button type="button" pButton label="précédent" icon="fa-arrow-left" (click)="prev()"></button>
-      </div>
-  </div>
+
 
   </div>
   </div>

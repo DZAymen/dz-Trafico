@@ -1,12 +1,79 @@
 <div class="content-block">
+  <div class="row">
+
+      <div class="ui-g-3">
+          <div class="card card-stats">
+              <div class="card-header" data-background-color="orange">
+                    <i class="material-icons fa fa-car"></i>
+              </div>
+              <div class="card-content">
+                  <p class="category">TPM</p>
+                  <ul>
+                    <li *ngFor="let item of resultList; let i=index">
+                      <h3 *ngIf="i==2" class="card-title">{{item.meanTravelTime}} %</h3>
+                    </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+      <div class="ui-g-3">
+          <div class="card card-stats">
+              <div class="card-header" data-background-color="red">
+                    <i class="material-icons fa fa-minus-circle"></i>
+              </div>
+              <div class="card-content">
+                  <p class="category">TAM</p>
+                  <ul>
+                    <li *ngFor="let item of resultList; let i=index">
+                      <h3 *ngIf="i==2" class="card-title">{{item.meanWaintingTime}} %</h3>
+                    </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+      <div class="ui-g-3">
+          <div class="card card-stats">
+              <div class="card-header" data-background-color="green">
+                    <i class="material-icons fa fa-free-code-camp"></i>
+              </div>
+              <div class="card-content">
+                  <p class="category">Carburant</p>
+                  <ul>
+                    <li *ngFor="let item of resultList; let i=index">
+                      <h3 *ngIf="i==2" class="card-title">{{item.fuelRate}} %</h3>
+                    </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+      <div class="ui-g-3">
+          <div class="card card-stats">
+              <div class="card-header" data-background-color="blue">
+                    <i class="material-icons fa fa-truck"></i>
+              </div>
+              <div class="card-content">
+                  <p class="category">Emission C02</p>
+                  <ul>
+                    <li *ngFor="let item of resultList; let i=index">
+                      <h3 *ngIf="i==2" class="card-title">{{item.co2Rate}} %</h3>
+                    </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+<div class="content-block">
             <div class="ui-g-12">
                 <div class="card card-stats">
                     <div class="card-header card-header-icon" data-background-color="blue">
                         <i class="material-icons fa fa-line-chart"></i>
                     </div>
                     <div class="card-content">
-                        <h4 class="card-title">Lines Chart
-                            <small> - Rounded</small>
+                        <h4 class="card-title">Diagramme Temps / Densité
+                            <small> - avec et sans contrôle</small>
                         </h4>
                     </div>
                     <div class="chart-card">
@@ -14,32 +81,4 @@
                     </div>
                 </div>
             </div>
-      
-              <div class="ui-g-6">
-                  <div class="card card-stats">
-                      <div class="card-header card-header-icon" data-background-color="red">
-                          <i class="material-icons fa fa-pie-chart"></i>
-                      </div>
-                      <div class="card-content">
-                          <h4 class="card-title">Pie Chart</h4>
-                      </div>
-                      <div class="chart-card">
-                        <p-chart type="pie" [data]="pieData" width="200" height="200"></p-chart>
-                      </div>
-                   </div>
-              </div>
-              <div class="ui-g-6">
-                  <div class="card card-stats">
-                      <div class="card-header card-header-icon" data-background-color="green">
-                          <i class="material-icons fa fa-bar-chart"></i>
-                      </div>
-                      <div class="card-content">
-                          <h4 class="card-title">Bar Chart</h4>
-                      </div>
-                      <div class="chart-card">
-                        <p-chart type="bar" [data]="barData"></p-chart>
-                      </div>
-                  </div>
-            </div>
-
 </div>

@@ -56,11 +56,11 @@
                               <button type="text" pButton style="float:right" (click)="showDialog()" icon="fa-plus" label="Nouveau Type"></button>
                           </div>
                       </p-header>
-                      <p-dataTable [value]="vehiclesDistri" dataKey="id">
+                      <p-dataTable [value]="vehiclesDistri">
                           <!-- affichage des type de véhicules -->
                           <p-column *ngFor="let col of cols"[style]="{'width':'100px'}" [field]="col.field" [header]="col.header"></p-column>
                           <!-- affichage distribution des véhicules -->
-                          <p-column field="percentage" header="% Pourcentage" [editable]="true">
+                         <p-column field="percentage" header="% Pourcentage" [editable]="true">
                               <ng-template let-col let-vd="rowData" pTemplate="body">
                                 <div class="ui-grid-col-10"><p-slider [(ngModel)]="vd[col.field]"></p-slider></div>
                                 <div class="ui-grid-col-2">{{vd[col.field]}}</div>
