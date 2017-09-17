@@ -11,6 +11,7 @@ class SimulationCreationConsumer(JsonWebsocketConsumer):
             {"accept": True}
         )
         SimulationManager.reply_channel = message.reply_channel
+        self.manager.create_simulation(self)
 
     def receive(self, content, **kwargs):
         print content
