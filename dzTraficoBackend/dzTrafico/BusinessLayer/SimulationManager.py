@@ -133,12 +133,12 @@ class SimulationManager:
         Simulation.sim_step_duration = data["sim_step_duration"]
         SimulationManager.__simulationCreator.set_sim_duration(data["simDuration"])
 
-        TrafficAnalyzer.isVSLControlActivated = data["vslControl"]
-        TrafficAnalyzer.isLCControlActivated = data["lcControl"]
+        TrafficAnalyzer.isVSLControlActivated = True
+        TrafficAnalyzer.isLCControlActivated = True
         TrafficAnalyzer.isCongestionDetected = False
         TrafficAnalyzer.congestionExists = False
 
-        Simulation.LCMode_vsl_lc = data["lc_mode"]
+        Simulation.LCMode_vsl_lc = 512
         Node.COMPLIANCE_PERCENTAGE = data["driver_compliance"]
 
     # ---------------------------------------------------------------------------------------------------
