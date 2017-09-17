@@ -30,14 +30,21 @@ export class RealTimeComponent implements OnInit {
   infoWindow: any;
   msgs: Message[] = [];
 
+  private message = {
+    startSim: true
+  }
+
   constructor(
     private realTimeService: RealTimeService,
     private osmService : OsmService,
+    private wsService: WebsocketService
     ){
 		// realTimeService.recommandations.subscribe(rec => {
     //   console.log("recommandations from websocket: " + rec);
 		// });
 	}
+
+
 
 
   ngOnInit() {
@@ -61,13 +68,8 @@ export class RealTimeComponent implements OnInit {
 
   }
 
+
   // When map is ready then define variable map
-  setMap(event) {
-      this.map = event.map;
-      this.osmService.getOsmMapType(this.map, google);
-
-  }
-
   handleOverlayClick(event){
     this.msgs.push({severity: event.overlay.severity,
                     summary:'Segment',
@@ -75,8 +77,13 @@ export class RealTimeComponent implements OnInit {
                    });
   }
 
+
  lancerSumo(){
-   this.realTimeService.startSimulation();
+   this.realTimeService.connectToWs(this.wsService);
+   setTimeout(() => {
+        this.realTimeService.startSimulationMsg.next(this.message);
+   }, 3000);
+
  }
 
   drawPolyline( stListe: TraficState[]){
@@ -85,7 +92,7 @@ export class RealTimeComponent implements OnInit {
     for (let ts of stListe) {
 
       // couleur du polyline
-      if (ts.current_speed <= 40){ polyColor= '#FF0000'; /* rouge */ severity= 'error'
+     if (ts.current_speed <= 40){ polyColor= '#FF0000'; /* rouge */ severity= 'error'
     }else if (ts.current_speed > 40 && ts.current_speed <= 70 ) { polyColor= '#FF4500'; /* orange */ severity= 'warn'
   }else {  polyColor= '#9ACD32'; /* vert */ severity= 'success'}
 

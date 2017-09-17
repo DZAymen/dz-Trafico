@@ -16,6 +16,9 @@ import { WebsocketService } from './websocket.service';
 export class SimulationComponent  {
 
   simulConfig = new SimulationConfig();
+  private message = {
+    createSim: true
+  }
 
 constructor(
       private router: Router,
@@ -23,18 +26,7 @@ constructor(
       private createSimulationService: CreateSimulationService,
       private wsService: WebsocketService
 
-    ){
-
-    }
-
-      private message = {
-    		createSim: true
-    	}
-
-      sendMsg() {
-    		console.log('new message from client to websocket: ', this.message);
-    		this.createSimulationService.createSimulationMsg.next(this.message);
-    	}
+    ){}
 
     configSimulation(){
         this.startSimulationService.simulationConfig(this.simulConfig).then( res => {
@@ -45,9 +37,6 @@ constructor(
               this.createSimulationService.createSimulationMsg.next(this.message);
         }, 3000);
       });
-
-
-
     }
 
     prev(){

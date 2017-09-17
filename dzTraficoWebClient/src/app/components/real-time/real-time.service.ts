@@ -10,6 +10,10 @@ import {Vsl} from '../../domain/vsl';
 import {TraficState} from '../../domain/trafic-state';
 
 
+export interface Message {
+  startSim: boolean
+}
+
 @Injectable()
 export class RealTimeService {
 
@@ -30,7 +34,23 @@ export class RealTimeService {
   //   			});
   // 	}
 
+  private  wsURL = 'ws://127.0.0.1:8000/simulation/api/simulationcreation/';
+
+
+  public startSimulationMsg: Subject<Message>;
+
+
   constructor(private http: Http) {}
+
+
+  connectToWs(wsService: WebsocketService) {
+      this.startSimulationMsg =  <Subject<Message>>wsService
+        .connect(this.wsURL)
+        .map((response: MessageEvent): Message => {
+          let data = JSON.parse(response.data);
+          return data
+        });
+  }
 
   getRecommandation(): Promise<Lc[]> {
      return this.http.get(this.lcURL)
@@ -54,9 +74,7 @@ export class RealTimeService {
                   .catch(this.handleError);
   }
 
-  startSimulation(){
-    
-  }
+
 
   private handleError(error : any){
     console.error('Erreur ', error);

@@ -13,7 +13,7 @@ export interface Message {
 @Injectable()
 export class CreateSimulationService {
 
-  private  wsURL = 'ws://127.0.0.1:8000/simulation/api/simulationcreation/';
+    private  wsURL = 'ws://127.0.0.1:8000/simulation/api/simulationcreation/';
 
 
     public createSimulationMsg: Subject<Message>;
