@@ -19,13 +19,17 @@ export class SimulationComponent {
 constructor(
       private router: Router,
       private startSimulationService: StartSimulationService,
-      private createSimulationService: CreateSimulationService
+      private createSimulationService: CreateSimulationService,
+      private wsService: WebsocketService
+
     ){}
 
 
 
     configSimulation(){
-        this.startSimulationService.simulationConfig(this.simulConfig);
+          this.startSimulationService.simulationConfig(this.simulConfig).then( res =>
+          this.createSimulationService.connectToWs(this.wsService)
+        );
 
     }
 

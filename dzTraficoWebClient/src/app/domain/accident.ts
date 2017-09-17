@@ -1,6 +1,7 @@
 import { Location } from './location';
 
 export class Accident {
+  id:number;
   position: Location;
   lane: number;
   accidentTime: number;
