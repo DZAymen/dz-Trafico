@@ -4,6 +4,7 @@ import { StepsModule } from 'primeng/primeng';
 
 import { OsmService } from './osm.service';
 import { StepsComponent } from './steps/steps.component';
+import { SpeedLimitComponent } from './speed-limit/speed-limit.component';
 
 
 
@@ -12,10 +13,11 @@ import { StepsComponent } from './steps/steps.component';
     CommonModule,
     StepsModule
   ],
-  declarations: [StepsComponent],
+  declarations: [StepsComponent, SpeedLimitComponent],
   exports:[
     CommonModule,
-    StepsComponent
+    StepsComponent,
+    SpeedLimitComponent
   ],
   providers: [OsmService]
 })

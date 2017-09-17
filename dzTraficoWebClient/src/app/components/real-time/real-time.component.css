@@ -1,0 +1,25 @@
+
+.segment {
+    float: left;
+    overflow: hidden;
+    /*height: 100vh;*/
+}
+
+.segment .recomd{
+  height: 80px;
+  width: 90px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto
+}
+
+.segment ul, .segment li{
+   list-style-type: none;
+   margin: 0;
+   padding: 0;
+   overflow: hidden;
+}
+
+/*.segment p-panel{
+  height: 93%;
+}*/

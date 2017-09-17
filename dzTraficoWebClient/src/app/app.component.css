@@ -6,7 +6,7 @@
 .mySidebar{
   width: 250px;
   height: 100%;
-  overflow: hidden;
+  overflow: auto;
 }
 .demo-header {
   /*position: fixed;*/

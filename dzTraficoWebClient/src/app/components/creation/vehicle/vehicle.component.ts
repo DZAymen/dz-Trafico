@@ -23,7 +23,7 @@ export class VehicleComponent implements OnInit {
   cols: any[];
 
   // dialog field
-  newType= new VehicleType();
+  newType =new VehicleType();
 
   constructor(
     private router: Router,
@@ -34,9 +34,13 @@ export class VehicleComponent implements OnInit {
   ngOnInit() {
 
     this.cols = DATATABLE_FIELD.filter(colomns => colomns);
-  }
+    this.vehicleTypeService.getVehicleTypes().then(
+        vehTypes => this.transformToDist(vehTypes)
+      )
+    }
 
   showDialog(){
+    this.newType = new VehicleType();
     this.dialogVisible= true;
   }
 
@@ -45,11 +49,9 @@ export class VehicleComponent implements OnInit {
         vehtype => {
           let newVDistri = new VehicleDistribution(vehtype);
           this.vehiclesDistri.push(newVDistri);
-          console.log(this.vehiclesDistri);
         }
       )
       this.dialogVisible = false;
-      //this.newType= null;
   }
 
   prev(){
@@ -62,9 +64,9 @@ export class VehicleComponent implements OnInit {
     this.router.navigate(['/start']);
   }
 
-  /*private transformToDist(vTypes: VehicleType[]){
+  private transformToDist(vTypes: VehicleType[]){
       for (let vt of vTypes) {
         this.vehiclesDistri.push(new VehicleDistribution(vt));
       }
-  }*/
+  }
 }

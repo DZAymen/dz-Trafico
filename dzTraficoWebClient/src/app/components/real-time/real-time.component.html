@@ -1,19 +1,73 @@
+<p-growl [value]="msgs"></p-growl>
+
+<div style="float:right">
+     <button type="button" pButton label="Lancer Simulation" icon="fa-arrow-right" (click)="lancerSumo()"></button>
+</div>
 
 <div class="ui-g-12">
  <div class="content-block">
       <div class="card card-stats">
           <div class="card-header card-header-icon" data-background-color="blue">
-              <i class="material-icons fa fa-flag"></i>
+              <i class="material-icons fa fa-car"></i>
           </div>
           <div class="card-content">
-               <h4 class="card-title">Liste des points de départ</h4>
-               <p-dataTable [value]="departPoints">
-                   <p-column field="id" header="id"></p-column>
-                   <p-column field="position.lat" header="Point de depart"></p-column>
-                   <p-column field="flow" header="Débit"></p-column>
-                   <p-column field="departTime" header="Temps de départ"></p-column>
-               </p-dataTable>
+               <h4 class="card-title">lc</h4>
+               <ul>
+                 <!-- Display VSL -->
+                 <li class="segment" *ngFor="let i of vslList">
+                   <p-panel>
+                     <p-header> segment {{i.id}} </p-header>
+                          <ul>
+                              <app-speed-limit [speed]="i.vsl"></app-speed-limit>
+                          </ul>
+                   </p-panel>
+                 </li>
+                 <!-- Display recommandation  -->
+                 <li class="segment" *ngFor="let k of lcList">
+                   <p-panel>
+                     <p-header> segment {{k.id}} </p-header>
+                          <ul>
+                              <li *ngFor="let l of k.lanes">
+                                  <img class="recomd" src="../../../assets/images/lc/{{l.recommandation}}.png">
+                              </li>
+                          </ul>
+                   </p-panel>
+                 </li>
+               </ul>
          </div>
       </div>
  </div>
 </div>
+
+<div class="content-block">
+  <div class="card card-stats">
+      <div class="card-header card-header-icon" data-background-color="red">
+          <i class="material-icons fa fa-map-o"></i>
+      </div>
+      <div class="card-content">
+          <h4 class="card-title">Séléctionner le réseau routier</h4>
+
+          <p-gmap #gmap [style]="{'width':'100%','height':'500px'}"
+                        [options]="options"
+                        [overlays]="overlays"
+                        (onMapReady)="setMap($event)"
+                        (onOverlayClick)="handleOverlayClick($event)"></p-gmap>
+
+     </div>
+
+  </div>
+
+</div>
+
+<!--
+<ul>
+  <li class="segment" *ngFor="let i of lcList">
+        seg {{i.id}}
+        <ul>
+          <li *ngFor="let j of i.lanes">
+            <img class="recomd" src="../../../assets/images/lc/{{j.recommandation}}.png">
+          </li>
+        </ul>
+  </li>
+</ul>
+ -->

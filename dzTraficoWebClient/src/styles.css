@@ -3819,10 +3819,10 @@ footer .btn {
 .card .card-footer h6 {
  color: #999999;
 }
-.card img {
+/*.card img {
  width: 100%;
  height: auto;
-}
+}*/
 .card .category .material-icons {
  position: relative;
  top: 6px;
