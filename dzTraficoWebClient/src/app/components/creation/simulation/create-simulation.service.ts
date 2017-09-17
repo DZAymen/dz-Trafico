@@ -12,13 +12,17 @@ export interface Message {
 @Injectable()
 export class CreateSimulationService {
 
-  private  wsURL = 'ws://127.0.0.1:8000/simulation/api/simulationcreation';
+  private  wsURL = 'ws://127.0.0.1:8000/simulation/api/simulationcreation/';
 
 
 
     public createSimulationMsg: Subject<Message>;
 
-  	constructor(wsService: WebsocketService) {
+  	constructor() {
+
+  	}
+
+    connectToWs(wsService: WebsocketService) {
     		this.createSimulationMsg = <Subject<Message>>wsService
     			.connect(this.wsURL)
     			.map((response: MessageEvent): Message => {

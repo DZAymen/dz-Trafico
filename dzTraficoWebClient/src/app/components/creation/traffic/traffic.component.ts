@@ -63,11 +63,11 @@ export class TrafficComponent implements OnInit {
 
     getAllPoints() {
       this.departPointService.getDepartPoints()
-          .then(departs => this.departPoints = []);
+          .then(departs => this.departPoints = departs);
       this.arrivalPointService.getArrivalPoints()
-          .then(arrivals => this.arrivalPoints = []);
+          .then(arrivals => this.arrivalPoints = arrivals);
      this.accidentPointService.getAccidentPoints()
-         .then(accidents => this.accidentPoints = []);
+         .then(accidents => this.accidentPoints = accidents);
     }
 
     ngOnInit() {

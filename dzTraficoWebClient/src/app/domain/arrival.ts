@@ -1,6 +1,7 @@
 import { Location } from './location';
 
 export class Arrival {
+      id:number;
       position: Location;
       percentage: number;
       order:number;
