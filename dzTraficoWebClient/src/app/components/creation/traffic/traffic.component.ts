@@ -45,8 +45,8 @@ export class TrafficComponent implements OnInit {
   /* Data  */
   markerName: string;
   selectedPosition: any;
-  flow:number; departTime: number;
-  percentage: number;
+  flow:number; departTime: number; orderDep:number;
+  percentage: number; orderArr:number;
   lane: number; accidentTime: number; accidentDuration: number;
 
 
@@ -165,7 +165,7 @@ export class TrafficComponent implements OnInit {
 
     addPoint() {
       if (this.departDialog) {
-        let depart= new Depart( this.position, this.departTime, this.flow);
+        let depart= new Depart( this.position, this.departTime, this.flow, this.orderDep);
         this.departPointService.create(depart)
           .then(dept => {
             this.departPoints.push(dept);
@@ -179,7 +179,7 @@ export class TrafficComponent implements OnInit {
             this.drawMarker(acc,'accident');
         });
       }else{
-        let arrival= new Arrival(this.position, this.percentage);
+        let arrival= new Arrival(this.position, this.percentage, this.orderArr);
         this.arrivalPointService.create(arrival)
           .then(arr => {
             this.arrivalPoints.push(arr);

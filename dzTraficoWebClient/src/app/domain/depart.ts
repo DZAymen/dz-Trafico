@@ -5,11 +5,12 @@ export class Depart {
   position: Location;
   departTime: number;
   flow: number;
-  outs:[0]
-  constructor(position: Location, departTime: number, flow: number){
+  order:number;
+  constructor(position: Location, departTime: number, flow: number, order:number){
       this.position= position;
       this.departTime= departTime;
       this.flow= flow;
+      this.order= order;
   }
 
 }

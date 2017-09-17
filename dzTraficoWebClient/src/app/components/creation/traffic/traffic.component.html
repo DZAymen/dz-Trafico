@@ -44,25 +44,29 @@
 
                    <div *ngIf="departDialog">
                      <div class="ui-grid-row">
-                         <div class="ui-grid-col-4"><label for="debit">Débit</label></div>
+                         <div class="ui-grid-col-4"><label>Débit</label></div>
                          <div class="ui-grid-col-8"><p-spinner #tasty [(ngModel)]="flow" [step]="100"></p-spinner></div>
                      </div>
                      <div class="ui-grid-row">
-                         <div class="ui-grid-col-4"><label for="debit">Temps de départ</label></div>
+                         <div class="ui-grid-col-4"><label>Temps de départ</label></div>
                          <div class="ui-grid-col-8"><p-spinner [(ngModel)]="departTime" [step]="10"></p-spinner></div>
+                     </div>
+                     <div class="ui-grid-row">
+                         <div class="ui-grid-col-4"><label>ordre</label></div>
+                         <div class="ui-grid-col-8"><p-spinner [(ngModel)]="orderDep" [step]="1"></p-spinner></div>
                      </div>
                   </div>
                   <div *ngIf="accidentDialog">
                     <div class="ui-grid-row">
-                        <div class="ui-grid-col-4"><label for="debit">Num voie</label></div>
+                        <div class="ui-grid-col-4"><label>Num voie</label></div>
                         <div class="ui-grid-col-8"><p-spinner [(ngModel)]="lane" [step]="1"></p-spinner></div>
                     </div>
                     <div class="ui-grid-row">
-                        <div class="ui-grid-col-4"><label for="debit">Temps accident</label></div>
+                        <div class="ui-grid-col-4"><label>Temps accident</label></div>
                         <div class="ui-grid-col-8"><p-spinner [(ngModel)]="accidentTime" [step]="100"></p-spinner></div>
                     </div>
                     <div class="ui-grid-row">
-                        <div class="ui-grid-col-4"><label for="debit">Durée accident</label></div>
+                        <div class="ui-grid-col-4"><label>Durée accident</label></div>
                         <div class="ui-grid-col-8"><p-spinner  [(ngModel)]="accidentDuration" [step]="10"></p-spinner></div>
                     </div>
                  </div>
@@ -70,6 +74,10 @@
                    <div class="ui-grid-row">
                        <div class="ui-grid-col-4"><label>Poucentage</label></div>
                        <div class="ui-grid-col-8"><p-spinner [(ngModel)]="percentage" [step]="10"></p-spinner></div>
+                   </div>
+                   <div class="ui-grid-row">
+                       <div class="ui-grid-col-4"><label>ordre</label></div>
+                       <div class="ui-grid-col-8"><p-spinner [(ngModel)]="orderArr" [step]="1"></p-spinner></div>
                    </div>
                 </div>
                </div>
