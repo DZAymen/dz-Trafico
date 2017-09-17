@@ -138,6 +138,8 @@ class SimulationManager:
         TrafficAnalyzer.isCongestionDetected = False
         TrafficAnalyzer.congestionExists = False
 
+        self.set_sensors_distance(data["distance"])
+
         Simulation.LCMode_vsl_lc = 512
         Node.COMPLIANCE_PERCENTAGE = data["driver_compliance"]
 
