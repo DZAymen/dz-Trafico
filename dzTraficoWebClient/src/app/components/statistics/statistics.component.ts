@@ -22,10 +22,14 @@ export class StatisticsComponent implements OnInit {
      ngOnInit() {
        this.statService.getVariations().then(result => this.resultList = result)
 
-       this.statService.getDiagramData().then(
+       this.statService.getFlowDiagramData().then(
          graphData => {
            this.drawLineChart(graphData.time, graphData.no_control,graphData.with_control)
-         })
+         });
+        // this.statService.getDensityDiagramData().then(
+        //    graphData => {
+        //      this.drawLineChart(graphData.time, graphData.no_control,graphData.with_control)
+        // });
      }
 
    private drawLineChart(x:number[], y1:number[], y2:number[]) {
