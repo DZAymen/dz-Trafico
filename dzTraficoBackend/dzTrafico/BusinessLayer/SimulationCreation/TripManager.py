@@ -29,7 +29,7 @@ class TripManager:
         for inflowPoint in inFlowPoints:
             inflowPoint.reset_flow_value()
         for inflowPoint in inFlowPoints:
-            for outflowPoint in self.get_outflow_points(inflowPoint.outs, outFlowPoints):
+            for outflowPoint in self.get_outflow_points(inflowPoint.order, outFlowPoints):
                 # set the start and end edges for a new flow
                 flows.append(
                     Flow(
@@ -40,11 +40,11 @@ class TripManager:
                     ))
         return flows
 
-    def get_outflow_points(self, outs, outFlowPoints):
+    def get_outflow_points(self, order, outFlowPoints):
         outflows = []
-        for out in outs:
-            if out < len(outFlowPoints):
-                outflows.append(outFlowPoints[out])
+        for outFlowPoint in outFlowPoints:
+            if outFlowPoint.order > order:
+                outflows.append(outFlowPoint)
         return outflows
 
     def generate_route_file(self, flows_file_path):
