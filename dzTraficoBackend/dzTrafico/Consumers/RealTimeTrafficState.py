@@ -11,10 +11,12 @@ class RealTimeTrafficStateConsumer(JsonWebsocketConsumer):
             {"accept": True}
         )
         RealTimeTrafficStateConsumer.reply_channel = message.reply_channel
+        self.manager.start(self)
 
     def receive(self, content, **kwargs):
-        if content["startSim"]:
-            self.manager.start(self)
+        # if content["startSim"]:
+        #     self.manager.start(self)
+        pass
 
     def send(self, content, close=False):
         RealTimeTrafficStateConsumer.reply_channel.send(
