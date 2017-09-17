@@ -17,8 +17,12 @@
                          Capteurs de mesure
                     </p-header>
                       <div class="ui-grid-row">
-                          <div class="ui-g-5"><label for="minGap">Temps de cycle de mesure (s)</label></div>
+                          <div class="ui-g-5"><label >Temps de cycle de mesure (s)</label></div>
                           <div class="ui-g-7"><p-spinner [(ngModel)]="simulConfig.sim_step_duration" [step]="1"></p-spinner></div>
+                      </div>
+                      <div class="ui-grid-row">
+                          <div class="ui-g-5"><label >Distance entre deux capteurs (s)</label></div>
+                          <div class="ui-g-7"><p-spinner [(ngModel)]="simulConfig.distance" [step]="1"></p-spinner></div>
                       </div>
                   </p-panel>
             </div>
