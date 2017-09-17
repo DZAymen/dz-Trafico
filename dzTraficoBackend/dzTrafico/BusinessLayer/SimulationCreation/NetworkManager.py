@@ -1,5 +1,6 @@
 from dzTrafico.Helpers.MapManager import MapManager
 from dzTrafico.BusinessEntities.Simulation import Simulation
+from dzTrafico.BusinessEntities.Location import Location
 from sumolib.net.generator.network import Split
 import subprocess, os, sumolib
 import lxml.etree as etree
@@ -49,6 +50,7 @@ class NetworkManager:
     def initialize_net(self):
         if self.net is None:
             self.net = sumolib.net.readNet(self.__network_file_path)
+        NetworkManager.net = self.net
 
     def get_edgeId_from_geoCoord(self, lon, lat):
         self.initialize_net()
@@ -186,6 +188,18 @@ class NetworkManager:
 
     def get_edge_by_laneID(self, lane_id):
         return self.net.getEdge(sumolib._laneID2edgeID(lane_id))
+
+    @staticmethod
+    def get_edge_coords(edge):
+        x, y = edge.getFromNode().getCoord()
+        lng, lat = NetworkManager.net.convertXY2LonLat(x, y)
+        start = Location(lng, lat)
+
+        x, y = edge.getToNode().getCoord()
+        lng, lat = NetworkManager.net.convertXY2LonLat(x, y)
+        end = Location(lng, lat)
+
+        return start, end
 
 class SplittedEdge:
 

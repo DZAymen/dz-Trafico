@@ -68,6 +68,7 @@ class SensorsManager():
 
         incident_sensors = self.get_incidents_sensors(incidents)
 
+        self.create_incident_sensors_file(incident_sensors)
         self.sensors_filename = self.create_sensors_file(sensors_list, incident_sensors)
         return sinks, sensors_list, self.sensors_filename
 
@@ -89,6 +90,21 @@ class SensorsManager():
                                         pos=str(sensor.get_sensor_position()),
                                         freq=str(30),
                                         file="incident.sensors.output.xml")
+            root.append(sensor_node)
+        et = etree.ElementTree(root)
+        et.write(Simulation.project_directory + "\\" + sensors_filename, pretty_print=True)
+        return sensors_filename
+
+    def create_incident_sensors_file(self, incident_sensors):
+        sensors_filename = "incident.sensors.nocontrol.xml"
+        root = etree.Element("additional")
+        for sensor in incident_sensors:
+            sensor_node = etree.Element("inductionLoop",
+                                        id=str(sensor.get_sensor_id()),
+                                        lane=str(sensor.get_sensor_lane()),
+                                        pos=str(sensor.get_sensor_position()),
+                                        freq=str(30),
+                                        file="incident.sensors.nocontrol.output.xml")
             root.append(sensor_node)
         et = etree.ElementTree(root)
         et.write(Simulation.project_directory + "\\" + sensors_filename, pretty_print=True)

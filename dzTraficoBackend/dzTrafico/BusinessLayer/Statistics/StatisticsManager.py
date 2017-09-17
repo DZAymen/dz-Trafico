@@ -1,6 +1,7 @@
 from GlobalPerformanceMeasurementsController import GlobalPerformanceMeasurementsController
 from DataVisualizationController import DataVisualizationController
 from FlowMeasurements import FlowMeasurementsController
+from QueueMeasurements import QueueMeasurementsController
 
 class StatisticsManager:
 
@@ -8,6 +9,7 @@ class StatisticsManager:
         self.gpmController = GlobalPerformanceMeasurementsController(simulation)
         self.dataVisualizationController = DataVisualizationController(simulation)
         self.flowMeasurementsController = FlowMeasurementsController(simulation)
+        self.queueMeasurementsController = QueueMeasurementsController(simulation)
 
     def get_GPMs(self):
         return self.gpmController.get_trip_infos()
@@ -23,3 +25,6 @@ class StatisticsManager:
 
     def get_incident_flow(self):
         return self.flowMeasurementsController.get_incident_flow_measurements()
+
+    def get_queue_measurements(self):
+        self.queueMeasurementsController.get_queue_measurements()

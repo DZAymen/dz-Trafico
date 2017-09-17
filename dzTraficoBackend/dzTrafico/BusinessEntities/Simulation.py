@@ -12,9 +12,13 @@ class Simulation:
     simulation_summary_vsl_lc_filename = "summary_vsl_lc.xml"
 
     incident_sensors_output = "incident.sensors.output.xml"
+    incident_sensors_nocntrol_output = "incident.sensors.nocontrol.output.xml"
 
     trip_output = "trip.output.xml"
     trip_output_vsl_lc = "trip.output.vsl_lc.xml"
+
+    queue_output = "queue.output.xml"
+    queue_output_vsl_lc = "queue.output.vsl_lc.xml"
 
     lanechange_summary_filename = "lc.summary.xml"
     lanechange_summary_vsl_lc_filename = "lc.summary_vsl_lc.xml"
@@ -39,6 +43,8 @@ class Simulation:
     __network_file = "map.net.xml"
     __route_file = ""
     __sensors_file = ""
+    incident_sensors_file = "incident.sensors.nocontrol.xml"
+    incident_sensors_nocontrol_file = "incident.sensors.nocontrol.xml"
 
     __sinks = []
     __sensors_list = []
@@ -143,11 +149,12 @@ class Simulation:
                 "--summary", Simulation.project_directory + self.simulation_summary_filename,
                 "--lanechange-output", Simulation.project_directory + self.lanechange_summary_filename,
                 "-a", Simulation.project_directory + self.edge_dump_additional_filename
-                      # + ','
-                      # + Simulation.project_directory + Simulation.__sensors_file
+                  + ','
+                  + Simulation.project_directory + Simulation.incident_sensors_file
                 ,
                 "--tripinfo-output", Simulation.project_directory + self.trip_output,
-                "--device.emissions.probability", "1"
+                "--device.emissions.probability", "1",
+                "--queue-output", Simulation.project_directory + self.queue_output
             ],
             label=self.SIM
         )
@@ -160,7 +167,8 @@ class Simulation:
                 "-a", Simulation.project_directory + self.edge_dump_additional_vsl_lc_filename + ','
                       + Simulation.project_directory + Simulation.__sensors_file,
                 "--tripinfo-output", Simulation.project_directory + self.trip_output_vsl_lc,
-                "--device.emissions.probability", "1"
+                "--device.emissions.probability", "1",
+                "--queue-output", Simulation.project_directory + self.queue_output_vsl_lc
             ],
             label=self.SIM_VSL_LC
         )

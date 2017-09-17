@@ -17,10 +17,18 @@ def get_simulation_gpm_results(request):
 
 @api_view(['GET'])
 def get_incident_flow_stats(request):
-    incident_flow_stats, time = simulationManager.get_incident_flow()
+    incident_flow_stats = simulationManager.get_incident_flow()
+    simulationManager.get_queue_measurements()
+
+    return Response(data=incident_flow_stats, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_incident_density_stats(request):
+    incident_density_stats, time = simulationManager.get_density_flow()
+    simulationManager.get_queue_measurements()
 
     # Plot flow stats
-    print time, incident_flow_stats
-    plot(time, incident_flow_stats)
+    print time, incident_density_stats
+    plot(time, incident_density_stats)
 
-    return Response(status.HTTP_200_OK)
+    return Response(status=status.HTTP_200_OK)
