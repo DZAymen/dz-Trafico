@@ -39,18 +39,19 @@ export class RealTimeComponent implements OnInit {
     private osmService : OsmService,
     private wsService: WebsocketService
     ){
-		// realTimeService.recommandations.subscribe(rec => {
-    //   console.log("recommandations from websocket: " + rec);
-		// });
+		realTimeService.vslMsg.subscribe(vsl => {
+      console.log("VSL from websocket: " + vsl);
+      this.vslList= vsl;
+		});
 	}
 
 
 
 
   ngOnInit() {
-    this.realTimeService.getTraficState().then(traficState => this.drawPolyline(traficState));
-    this.realTimeService.getRecommandation().then(laneChange => this.lcList = laneChange);
-    this.realTimeService.getVsl().then(variableSpeedLimit => this.vslList = variableSpeedLimit);
+    // this.realTimeService.getTraficState().then(traficState => this.drawPolyline(traficState));
+    // this.realTimeService.getRecommandation().then(laneChange => this.lcList = laneChange);
+    // this.realTimeService.getVsl().then(variableSpeedLimit => this.vslList = variableSpeedLimit);
 
     this.options = {
                 center: {lat: 36.7596737, lng: 3.1365537},
@@ -68,6 +69,11 @@ export class RealTimeComponent implements OnInit {
 
   }
 
+  // When map is ready then define variable map
+  setMap(event) {
+      this.map = event.map;
+      this.osmService.getOsmMapType(this.map, google);
+  }
 
   // When map is ready then define variable map
   handleOverlayClick(event){
@@ -78,13 +84,14 @@ export class RealTimeComponent implements OnInit {
   }
 
 
- lancerSumo(){
-   this.realTimeService.connectToWs(this.wsService);
-   setTimeout(() => {
-        this.realTimeService.startSimulationMsg.next(this.message);
-   }, 3000);
+   lancerSumo(){
+     this.realTimeService.connectToRealTime(this.wsService);
+     setTimeout(() => {
+          this.realTimeService.startSimulationMsg.next(this.message);
+     }, 3000);
 
- }
+     this.realTimeService.connectToVsl(this.wsService);
+   }
 
   drawPolyline( stListe: TraficState[]){
     let polyColor: string;

@@ -19,8 +19,9 @@ export class RealTimeService {
 
   //private lcURL = 'ws://127.0.0.1:8000/simulation/api/lcrecommendations/';
   private realTimeStateURL ='ws://127.0.0.1:8000/simulation/api/realtimetrafficstate/';
-  private lcURL= "api/recommandationTest";
-  private vslURL= "api/vslTest";
+  private lcURL ='ws://127.0.0.1:8000/simulation/api/lcrecommendations/';
+  private vslURL ='ws://127.0.0.1:8000/simulation/api/vsl/';
+
   private polylineURL="api/polyline";
 
   // public recommandations: Subject<Lc>;
@@ -34,51 +35,61 @@ export class RealTimeService {
   //   			});
   // 	}
 
-  private  wsURL = 'ws://127.0.0.1:8000/simulation/api/simulationcreation/';
+
 
 
   public startSimulationMsg: Subject<Message>;
+  public vslMsg:Subject<Vsl[]>;
 
 
   constructor(private http: Http) {}
 
 
-  connectToWs(wsService: WebsocketService) {
+  connectToRealTime(wsService: WebsocketService) {
       this.startSimulationMsg =  <Subject<Message>>wsService
-        .connect(this.wsURL)
+        .connect(this.realTimeStateURL)
         .map((response: MessageEvent): Message => {
           let data = JSON.parse(response.data);
           return data
         });
   }
 
-  getRecommandation(): Promise<Lc[]> {
-     return this.http.get(this.lcURL)
-                .toPromise()
-                .then(response => response.json().data as Lc[])
-                .catch(this.handleError);
+  connectToVsl(wsService: WebsocketService) {
+      this.vslMsg =  <Subject<Vsl[]>>wsService
+        .connect(this.vslURL)
+        .map((response: MessageEvent): Vsl[] => {
+          let data = JSON.parse(response.data);
+          return data
+        });
   }
 
-
-  getVsl(): Promise<Vsl[]> {
-       return this.http.get(this.vslURL)
-                  .toPromise()
-                  .then(response => response.json().data as Vsl[])
-                  .catch(this.handleError);
-  }
-
-  getTraficState(): Promise<TraficState[]> {
-       return this.http.get(this.polylineURL)
-                  .toPromise()
-                  .then(response => response.json().data as TraficState[])
-                  .catch(this.handleError);
-  }
+  // getRecommandation(): Promise<Lc[]> {
+  //    return this.http.get(this.lcURL)
+  //               .toPromise()
+  //               .then(response => response.json().data as Lc[])
+  //               .catch(this.handleError);
+  // }
 
 
-
-  private handleError(error : any){
-    console.error('Erreur ', error);
-    return Promise.reject(error.message || error);
-  }
+  // getVsl(): Promise<Vsl[]> {
+  //      return this.http.get(this.vslURL)
+  //                 .toPromise()
+  //                 .then(response => response.json().data as Vsl[])
+  //                 .catch(this.handleError);
+  // }
+  //
+  // getTraficState(): Promise<TraficState[]> {
+  //      return this.http.get(this.polylineURL)
+  //                 .toPromise()
+  //                 .then(response => response.json().data as TraficState[])
+  //                 .catch(this.handleError);
+  // }
+  //
+  //
+  //
+  // private handleError(error : any){
+  //   console.error('Erreur ', error);
+  //   return Promise.reject(error.message || error);
+  // }
 
 }
