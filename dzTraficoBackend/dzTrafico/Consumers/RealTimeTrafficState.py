@@ -8,7 +8,8 @@ class RealTimeTrafficStateConsumer(JsonWebsocketConsumer):
 
     def connect(self, message, **kwargs):
         message.reply_channel.send(
-            {"accept": True}
+            {"accept": True},
+            immediately=True
         )
         RealTimeTrafficStateConsumer.reply_channel = message.reply_channel
         self.manager.start(self)
