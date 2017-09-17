@@ -20,10 +20,10 @@ urlpatterns = [
     url(r'^api/creation/incident$', SimulationCreationService.add_incidents),
     url(r'^api/creation/vehicletypes$', SimulationCreationService.add_vehicle_types),
     url(r'^api/creation/vehicletypespercentages$', SimulationCreationService.add_vehicle_types_percentages),
-    url(r'^api/creation/sensorsdistance$', SimulationCreationService.set_sensors_distance),
     url(r'^api/creation/config$', SimulationCreationService.update_configuration_state),
 
     #Simulation Results Routes _________________________________________________________________
     url(r'^api/statistics/gpm$', StatisticsService.get_simulation_gpm_results),
     url(r'^api/statistics/incidentflowstats$', StatisticsService.get_incident_flow_stats),
+    url(r'^api/statistics/incidentdensitystats$', StatisticsService.get_incident_density_stats),
 ]

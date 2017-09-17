@@ -8,6 +8,8 @@ class Simulation:
     # Simulation with vsl and lc control
     SIM_VSL_LC = "sim_vsl_lc"
 
+    time, densities, nocontrol_densities = [0], [0], [0]
+
     simulation_summary_filename = "summary.xml"
     simulation_summary_vsl_lc_filename = "summary_vsl_lc.xml"
 
@@ -269,3 +271,9 @@ class Simulation:
 
     def get_sensors_distance(self):
         return self.__sensors_distance
+
+    @staticmethod
+    def set_density_stats(time, densities, nocontrol_densities):
+        Simulation.time = time
+        Simulation.densities = densities
+        Simulation.nocontrol_densities = nocontrol_densities

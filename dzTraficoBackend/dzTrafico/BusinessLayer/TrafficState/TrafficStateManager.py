@@ -1,5 +1,5 @@
 from numpy.distutils.system_info import numarray_info
-
+from dzTrafico.BusinessEntities.Simulation import Simulation
 from dzTrafico.BusinessLayer.SimulationManager import SimulationManager
 from dzTrafico.BusinessEntities.Sink import Sink
 from dzTrafico.BusinessEntities.EdgeState import EdgeStateSerializer
@@ -34,6 +34,11 @@ class TrafficStateManager:
 
         self.simulation.start_simulation()
         densities = []
+        nocontrol_densities = []
+        time = []
+
+        self.incident_node = self.get_incident_node(sinks)
+
         for step in range(self.simulation.sim_duration):
 
             traci.switch(self.simulation.SIM)
@@ -41,18 +46,20 @@ class TrafficStateManager:
             self.simulation.check_incidents(step, self.simulation.SIM)
             self.simulation.clean_incidents(step)
             self.set_sumo_LC_Model(sinks, self.simulation.LCMode_noControl)
-            # self.check_departed_vehicles(step, self.no_control_vehs_dict)
+
+
+            res, rest = divmod(step, self.simulation.sim_step_duration)
+            if rest == 0:
+                nocontrol_densities.append(self.incident_node.get_current_density())
 
             # Changelane in accident edge
             if TrafficAnalyzer.congestionExists:
                 self.incident_change_lane(sinks)
-
             traci.switch(self.simulation.SIM_VSL_LC)
             traci.simulationStep()
             incidentIsClear = self.simulation.check_incidents(step, self.simulation.SIM_VSL_LC)
             self.simulation.clean_incidents(step)
             self.set_sumo_LC_Model(sinks, self.simulation.LCMode_vsl_lc)
-            # self.check_departed_vehicles(step, self.control_vehs_dict)
 
             if step == 0 or (TrafficAnalyzer.isCongestionDetected and incidentIsClear):
                 self.deactivate_vsl(sinks)
@@ -76,24 +83,18 @@ class TrafficStateManager:
                     if self.VSL_consumer is not None:
                         self.VSL_consumer.send(vsl_values)
                 realTimeTrafficStateConsumer.send(traffic_state)
-                if len(self.simulation.get_incidents())>0:
-                    for state in traffic_state:
-                        if state['edge_id'] == traci.lane.getEdgeID(self.simulation.get_incidents()[0].lane_id):
-                            densities.append(state['density'])
-                            print step, "  ", state['density']
+                densities.append(self.incident_node.get_current_density())
+                time.append(step)
 
             if TrafficAnalyzer.isCongestionDetected:
                 self.simulation.check_statistics_vehicles()
                 self.simulation.reset_vehicles_behaviour()
 
+        self.set_density_stats(time, densities, nocontrol_densities)
+
         traci.close()
         traci.switch(self.simulation.SIM)
         traci.close()
-
-        print densities
-
-        # print "Control, numStops ===> ", self.get_num_stops(self.control_vehs_dict)
-        # print "No Control, numStops ===> ", self.get_num_stops(self.no_control_vehs_dict)
 
         gpms = self.__simulationManager.get_simulation_gpm_results()
         serializer = GlobalPerformanceMeasurementSerializer(gpms, many=True)
@@ -177,6 +178,12 @@ class TrafficStateManager:
         for sink in sinks:
             lc_recommendations.extend(sink[0].get_LC_recommendations())
         return lc_recommendations
+
+    def get_incident_node(self, sinks):
+        return sinks[0][0].get_node_by_edgeID(traci.lane.getEdgeID(self.simulation.get_incidents()[0].lane_id))
+
+    def set_density_stats(self, time, densities, nocontrol_densities):
+        Simulation.set_density_stats(time, densities, nocontrol_densities)
 
 
 class Vehicle:

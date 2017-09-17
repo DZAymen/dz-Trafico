@@ -26,7 +26,7 @@ class InFlowPoint(object):
         self.order = order
 
     def get_left_flow(self, percentage):
-        flow = percentage * self.left_flow
+        flow = percentage * self.left_flow / 100
         self.left_flow -= flow
         return flow
 
