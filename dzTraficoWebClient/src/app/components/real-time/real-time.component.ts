@@ -12,6 +12,7 @@ import {Message} from 'primeng/primeng';
 import {Lc} from '../../domain/lc';
 import {Vsl} from '../../domain/vsl';
 import {TraficState} from '../../domain/trafic-state';
+import {RealtimeData} from '../../domain/realtime-data';
 
 declare var google: any;
 @Component({
@@ -22,6 +23,7 @@ declare var google: any;
 })
 export class RealTimeComponent implements OnInit {
 
+  realtimeDataList: RealtimeData;
   lcList: Lc[]=[];
   vslList: Vsl[]=[];
   traficStateList: TraficState[]=[];
@@ -43,12 +45,16 @@ export class RealTimeComponent implements OnInit {
     private wsService: WebsocketService,
     private vslService: VslService
     ){
-    this.vslService.connectToVsl(this.wsService);  
-		this.vslService.vslMsg.subscribe(vsl => {
-      console.log("VSL from websocket: " + vsl);
-      this.vslList= vsl;
-		});
+    this.realTimeService.connectToRealTime(this.wsService);
+		// this.vslService.vslMsg.subscribe(vsl => {
+    //   console.log("VSL from websocket: " + vsl);
+    //   this.vslList= vsl;
+		// });
 
+     this.realTimeService.startSimulationMsg.subscribe( rt => {
+      console.log("VSL from websocket: " + rt);
+       this.realtimeDataList = rt;
+		});
     // realTimeService.lcMsg.subscribe(lc => {
     //   console.log("VSL from websocket: " + lc);
     //   this.lcList= lc;
@@ -95,10 +101,10 @@ export class RealTimeComponent implements OnInit {
 
 
    lancerSumo(){
-     this.realTimeService.connectToRealTime(this.wsService);
-     setTimeout(() => {
-          this.realTimeService.startSimulationMsg.next(this.message);
-     }, 3000);
+    //  this.realTimeService.connectToRealTime(this.wsService);
+    //  setTimeout(() => {
+    //       this.realTimeService.startSimulationMsg.next(this.message);
+    //  }, 3000);
 
     // this.vslService.connectToVsl(this.wsService);
      //this.realTimeService.connectToLc(this.wsService);
