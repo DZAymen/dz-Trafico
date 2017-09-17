@@ -46,22 +46,15 @@ export class RealTimeComponent implements OnInit {
     private vslService: VslService
     ){
     this.realTimeService.connectToRealTime(this.wsService);
-		// this.vslService.vslMsg.subscribe(vsl => {
-    //   console.log("VSL from websocket: " + vsl);
-    //   this.vslList= vsl;
-		// });
 
      this.realTimeService.startSimulationMsg.subscribe( rt => {
-      console.log("VSL from websocket: " + rt);
+      console.log("VSL from websocket: ", rt);
        this.realtimeDataList = rt;
+       this.lcList= this.realtimeDataList.lc;
+       this.vslList= this.realtimeDataList.vsl;
+        this.drawPolyline(this.realtimeDataList.trafficState)
 		});
-    // realTimeService.lcMsg.subscribe(lc => {
-    //   console.log("VSL from websocket: " + lc);
-    //   this.lcList= lc;
-		// });
 	}
-
-
 
 
   ngOnInit() {
@@ -99,16 +92,6 @@ export class RealTimeComponent implements OnInit {
                    });
   }
 
-
-   lancerSumo(){
-    //  this.realTimeService.connectToRealTime(this.wsService);
-    //  setTimeout(() => {
-    //       this.realTimeService.startSimulationMsg.next(this.message);
-    //  }, 3000);
-
-    // this.vslService.connectToVsl(this.wsService);
-     //this.realTimeService.connectToLc(this.wsService);
-   }
 
   drawPolyline( stListe: TraficState[]){
     let polyColor: string;
