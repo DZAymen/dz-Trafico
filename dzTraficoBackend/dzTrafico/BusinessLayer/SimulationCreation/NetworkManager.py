@@ -44,7 +44,7 @@ class NetworkManager:
             "osm.map"+"_".join(map(str, map_box.get_coords())) + ".xml"
         )
         if not os.path.isfile(self.osm_file_path):
-            self.osm_file_path = NetworkManager.__mapManager.download_map(map_box, self.osm_file_path)
+            NetworkManager.__mapManager.download_map(map_box, self.osm_file_path)
         return self.convert_map_to_network_file(self.osm_file_path)
 
     def initialize_net(self):
