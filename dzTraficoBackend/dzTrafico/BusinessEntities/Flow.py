@@ -14,7 +14,7 @@ class Flow(object):
 class InFlowPoint(object):
 
     id = 0
-    def __init__(self, lon, lat, departTime, flow, outs):
+    def __init__(self, lon, lat, departTime, flow, order):
         self.id = InFlowPoint.id
         InFlowPoint.id += 1
         self.lon = lon
@@ -23,7 +23,7 @@ class InFlowPoint(object):
         self.departTime = departTime
         self.flow = flow
         self.left_flow = flow
-        self.outs = outs
+        self.order = order
 
     def get_left_flow(self, percentage):
         flow = percentage * self.left_flow
@@ -42,9 +42,7 @@ class InFlowPointSerializer(serializers.Serializer):
     position = LocationSerializer()
     departTime = serializers.FloatField()
     flow = serializers.FloatField()
-    outs = serializers.ListField(
-        child = serializers.IntegerField(min_value=0, max_value=1000)
-    )
+    order = serializers.IntegerField()
 
     def create(self, validated_data):
         return InFlowPoint(
@@ -52,28 +50,31 @@ class InFlowPointSerializer(serializers.Serializer):
             validated_data["position"]["lat"],
             validated_data["departTime"],
             validated_data["flow"],
-            validated_data["outs"]
+            validated_data["order"]
         )
 
 class OutFlowPoint(object):
     id = 0
-    def __init__(self, lon, lat, percentage):
+    def __init__(self, lon, lat, percentage, order):
         self.id = OutFlowPoint.id
         OutFlowPoint.id += 1
         self.lon = lon
         self.lat = lat
         self.position = Location(lon, lat)
         self.percentage = percentage
+        self.order = order
 
 class OutFlowPointSerializer(serializers.Serializer):
 
     id = serializers.IntegerField(required=False)
     position = LocationSerializer()
     percentage = serializers.FloatField(required=False)
+    order = serializers.IntegerField()
 
     def create(self, validated_data):
         return OutFlowPoint(
             validated_data["position"]["lng"],
             validated_data["position"]["lat"],
-            validated_data["percentage"]
+            validated_data["percentage"],
+            validated_data["order"]
         )
