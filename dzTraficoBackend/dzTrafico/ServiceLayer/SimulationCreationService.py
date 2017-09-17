@@ -121,16 +121,6 @@ def add_vehicle_types_percentages(request):
     simulationManager.set_vehicle_types_percentages(request.data)
     return Response(status.HTTP_201_CREATED)
 
-#Post configuration state
-# :true means to launch the simulation creation
-
-@api_view(['POST'])
-def set_sensors_distance(request):
-    simulationManager.set_sensors_distance(request.data["distance"])
-
-    return Response(status.HTTP_202_ACCEPTED)
-
-
 @api_view(['POST'])
 def update_configuration_state(request):
     simulationManager.update_config(request.data)
