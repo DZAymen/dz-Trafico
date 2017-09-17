@@ -12,6 +12,7 @@ class Simulation:
     simulation_summary_vsl_lc_filename = "summary_vsl_lc.xml"
 
     incident_sensors_output = "incident.sensors.output.xml"
+    incident_sensors_nocntrol_output = "incident.sensors.nocontrol.output.xml"
 
     trip_output = "trip.output.xml"
     trip_output_vsl_lc = "trip.output.vsl_lc.xml"
@@ -42,6 +43,8 @@ class Simulation:
     __network_file = "map.net.xml"
     __route_file = ""
     __sensors_file = ""
+    incident_sensors_file = "incident.sensors.nocontrol.xml"
+    incident_sensors_nocontrol_file = "incident.sensors.nocontrol.xml"
 
     __sinks = []
     __sensors_list = []
@@ -146,8 +149,8 @@ class Simulation:
                 "--summary", Simulation.project_directory + self.simulation_summary_filename,
                 "--lanechange-output", Simulation.project_directory + self.lanechange_summary_filename,
                 "-a", Simulation.project_directory + self.edge_dump_additional_filename
-                      # + ','
-                      # + Simulation.project_directory + Simulation.__sensors_file
+                  + ','
+                  + Simulation.project_directory + Simulation.incident_sensors_file
                 ,
                 "--tripinfo-output", Simulation.project_directory + self.trip_output,
                 "--device.emissions.probability", "1",
