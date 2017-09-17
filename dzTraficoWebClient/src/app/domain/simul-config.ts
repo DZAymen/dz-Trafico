@@ -12,4 +12,5 @@ export class SimulationConfig {
     // lcControl:boolean;
 
     driver_compliance:number;
+    distance: number;
 }

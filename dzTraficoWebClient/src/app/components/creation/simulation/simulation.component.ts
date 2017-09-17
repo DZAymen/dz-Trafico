@@ -14,10 +14,6 @@ import { WebsocketService } from './websocket.service';
   providers:[StartSimulationService, CreateSimulationService, WebsocketService]
 })
 export class SimulationComponent {
-
-  private message = {
-    createSim: true
-  }
   simulConfig = new SimulationConfig();
 
 constructor(
@@ -30,17 +26,14 @@ constructor(
 
     configSimulation(){
         this.startSimulationService.simulationConfig(this.simulConfig);
-        //this.sendMsg();
+
     }
 
     prev(){
       this.router.navigate(['/vehicle']);
     }
 
-    private sendMsg() {
-   		console.log('new message from client to websocket: ', this.message);
-   		this.createSimulationService.createSimulationMsg.next(this.message);
-   	}
+
 
 
 }
