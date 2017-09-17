@@ -30,54 +30,54 @@
            <p-dialog showEffect="fade" [(visible)]="dialogVisible" header="Ajout Point">
                <div class="ui-grid ui-grid-pad ui-fluid" *ngIf="selectedPosition">
                    <div class="ui-grid-row">
-                       <div class="ui-grid-col-2"><label for="name">Nom</label></div>
-                       <div class="ui-grid-col-10"><input #name type="text" pInputText [(ngModel)]="markerName"></div>
+                       <div class="ui-grid-col-5"><label for="name">Nom</label></div>
+                       <div class="ui-grid-col-7"><input #name type="text" pInputText [(ngModel)]="markerName"></div>
                    </div>
                    <div class="ui-grid-row">
-                       <div class="ui-grid-col-2"><label for="lat">Lat</label></div>
-                       <div class="ui-grid-col-10"><input type="text" readonly pInputText [ngModel]="selectedPosition.lat()"></div>
+                       <div class="ui-grid-col-5"><label for="lat">Lat</label></div>
+                       <div class="ui-grid-col-7"><input type="text" readonly pInputText [ngModel]="selectedPosition.lat()"></div>
                    </div>
                    <div class="ui-grid-row">
-                       <div class="ui-grid-col-2"><label for="lng">Lng</label></div>
-                       <div class="ui-grid-col-10"><input type="text" readonly pInputText [ngModel]="selectedPosition.lng()"></div>
+                       <div class="ui-grid-col-5"><label for="lng">Lng</label></div>
+                       <div class="ui-grid-col-7"><input type="text" readonly pInputText [ngModel]="selectedPosition.lng()"></div>
                    </div>
 
                    <div *ngIf="departDialog">
                      <div class="ui-grid-row">
-                         <div class="ui-grid-col-4"><label>Débit</label></div>
-                         <div class="ui-grid-col-8"><p-spinner #tasty [(ngModel)]="flow" [step]="100"></p-spinner></div>
+                         <div class="ui-grid-col-5"><label>Débit</label></div>
+                         <div class="ui-grid-col-7"><p-spinner #tasty [(ngModel)]="flow" [step]="100"></p-spinner></div>
                      </div>
                      <div class="ui-grid-row">
-                         <div class="ui-grid-col-4"><label>Temps de départ</label></div>
-                         <div class="ui-grid-col-8"><p-spinner [(ngModel)]="departTime" [step]="10"></p-spinner></div>
+                         <div class="ui-grid-col-5"><label>Temps de départ</label></div>
+                         <div class="ui-grid-col-7"><p-spinner [(ngModel)]="departTime" [step]="10"></p-spinner></div>
                      </div>
                      <div class="ui-grid-row">
-                         <div class="ui-grid-col-4"><label>ordre</label></div>
-                         <div class="ui-grid-col-8"><p-spinner [(ngModel)]="orderDep" [step]="1"></p-spinner></div>
+                         <div class="ui-grid-col-5"><label>ordre</label></div>
+                         <div class="ui-grid-col-7"><p-spinner [(ngModel)]="orderDep" [step]="1"></p-spinner></div>
                      </div>
                   </div>
                   <div *ngIf="accidentDialog">
                     <div class="ui-grid-row">
-                        <div class="ui-grid-col-4"><label>Num voie</label></div>
-                        <div class="ui-grid-col-8"><p-spinner [(ngModel)]="lane" [step]="1"></p-spinner></div>
+                        <div class="ui-grid-col-5"><label>Num voie</label></div>
+                        <div class="ui-grid-col-7"><p-spinner [(ngModel)]="lane" [step]="1"></p-spinner></div>
                     </div>
                     <div class="ui-grid-row">
-                        <div class="ui-grid-col-4"><label>Temps accident</label></div>
-                        <div class="ui-grid-col-8"><p-spinner [(ngModel)]="accidentTime" [step]="100"></p-spinner></div>
+                        <div class="ui-grid-col-5"><label>Temps accident</label></div>
+                        <div class="ui-grid-col-7"><p-spinner [(ngModel)]="accidentTime" [step]="100"></p-spinner></div>
                     </div>
                     <div class="ui-grid-row">
-                        <div class="ui-grid-col-4"><label>Durée accident</label></div>
-                        <div class="ui-grid-col-8"><p-spinner  [(ngModel)]="accidentDuration" [step]="10"></p-spinner></div>
+                        <div class="ui-grid-col-5"><label>Durée accident</label></div>
+                        <div class="ui-grid-col-7"><p-spinner  [(ngModel)]="accidentDuration" [step]="100"></p-spinner></div>
                     </div>
                  </div>
                  <div *ngIf="arrivalDialog">
                    <div class="ui-grid-row">
-                       <div class="ui-grid-col-4"><label>Poucentage</label></div>
-                       <div class="ui-grid-col-8"><p-spinner [(ngModel)]="percentage" [step]="10"></p-spinner></div>
+                       <div class="ui-grid-col-5"><label>Poucentage</label></div>
+                       <div class="ui-grid-col-7"><p-spinner [(ngModel)]="percentage" [step]="10"></p-spinner></div>
                    </div>
                    <div class="ui-grid-row">
-                       <div class="ui-grid-col-4"><label>ordre</label></div>
-                       <div class="ui-grid-col-8"><p-spinner [(ngModel)]="orderArr" [step]="1"></p-spinner></div>
+                       <div class="ui-grid-col-5"><label>ordre</label></div>
+                       <div class="ui-grid-col-7"><p-spinner [(ngModel)]="orderArr" [step]="1"></p-spinner></div>
                    </div>
                 </div>
                </div>

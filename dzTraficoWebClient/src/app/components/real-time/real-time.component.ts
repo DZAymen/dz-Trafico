@@ -18,7 +18,7 @@ declare var google: any;
   selector: 'app-real-time',
   templateUrl: './real-time.component.html',
   styleUrls: ['./real-time.component.css'],
-  providers: [WebsocketService, RealTimeService, OsmService]
+  providers: [WebsocketService, RealTimeService, VslService, OsmService]
 })
 export class RealTimeComponent implements OnInit {
 
@@ -43,7 +43,8 @@ export class RealTimeComponent implements OnInit {
     private wsService: WebsocketService,
     private vslService: VslService
     ){
-		vslService.vslMsg.subscribe(vsl => {
+    this.vslService.connectToVsl(this.wsService);  
+		this.vslService.vslMsg.subscribe(vsl => {
       console.log("VSL from websocket: " + vsl);
       this.vslList= vsl;
 		});
@@ -99,7 +100,7 @@ export class RealTimeComponent implements OnInit {
           this.realTimeService.startSimulationMsg.next(this.message);
      }, 3000);
 
-     this.vslService.connectToVsl(this.wsService);
+    // this.vslService.connectToVsl(this.wsService);
      //this.realTimeService.connectToLc(this.wsService);
    }
 

@@ -4,7 +4,7 @@ import {MenuItem} from  'primeng/primeng';
 
 @Component({
   selector: 'app-steps',
-  template: '<p-steps [model]="items" [(activeIndex)]="activeIndex" [readonly]="false"></p-steps>',
+  template: '<p-steps [model]="items" [(activeIndex)]="activeIndex" [readonly]="true"></p-steps>',
   styles: [`
         .ui-steps {
           margin-top: 20px;

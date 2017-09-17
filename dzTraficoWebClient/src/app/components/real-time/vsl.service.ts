@@ -7,7 +7,8 @@ import {Vsl} from '../../domain/vsl';
 export class VslService {
 
   private vslURL ='ws://127.0.0.1:8000/simulation/api/vsl/';
-  public vslMsg:Subject<Vsl[]>;
+  public vslMsg: Subject<Vsl[]> ;
+
   constructor() { }
 
   connectToVsl(wsService: WebsocketService) {
