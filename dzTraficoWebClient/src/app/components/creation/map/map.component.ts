@@ -110,7 +110,7 @@ export class MapComponent implements OnInit {
         this.msgs = [];
         this.msgs.push({severity:'warn', summary:'Aucune zone à exporter', detail: 'Vous devez d\'abord seléctionner une zone'});
       }
-    //  this.router.navigate(['/trafficflow']);
+      this.router.navigate(['/trafficflow']);
     }
 
 
