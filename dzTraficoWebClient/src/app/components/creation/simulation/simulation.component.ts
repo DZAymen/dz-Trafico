@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { SimulationConfig } from '../../../domain/simul-config';
@@ -13,12 +13,9 @@ import { WebsocketService } from './websocket.service';
   styleUrls: ['./simulation.component.css'],
   providers:[StartSimulationService, CreateSimulationService, WebsocketService]
 })
-export class SimulationComponent implements OnInit, OnDestroy {
+export class SimulationComponent  {
 
   simulConfig = new SimulationConfig();
-  messages = [];
-  connection;
-  message;
 
 constructor(
       private router: Router,
@@ -26,45 +23,31 @@ constructor(
       private createSimulationService: CreateSimulationService,
       private wsService: WebsocketService
 
-    ){}
+    ){
 
+    }
 
-  sendMessage() {
-    this.createSimulationService.sendMessage(this.message);
-    this.message = '';
-  }
+      private message = {
+    		createSim: true
+    	}
 
-
-  ngOnInit() {
-    this.connection = this.createSimulationService.getMessages().subscribe(message => {
-      this.messages.push(message);
-    })
-  }
-
-
-  ngOnDestroy() {
-    this.connection.unsubscribe();
-  }
-
-    // private message = {
-    // 		createSim: true
-    // 	}
-
-      // sendMsg() {
-    	// 	console.log('new message from client to websocket: ', this.message);
-    	// 	this.createSimulationService.createSimulationMsg.next(this.message);
-      //
-    	// }
+      sendMsg() {
+    		console.log('new message from client to websocket: ', this.message);
+    		this.createSimulationService.createSimulationMsg.next(this.message);
+    	}
 
     configSimulation(){
-          this.startSimulationService.simulationConfig(this.simulConfig).then( res => {
-          // this.createSimulationService.connectToWs(this.wsService).subscribe( res=> {
-          //   this.sendMsg() ;
-          //   console.log("appel de senMsg")
-          // }
-          //          )
-          //
-        });
+        this.startSimulationService.simulationConfig(this.simulConfig).then( res => {
+         console.log(" après envoie de l'objet config " + res);
+
+        this.createSimulationService.connectToWs(this.wsService)
+        setTimeout(() => {
+              this.createSimulationService.createSimulationMsg.next(this.message);
+        }, 3000);
+      });
+
+
+
     }
 
     prev(){
