@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 import { WebsocketService } from './websocket.service';
 import {RealTimeService} from './real-time.service';
+import { VslService } from './vsl.service';
+
 import { OsmService } from '../../shared/osm.service';
+
 
 import {Message} from 'primeng/primeng';
 
@@ -37,12 +40,18 @@ export class RealTimeComponent implements OnInit {
   constructor(
     private realTimeService: RealTimeService,
     private osmService : OsmService,
-    private wsService: WebsocketService
+    private wsService: WebsocketService,
+    private vslService: VslService
     ){
-		realTimeService.vslMsg.subscribe(vsl => {
+		vslService.vslMsg.subscribe(vsl => {
       console.log("VSL from websocket: " + vsl);
       this.vslList= vsl;
 		});
+
+    // realTimeService.lcMsg.subscribe(lc => {
+    //   console.log("VSL from websocket: " + lc);
+    //   this.lcList= lc;
+		// });
 	}
 
 
@@ -90,7 +99,8 @@ export class RealTimeComponent implements OnInit {
           this.realTimeService.startSimulationMsg.next(this.message);
      }, 3000);
 
-     this.realTimeService.connectToVsl(this.wsService);
+     this.vslService.connectToVsl(this.wsService);
+     //this.realTimeService.connectToLc(this.wsService);
    }
 
   drawPolyline( stListe: TraficState[]){
