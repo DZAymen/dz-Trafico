@@ -9,8 +9,8 @@ class FlowMeasurementsController:
 
     def get_incident_flow_measurements(self):
         flow = dict()
-        flow["time"], flow["flow_control"] = self.get_incident_FM(self.simulation.incident_sensors_output)
-        t, flow["flow_no_control"] = self.get_incident_FM(self.simulation.incident_sensors_nocntrol_output)
+        flow["time"], flow["with_control"] = self.get_incident_FM(self.simulation.incident_sensors_output)
+        t, flow["no_control"] = self.get_incident_FM(self.simulation.incident_sensors_nocntrol_output)
         return flow
 
     def get_incident_FM(self, output_file):
