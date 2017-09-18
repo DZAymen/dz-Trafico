@@ -1,7 +1,6 @@
 import { Component, OnInit, AnimationTransitionEvent } from '@angular/core';
 
 
-
 @Component({
   moduleId: module.id,
   selector: 'app-root',

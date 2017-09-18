@@ -5,7 +5,7 @@ import { Component, OnInit, Input} from '@angular/core';
   template: `
             <div class="road-sign">
                 <div class="speed-limit">
-                  50
+                  {{speed}}
                 </div>
             </div>
           `,
