@@ -64,6 +64,12 @@ class SimulationManager:
     def get_outflow_points(self):
         return SimulationManager.__simulation.get_outflows()
 
+    def delete_traffic_outflow(self, id):
+        SimulationManager.__simulation.delete_outflow(id)
+
+    def delete_traffic_inflow(self, id):
+        SimulationManager.__simulation.delete_inflow(id)
+
     # ---------------------------------------------------------------------------------------------------
 
     # -------------------------------- Incidents definition ---------------------------------------------
@@ -73,7 +79,12 @@ class SimulationManager:
         #SimulationManager.__simulationCreator.add_incidents(SimulationManager.incident)
 
     def get_incidents(self):
-        return SimulationManager.__simulation.get_incidents()
+        return SimulationManager.incidents
+
+    def delete_incident(self, id):
+        for incident in SimulationManager.incidents:
+            if incident.id == int(id):
+                SimulationManager.incidents.remove(incident)
     # ---------------------------------------------------------------------------------------------------
 
     # -------------------------------- Vehicle types definition -----------------------------------------
@@ -140,8 +151,12 @@ class SimulationManager:
 
         self.set_sensors_distance(data["distance"])
 
-        Simulation.LCMode_vsl_lc = 512
-        Node.COMPLIANCE_PERCENTAGE = data["driver_compliance"]
+        Node.COMPLIANCE_PERCENTAGE = data["driver_compliance"] / 100
+
+        if Node.COMPLIANCE_PERCENTAGE < 1:
+            Simulation.LCMode_vsl_lc = 597
+        else:
+            Simulation.LCMode_vsl_lc = 512
 
     # ---------------------------------------------------------------------------------------------------
 

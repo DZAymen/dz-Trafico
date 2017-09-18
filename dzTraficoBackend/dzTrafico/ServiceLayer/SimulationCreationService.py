@@ -45,8 +45,14 @@ def add_traffic_inflow(request):
         serializer = InFlowPointSerializer(inFlowPoints, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['DELETE'])
+def delete_traffic_inflow(request, pk):
+    simulationManager.delete_traffic_inflow(pk)
+    return Response(status=status.HTTP_200_OK)
+
 #POST: add an outflow point
 #GET: get outflow points
+
 @api_view(['POST', 'GET'])
 def add_traffic_outflow(request):
     if request.method == 'POST':
@@ -68,6 +74,12 @@ def add_traffic_outflow(request):
         serializer = OutFlowPointSerializer(outFlowPoints, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
+@api_view(['DELETE'])
+def delete_traffic_outflow(request, pk):
+    simulationManager.delete_traffic_outflow(pk)
+    return Response(status=status.HTTP_200_OK)
+
+
 # Post incidents list
 @api_view(['POST', 'GET'])
 def add_incidents(request):
@@ -81,12 +93,20 @@ def add_incidents(request):
         # Add incident to incidents list
         simulationManager.add_incident(incident)
 
-        return Response(data=incidentSerializer.data, status=status.HTTP_202_ACCEPTED)
+        data = incidentSerializer.data
+        data["id"] = incident.id
+
+        return Response(data=data, status=status.HTTP_202_ACCEPTED)
 
     elif request.method == 'GET':
         incidents = simulationManager.get_incidents()
         serializer = IncidentSerializer(incidents, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['DELETE'])
+def delete_incident(request, pk):
+    simulationManager.delete_incident(pk)
+    return Response(status=status.HTTP_200_OK)
 
 #Post vehicle types
 @api_view(['POST', 'GET'])

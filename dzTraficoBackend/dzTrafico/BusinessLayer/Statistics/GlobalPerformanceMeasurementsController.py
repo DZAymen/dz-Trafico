@@ -149,7 +149,8 @@ class GlobalPerformanceMeasurementsController:
         return trip_infos, trip_infos_vsl_lc
 
     def get_trip_infos_GPM(self, trip_infos, type):
-        totalTravelTime, totalWaitingTime, numLC, fuel, co2, nox, routeLength = 0,0,0,0,0,0,0
+        totalTravelTime, totalWaitingTime, fuel, co2, nox = 0,0,0,0,0
+        routeLength = 1
 
         for trip_info in trip_infos:
             totalTravelTime += float(trip_info.get("duration"))
@@ -172,13 +173,12 @@ class GlobalPerformanceMeasurementsController:
         meanWaintingTime = totalWaitingTime/len(trip_infos)
 
         # Get numLaneChange
-        numLC = self.get_trip_infos_num_LaneChange(trip_infos, type)
+        # numLC = self.get_trip_infos_num_LaneChange(trip_infos, type)
 
         return GlobalPerformanceMeasurement(
             type,
             meanTravelTime,
             meanWaintingTime,
-            numLC,
             fuelRate,
             co2Rate,
             noxRate
@@ -210,7 +210,6 @@ class GlobalPerformanceMeasurementsController:
             GlobalPerformanceMeasurement.VSL_LC_NoControl_COMP,
             100 *(vsl_lc_GPM.meanTravelTime - noControl_GPM.meanTravelTime) /noControl_GPM.meanTravelTime,
             100 *(vsl_lc_GPM.meanWaintingTime - noControl_GPM.meanWaintingTime) /noControl_GPM.meanWaintingTime,
-            100 *(vsl_lc_GPM.numLC - noControl_GPM.numLC) /noControl_GPM.numLC,
             100 *(vsl_lc_GPM.fuelRate - noControl_GPM.fuelRate) /noControl_GPM.fuelRate,
             100 *(vsl_lc_GPM.co2Rate - noControl_GPM.co2Rate) /noControl_GPM.co2Rate,
             100 *(vsl_lc_GPM.noxRate - noControl_GPM.noxRate) /noControl_GPM.noxRate
@@ -237,11 +236,10 @@ class GlobalPerformanceMeasurement(object):
 
     VSL_LC_NoControl_COMP = "vsl_lc_noControl_comp"
 
-    def __init__(self, type, meanTravelTime, meanWaintingTime, numLC, fuel, co2, nox):
+    def __init__(self, type, meanTravelTime, meanWaintingTime, fuel, co2, nox):
         self.type = type
         self.meanTravelTime = meanTravelTime
         self.meanWaintingTime = meanWaintingTime
-        self.numLC = numLC
         self.fuelRate = fuel
         self.co2Rate = co2
         self.noxRate = nox
@@ -251,7 +249,6 @@ class GlobalPerformanceMeasurementSerializer(serializers.Serializer):
     type = serializers.CharField()
     meanTravelTime = serializers.FloatField()
     meanWaintingTime = serializers.FloatField()
-    numLC = serializers.FloatField()
     fuelRate = serializers.FloatField()
     co2Rate = serializers.FloatField()
     noxRate = serializers.FloatField()
