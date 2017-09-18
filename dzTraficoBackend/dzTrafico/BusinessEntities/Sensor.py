@@ -27,12 +27,12 @@ class Sensor(object):
 
     def check_traffic_state(self):
         speed = Converter.tokmh(traci.inductionloop.getLastStepMeanSpeed(str(self.__id)))
-        density = self.__get_density()
+        density = self.get_density()
         self.add_measure(speed, density)
         return self.__check_measure_density(density)
 
     def check_clear_lane(self):
-        density = self.__get_density()
+        density = self.get_density()
         speed = Converter.tokmh(traci.lane.getLastStepMeanSpeed(self.__lane))
         return (density == 0) or (speed > 15)
 
@@ -81,7 +81,7 @@ class Sensor(object):
     def get_previous_step_density(self):
         return self.previous_step_density
 
-    def __get_density(self):
+    def get_density(self):
         vehs_number = len(traci.lane.getLastStepVehicleIDs(self.__lane))
         lane_length = traci.lane.getLength(self.__lane)
         return (vehs_number * (1000 / lane_length))

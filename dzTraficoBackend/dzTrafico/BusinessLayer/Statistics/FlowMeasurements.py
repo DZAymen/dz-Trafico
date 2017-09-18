@@ -14,7 +14,7 @@ class FlowMeasurementsController:
         return flow
 
     def get_incident_FM(self, output_file):
-        root = etree.parse(Simulation.project_directory + self.simulation.incident_sensors_output)
+        root = etree.parse(Simulation.project_directory + output_file)
 
         intervals = root.getroot().getchildren()
 
