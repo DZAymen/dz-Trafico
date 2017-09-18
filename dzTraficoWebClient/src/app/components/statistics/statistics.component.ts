@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { StatService } from './stat.service';
-import { GraphData } from '../../domain/graph-data';
 import { Result } from '../../domain/result';
 
 @Component({
@@ -11,9 +10,8 @@ import { Result } from '../../domain/result';
 })
 export class StatisticsComponent implements OnInit {
 
-  lineData: any;
-  //barData: any;
-  data:GraphData;
+  flowData: any;
+  densityData: any;
   resultList: Result[]=[];
 
   constructor(private statService: StatService) {
@@ -24,16 +22,36 @@ export class StatisticsComponent implements OnInit {
 
        this.statService.getFlowDiagramData().then(
          graphData => {
-           this.drawLineChart(graphData.time, graphData.no_control,graphData.with_control)
+           this.drawflowChart(graphData.time, graphData.no_control,graphData.with_control)
          });
-        // this.statService.getDensityDiagramData().then(
-        //    graphData => {
-        //      this.drawLineChart(graphData.time, graphData.no_control,graphData.with_control)
-        // });
+        this.statService.getDensityDiagramData().then(
+           graphData => {
+             this.drawdensityChart(graphData.time, graphData.no_control,graphData.with_control)
+        });
      }
 
-   private drawLineChart(x:number[], y1:number[], y2:number[]) {
-     this.lineData= {
+   private drawflowChart(x:number[], y1:number[], y2:number[]) {
+     this.flowData= {
+             labels: x,
+             datasets: [
+                 {
+                     label: 'Sans contrôle',
+                     data: y1,
+                     fill: false,
+                     borderColor: '#4bc0c0'
+                 },
+                 {
+                     label: 'LDV + CV',
+                     data: y2,
+                     fill: false,
+                     borderColor: '#565656'
+                 }
+             ]
+         }
+   }
+
+   private drawdensityChart(x:number[], y1:number[], y2:number[]) {
+     this.densityData= {
              labels: x,
              datasets: [
                  {
