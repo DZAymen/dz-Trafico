@@ -74,9 +74,9 @@ class TrafficStateManager:
             # Check for LanChanges in nodes' recommendations
             if TrafficAnalyzer.congestionExists and TrafficAnalyzer.isLCControlActivated and self.simulation.sim_step_duration>1:
                 self.change_lane(sinks)
-                if self.LC_consumer is not None:
+                # if self.LC_consumer is not None:
                     # self.LC_consumer.send(self.get_LC_recommendations(sinks))
-                    self.realtimeData["lc"] = self.get_LC_recommendations(sinks)
+                self.realtimeData["lc"] = self.get_LC_recommendations(sinks)
 
             # Read traffic state in each time stamp
             # Check for congestion
@@ -85,8 +85,8 @@ class TrafficStateManager:
                 traffic_state = self.read_traffic_state(sinks)
                 if TrafficAnalyzer.isVSLControlActivated and TrafficAnalyzer.isCongestionDetected:
                     vsl_values = self.update_vsl(sinks)
-                    if self.VSL_consumer is not None:
-                        self.realtimeData["vsl"] = vsl_values
+                    # if self.VSL_consumer is not None:
+                    self.realtimeData["vsl"] = vsl_values
                         # self.VSL_consumer.send(vsl_values)
                 self.realtimeData["trafficState"] = traffic_state
                 realTimeTrafficStateConsumer.send(self.realtimeData)
