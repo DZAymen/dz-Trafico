@@ -24,8 +24,8 @@ def set_simulation_map(request):
 
 #POST: add an inflow point
 #GET: get inflow points
-@api_view(['POST', 'GET'])
-def add_traffic_inflow(request):
+@api_view(['POST', 'GET', 'DELETE'])
+def add_traffic_inflow(request, pk):
     if request.method == 'POST':
         #Validate inflow point request data
         inflowPointSerializer = InFlowPointSerializer(data=request.data)
@@ -44,6 +44,9 @@ def add_traffic_inflow(request):
         inFlowPoints = simulationManager.get_inflow_points()
         serializer = InFlowPointSerializer(inFlowPoints, many=True)
         return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+    elif request.method == 'DELETE':
+        print pk
 
 #POST: add an outflow point
 #GET: get outflow points
@@ -81,7 +84,10 @@ def add_incidents(request):
         # Add incident to incidents list
         simulationManager.add_incident(incident)
 
-        return Response(data=incidentSerializer.data, status=status.HTTP_202_ACCEPTED)
+        data = incidentSerializer.data
+        data["id"] = incident.id
+
+        return Response(data=data, status=status.HTTP_202_ACCEPTED)
 
     elif request.method == 'GET':
         incidents = simulationManager.get_incidents()
