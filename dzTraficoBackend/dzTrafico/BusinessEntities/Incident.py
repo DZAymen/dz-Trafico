@@ -24,6 +24,7 @@ class Incident(object):
         self.lane_position = lane_position
 
 class IncidentSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     position = LocationSerializer()
     accidentTime = serializers.FloatField()
     accidentDuration = serializers.FloatField()

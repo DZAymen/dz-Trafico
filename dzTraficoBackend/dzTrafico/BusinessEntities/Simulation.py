@@ -277,3 +277,13 @@ class Simulation:
         Simulation.time = time
         Simulation.densities = densities
         Simulation.nocontrol_densities = nocontrol_densities
+
+    def delete_outflow(self, id):
+        for outflow in self.outFlowPoints:
+            if outflow.id == int(id):
+                self.outFlowPoints.remove(outflow)
+
+    def delete_inflow(self, id):
+        for inflow in self.inFlowPoints:
+            if inflow.id == int(id):
+                self.inFlowPoints.remove(inflow)

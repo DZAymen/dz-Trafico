@@ -16,8 +16,11 @@ urlpatterns = [
     #Simulation Creation Routes _________________________________________________________________
     url(r'^api/creation/map$', SimulationCreationService.set_simulation_map),
     url(r'^api/creation/trafficflow/departs$', SimulationCreationService.add_traffic_inflow),
+    url(r'^api/creation/trafficflow/departs/(?P<pk>[0-9]+)$', SimulationCreationService.delete_traffic_inflow),
     url(r'^api/creation/trafficflow/arrivals$', SimulationCreationService.add_traffic_outflow),
+    url(r'^api/creation/trafficflow/arrivals/(?P<pk>[0-9]+)$', SimulationCreationService.delete_traffic_outflow),
     url(r'^api/creation/incident$', SimulationCreationService.add_incidents),
+    url(r'^api/creation/incident/(?P<pk>[0-9]+)$', SimulationCreationService.delete_incident),
     url(r'^api/creation/vehicletypes$', SimulationCreationService.add_vehicle_types),
     url(r'^api/creation/vehicletypespercentages$', SimulationCreationService.add_vehicle_types_percentages),
     url(r'^api/creation/config$', SimulationCreationService.update_configuration_state),
