@@ -140,8 +140,12 @@ class SimulationManager:
 
         self.set_sensors_distance(data["distance"])
 
-        Simulation.LCMode_vsl_lc = 512
-        Node.COMPLIANCE_PERCENTAGE = data["driver_compliance"]
+        Node.COMPLIANCE_PERCENTAGE = data["driver_compliance"] / 100
+
+        if Node.COMPLIANCE_PERCENTAGE < 1:
+            Simulation.LCMode_vsl_lc = 597
+        else:
+            Simulation.LCMode_vsl_lc = 512
 
     # ---------------------------------------------------------------------------------------------------
 
