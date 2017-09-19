@@ -8,8 +8,8 @@ class TrafficAnalyzer:
     laneChangeController = LaneChange()
     virtualRampMeteringController = VirtualRampMetering()
 
-    isVSLControlActivated = False
-    isLCControlActivated = False
+    isVSLControlActivated = True
+    isLCControlActivated = True
     isCongestionDetected = False
     congestionExists = False
 
