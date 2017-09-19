@@ -95,19 +95,8 @@ export class TrafficComponent implements OnInit {
 
      zoneDelimiter() {
         // service pr récupérer bounds
-        this.osmService.getBounds().then( zone => {
-          // this.rectangle = new google.maps.Rectangle({
-          //     editable: false,
-          //     draggable: false,
-          //     strokeColor: '#999999', strokeOpacity: 0.8, strokeWeight: 2,
-          //     fillColor: '#999999', fillOpacity: 0,
-          //     bounds: {
-          //       north: zone.top,
-          //       south: zone.bottom,
-          //       east:  zone.right,
-          //       west:  zone.left
-          //   }
-          // });
+          this.osmService.getBounds().then( zone => {
+
           this.overlays.push(new google.maps.Polyline({
             path: [
                     {lat: zone.top, lng: zone.left},
@@ -202,7 +191,7 @@ export class TrafficComponent implements OnInit {
                   if(point._type === 'depart') {
                     this.departPointService.delete(point._id)
                     .then(() => {
-                        this.arrivalPoints= this.arrivalPoints.filter(p => p !== point._id);
+                        this.arrivalPoints= this.arrivalPoints.filter(p => p !== point);
                         this.overlays= this.overlays.filter(p=> p !== marker);
                      })
                   }else if (point.type === 'arrival'){

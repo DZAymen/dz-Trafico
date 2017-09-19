@@ -28,28 +28,28 @@ export class StepsComponent implements OnInit {
 
   ngOnInit() {
     this.items = [{
-               label: 'Etape 1',
+               label: 'Réseau routier',
                command: (event: any) => {
                    this.activeIndex = 0;
                    this.router.navigate(['/map']);
                }
            },
            {
-               label: 'Etape 2',
+               label: 'Demande du trafic',
                command: (event: any) => {
                    this.activeIndex = 1;
                    this.router.navigate(['/trafficflow']);
                }
            },
            {
-               label: 'Etape 3',
+               label: 'Types des véhicules',
                command: (event: any) => {
                    this.activeIndex = 2;
                    this.router.navigate(['/vehicle']);
                }
            },
            {
-               label: 'Etape 4',
+               label: 'Paramètres simulation',
                command: (event: any) => {
                    this.activeIndex = 3;
                    this.router.navigate(['/start']);
