@@ -44,11 +44,11 @@
 
                    <div *ngIf="departDialog">
                      <div class="ui-grid-row">
-                         <div class="ui-grid-col-5"><label>Débit</label></div>
+                         <div class="ui-grid-col-5"><label>Débit (véh/h)</label></div>
                          <div class="ui-grid-col-7"><p-spinner #tasty [(ngModel)]="flow" [step]="100"></p-spinner></div>
                      </div>
                      <div class="ui-grid-row">
-                         <div class="ui-grid-col-5"><label>Temps de départ</label></div>
+                         <div class="ui-grid-col-5"><label>Temps de départ (s)</label></div>
                          <div class="ui-grid-col-7"><p-spinner [(ngModel)]="departTime" [step]="10"></p-spinner></div>
                      </div>
                      <div class="ui-grid-row">
@@ -62,17 +62,17 @@
                         <div class="ui-grid-col-7"><p-spinner [(ngModel)]="lane" [step]="1"></p-spinner></div>
                     </div>
                     <div class="ui-grid-row">
-                        <div class="ui-grid-col-5"><label>Temps accident</label></div>
+                        <div class="ui-grid-col-5"><label>Temps accident (s)</label></div>
                         <div class="ui-grid-col-7"><p-spinner [(ngModel)]="accidentTime" [step]="100"></p-spinner></div>
                     </div>
                     <div class="ui-grid-row">
-                        <div class="ui-grid-col-5"><label>Durée accident</label></div>
+                        <div class="ui-grid-col-5"><label>Durée accident (s)</label></div>
                         <div class="ui-grid-col-7"><p-spinner  [(ngModel)]="accidentDuration" [step]="100"></p-spinner></div>
                     </div>
                  </div>
                  <div *ngIf="arrivalDialog">
                    <div class="ui-grid-row">
-                       <div class="ui-grid-col-5"><label>Poucentage</label></div>
+                       <div class="ui-grid-col-5"><label>Poid (%)</label></div>
                        <div class="ui-grid-col-7"><p-spinner [(ngModel)]="percentage" [step]="10"></p-spinner></div>
                    </div>
                    <div class="ui-grid-row">

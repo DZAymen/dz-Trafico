@@ -54,7 +54,7 @@ export class RealTimeComponent implements OnInit {
          this.realtimeDataList = rt;
          this.lcList= this.realtimeDataList.lc;
          this.vslList= this.realtimeDataList.vsl;
-          this.drawPolyline(this.realtimeDataList.trafficState)
+        this.drawPolyline(this.realtimeDataList.trafficState)
   		});
 	}
 
@@ -79,20 +79,8 @@ export class RealTimeComponent implements OnInit {
 
   zoneDelimiter() {
      // service pr récupérer bounds
-     this.osmService.getBounds().then( zone => {
-      //  this.rectangle = new google.maps.Rectangle({
-      //      editable: false,
-      //      draggable: false,
-      //      strokeColor: '#999999', strokeOpacity: 0.8, strokeWeight: 2,
-      //      fillColor: '#999999', fillOpacity: 0,
-      //      bounds: {
-      //        north: zone.top,
-      //        south: zone.bottom,
-      //        east:  zone.right,
-      //        west:  zone.left
-      //    }
-      //  });
-      //  this.overlays.push(this.rectangle);
+      this.osmService.getBounds().then( zone => {
+
       this.overlays.push(new google.maps.Polyline({
         path: [
                 {lat: zone.top, lng: zone.left},
@@ -148,14 +136,18 @@ export class RealTimeComponent implements OnInit {
 
 
   drawPolyline( stListe: TraficState[]){
+
+    this.overlays = [] ;
+    this.zoneDelimiter();
+
     let polyColor: string;
     let severity: string;
     for (let ts of stListe) {
 
       // couleur du polyline
-     if (ts.current_speed <= 40){ polyColor= '#FF0000'; /* rouge */ severity= 'error'
+     if (ts.current_speed <= 40 && ts.current_speed >= 0){ polyColor= '#FF0000'; /* rouge */ severity= 'error'
    }else if (ts.current_speed > 40 && ts.current_speed <= 60 ) { polyColor= '#FF4500'; /* orange */ severity= 'warn'
-   }else {  polyColor= '#9ACD32'; /* vert */ severity= 'success'}
+   }else if (ts.current_speed > 60 )  {  polyColor= '#9ACD32'; /* vert */ severity= 'success'}
 
       this.overlays.push(new google.maps.Polyline({
         path: [

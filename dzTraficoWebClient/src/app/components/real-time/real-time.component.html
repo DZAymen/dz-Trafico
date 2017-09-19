@@ -1,9 +1,5 @@
 <p-growl [value]="msgs"></p-growl>
 
-<div style="float:right">
-     <button type="button" pButton label="Lancer Simulation" icon="fa-arrow-right" (click)="lancerSumo()"></button>
-</div>
-
 <div class="ui-g-12">
  <div class="content-block">
       <div class="card card-stats">
@@ -11,7 +7,7 @@
               <i class="material-icons fa fa-car"></i>
           </div>
           <div class="card-content">
-               <h4 class="card-title">lc</h4>
+               <h4 class="card-title">Les commandes de contrôle</h4>
                <ul>
                  <!-- Display VSL -->
                  <li class="segment" *ngFor="let i of vslList">
@@ -45,7 +41,7 @@
           <i class="material-icons fa fa-map-o"></i>
       </div>
       <div class="card-content">
-          <h4 class="card-title">Séléctionner le réseau routier</h4>
+          <h4 class="card-title">Etat du trafic en temps réel</h4>
 
           <p-gmap #gmap [style]="{'width':'100%','height':'500px'}"
                         [options]="options"
