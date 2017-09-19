@@ -53,12 +53,12 @@ export class MapComponent implements OnInit {
         this.map = event.map;
         this.osmService.getOsmMapType(this.map, google);
 
-        // Center the map on the current location of the user
-        // this.geocodingService
-        //     .getCurrentLocation()
-        //     .subscribe(location => this.map.setCenter(new google.maps.LatLng(
-        //      location.latitude, location.longitude
-        // )));
+        //Center the map on the current location of the user
+        this.geocodingService
+            .getCurrentLocation()
+            .subscribe(location => this.map.setCenter(new google.maps.LatLng(
+             location.latitude, location.longitude
+        )));
     }
 
     //
@@ -98,19 +98,18 @@ export class MapComponent implements OnInit {
 
     networkExport(){
       if (this.rectangle) {
+      
         this.osmService.buildOsmFile(
                 this.rectangle.getBounds().getNorthEast(),
                 this.rectangle.getBounds().getSouthWest()
         );
-
-      // if l'export à partir du service a réussie
-      this.msgs.push({severity:'success', summary:'Export réussi', detail: 'La zone routière a bien été exporté'});
+          this.router.navigate(['/trafficflow']);
       }
       else {
         this.msgs = [];
         this.msgs.push({severity:'warn', summary:'Aucune zone à exporter', detail: 'Vous devez d\'abord seléctionner une zone'});
       }
-      this.router.navigate(['/trafficflow']);
+
     }
 
 

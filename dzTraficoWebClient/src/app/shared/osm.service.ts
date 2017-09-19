@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
-
 import 'rxjs/add/operator/toPromise';
+import { Zone } from '../domain/zone';
+
+
+
 
 @Injectable()
 export class OsmService {
 
-  private mapURL= "http://127.0.0.1:8000/api/creation/map"; 
+  private mapURL= "http://127.0.0.1:8000/api/creation/map";
   private headers = new Headers({'Content-Type': 'application/json'});
+
 
   constructor(private http: Http) {}
 
@@ -34,6 +38,7 @@ export class OsmService {
 
  // Call the backend to build .osm file
   buildOsmFile(northEast: any, southWest: any){
+
         this.http.post(this.mapURL, JSON.stringify({
             left: southWest.lng(),
             bottom: southWest.lat(),
@@ -43,6 +48,14 @@ export class OsmService {
         .toPromise().catch(this.handleError);
 
   }
+
+  getBounds(): Promise<Zone> {
+     return this.http.get(this.mapURL)
+                .toPromise()
+                .then(response => response.json() as Zone)
+                .catch(this.handleError);
+  }
+
   private handleError(error : any){
     console.error('Erreur ', error);
     return Promise.reject(error.message || error);

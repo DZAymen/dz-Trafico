@@ -7,6 +7,7 @@ import { Arrival } from '../../../domain/arrival';
 import { Accident } from '../../../domain/accident';
 import { Location } from '../../../domain/location';
 
+
 import { OsmService } from '../../../shared/osm.service';
 import { DepartPointsService } from './depart-point.service';
 import { ArrivalPointsService } from './arrival-point.service';
@@ -18,7 +19,7 @@ declare var google: any;
   selector: 'app-traffic',
   templateUrl: './traffic.component.html',
   styleUrls: ['./traffic.component.css'],
-  providers: [DepartPointsService, ArrivalPointsService, AccidentPointsService, ConfirmationService]
+  providers: [OsmService, DepartPointsService, ArrivalPointsService, AccidentPointsService, ConfirmationService]
 })
 export class TrafficComponent implements OnInit {
 
@@ -26,12 +27,14 @@ export class TrafficComponent implements OnInit {
   arrivalPoints: Arrival[]=[];
   accidentPoints: Accident[]=[];
 
+
   /* Map */
   map:any;
   options: any;
   overlays: any[];
   mapTypeIds:any[]=[];
   infoWindow: any;
+  rectangle: any;
 
   /* Dialog */
   dialogVisible: boolean;
@@ -59,6 +62,7 @@ export class TrafficComponent implements OnInit {
           private confirmationService: ConfirmationService
         ){
               osmService.initMapStyle(google, this.mapTypeIds);
+
     }
 
     getAllPoints() {
@@ -85,6 +89,27 @@ export class TrafficComponent implements OnInit {
         this.infoWindow = new google.maps.InfoWindow();
 
         this.getAllPoints();
+        console.log("avant appel de zone delimter")
+        this.zoneDelimiter();
+    }
+
+     zoneDelimiter() {
+        // service pr récupérer bounds
+        this.osmService.getBounds().then( zone => {
+          this.rectangle = new google.maps.Rectangle({
+              editable: true,
+              draggable: true,
+              strokeColor: '#999999', strokeOpacity: 0.8, strokeWeight: 2,
+              fillColor: '#999999', fillOpacity: 0,
+              bounds: {
+                north: zone.top,
+                south: zone.bottom,
+                east:  zone.right,
+                west:  zone.left
+            }
+          });
+          this.overlays.push(this.rectangle);
+        })
     }
 
     // map toolabar child component
@@ -130,7 +155,7 @@ export class TrafficComponent implements OnInit {
          this.infoWindow.setContent(
            '<p> '+label+'</p>');
          this.infoWindow.open(event.map, event.overlay)
-         //event.map.setCenter(event.overlay.getPosition());
+         event.map.setCenter(event.overlay.getPosition());
        }else{
          this.confirmationService.confirm({
                message: 'Voulez vous vraiment supprimer ce point?',
@@ -142,7 +167,7 @@ export class TrafficComponent implements OnInit {
                   if(point._type === 'depart') {
                     this.departPointService.delete(point._id)
                     .then(() => {
-                        //this.arrivalPoints= this.arrivalPoints.filter(p => p !== marker.label);
+                        this.arrivalPoints= this.arrivalPoints.filter(p => p !== point._id);
                         this.overlays= this.overlays.filter(p=> p !== marker);
                      })
                   }else if (point.type === 'arrival'){

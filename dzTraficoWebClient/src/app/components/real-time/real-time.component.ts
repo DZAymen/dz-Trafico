@@ -45,15 +45,16 @@ export class RealTimeComponent implements OnInit {
     private wsService: WebsocketService,
     private vslService: VslService
     ){
-    this.realTimeService.connectToRealTime(this.wsService);
+       this.osmService.initMapStyle(google, this.mapTypeIds);
+       this.realTimeService.connectToRealTime(this.wsService);
 
-     this.realTimeService.startSimulationMsg.subscribe( rt => {
-      console.log("VSL from websocket: ", rt);
-       this.realtimeDataList = rt;
-       this.lcList= this.realtimeDataList.lc;
-       this.vslList= this.realtimeDataList.vsl;
-        this.drawPolyline(this.realtimeDataList.trafficState)
-		});
+       this.realTimeService.startSimulationMsg.subscribe( rt => {
+        console.log("VSL from websocket: ", rt);
+         this.realtimeDataList = rt;
+         this.lcList= this.realtimeDataList.lc;
+         this.vslList= this.realtimeDataList.vsl;
+          this.drawPolyline(this.realtimeDataList.trafficState)
+  		});
 	}
 
 
@@ -100,8 +101,8 @@ export class RealTimeComponent implements OnInit {
 
       // couleur du polyline
      if (ts.current_speed <= 40){ polyColor= '#FF0000'; /* rouge */ severity= 'error'
-    }else if (ts.current_speed > 40 && ts.current_speed <= 70 ) { polyColor= '#FF4500'; /* orange */ severity= 'warn'
-  }else {  polyColor= '#9ACD32'; /* vert */ severity= 'success'}
+   }else if (ts.current_speed > 40 && ts.current_speed <= 60 ) { polyColor= '#FF4500'; /* orange */ severity= 'warn'
+   }else {  polyColor= '#9ACD32'; /* vert */ severity= 'success'}
 
       this.overlays.push(new google.maps.Polyline({
         path: [
