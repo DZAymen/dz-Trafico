@@ -147,7 +147,7 @@ class NetworkManager:
                 if not edge in already_splitted_edges:
                     splits = []
                     sub_edges_num = int(edge.getLength() / sensors_distance)
-                    for i in range(0, sub_edges_num):
+                    for i in range(1, sub_edges_num + 1):
                         splits.append(
                             Split(
                                 distance = i * sensors_distance,

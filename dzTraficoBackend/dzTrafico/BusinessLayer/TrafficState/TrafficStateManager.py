@@ -15,10 +15,6 @@ class TrafficStateManager:
     vehicles = []
     LC_consumer = None
     VSL_consumer = None
-    realtimeData = dict()
-    realtimeData["vsl"] = []
-    realtimeData["lc"] = []
-    realtimeData["trafficState"] = []
 
     @staticmethod
     def get_instance():
@@ -27,6 +23,12 @@ class TrafficStateManager:
         return TrafficStateManager.__trafficStateManager
 
     def start(self, realTimeTrafficStateConsumer):
+
+        self.realtimeData = dict()
+        self.realtimeData["vsl"] = []
+        self.realtimeData["lc"] = []
+        self.realtimeData["trafficState"] = []
+
         self.control_vehs_dict = dict()
         self.no_control_vehs_dict = dict()
 
