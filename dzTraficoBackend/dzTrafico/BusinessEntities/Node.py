@@ -65,6 +65,11 @@ class Node(object):
     def reset_previous_speed(self):
         self.previous_vsl = self.initial_max_speed
 
+    def get_node_density(self):
+        density = 0
+        for sensor in self.sensors:
+            density += sensor.get_density()
+        return density
     # --------------- Check congestion state ------------------------------------------
     def check_congested_lanes(self):
         congested_lanes = []

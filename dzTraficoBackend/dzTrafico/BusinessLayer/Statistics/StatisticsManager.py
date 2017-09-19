@@ -30,8 +30,8 @@ class StatisticsManager:
     def get_incident_density(self):
         density = dict()
         density["time"] = self.simulation.time
-        density["density_control"] = self.simulation.densities
-        density["density_no_control"] = self.simulation.nocontrol_densities
+        density["with_control"] = self.simulation.densities
+        density["no_control"] = self.simulation.nocontrol_densities
         return density
 
     def get_queue_measurements(self):

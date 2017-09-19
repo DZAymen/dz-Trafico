@@ -38,6 +38,8 @@ class SimulationManager:
         self.__statisticsManager = StatisticsManager(self.__simulation)
         self.__simulationCreator.set_map_box(map_box)
 
+    def get_map_box(self):
+        return self.__simulationCreator.get_map_box()
     # ---------------------------------------------------------------------------------------------------
 
     # -------------------------------- Flows definition -------------------------------------------------

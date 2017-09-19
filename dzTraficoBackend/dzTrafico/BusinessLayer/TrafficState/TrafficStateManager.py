@@ -54,7 +54,7 @@ class TrafficStateManager:
 
             res, rest = divmod(step, self.simulation.sim_step_duration)
             if rest == 0:
-                nocontrol_densities.append(self.incident_node.get_current_density())
+                nocontrol_densities.append(self.incident_node.get_node_density())
 
             # Changelane in accident edge
             if TrafficAnalyzer.congestionExists:
