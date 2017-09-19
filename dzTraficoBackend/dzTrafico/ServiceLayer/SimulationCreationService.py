@@ -10,17 +10,23 @@ from dzTrafico.BusinessEntities.Incident import Incident, IncidentSerializer
 simulationManager = SimulationManager.get_instance()
 
 #Post the selected map
-@api_view(['POST'])
+@api_view(['POST', 'GET'])
 def set_simulation_map(request):
-    #request.data validation
-    mapBoxSerializer = MapBoxSerializer(data=request.data)
-    mapBoxSerializer.is_valid(raise_exception=True)
+    if request.method == 'POST':
+        #request.data validation
+        mapBoxSerializer = MapBoxSerializer(data=request.data)
+        mapBoxSerializer.is_valid(raise_exception=True)
 
-    #Call SimulationManager to pass the mapBox to the simulationCreator
-    map_box = mapBoxSerializer.create(mapBoxSerializer.validated_data)
+        #Call SimulationManager to pass the mapBox to the simulationCreator
+        map_box = mapBoxSerializer.create(mapBoxSerializer.validated_data)
 
-    simulationManager.set_map(map_box)
-    return Response(status.HTTP_201_CREATED)
+        simulationManager.set_map(map_box)
+        return Response(status.HTTP_201_CREATED)
+
+    elif request.method == 'GET':
+        box = simulationManager.get_map_box()
+        serializer = MapBoxSerializer(box)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 #POST: add an inflow point
 #GET: get inflow points

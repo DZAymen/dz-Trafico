@@ -21,6 +21,9 @@ class SimulationCreator:
     def set_map_box(self, mapBox):
         SimulationCreator.__simulation.set_map_box(mapBox)
 
+    def get_map_box(self):
+        return SimulationCreator.__simulation.get_map_box()
+
     #Call NetworkManager to create map.net.xml
     def create_network_file(self):
         project_directory = SimulationCreator.__networkManager.create_project_directory()
