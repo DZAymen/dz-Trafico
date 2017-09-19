@@ -33,6 +33,7 @@ export class RealTimeComponent implements OnInit {
   overlays: any[];
   mapTypeIds:any[]=[];
   infoWindow: any;
+  rectangle: any;
   msgs: Message[] = [];
 
   private message = {
@@ -59,10 +60,6 @@ export class RealTimeComponent implements OnInit {
 
 
   ngOnInit() {
-    // this.realTimeService.getTraficState().then(traficState => this.drawPolyline(traficState));
-    // this.realTimeService.getRecommandation().then(laneChange => this.lcList = laneChange);
-    // this.realTimeService.getVsl().then(variableSpeedLimit => this.vslList = variableSpeedLimit);
-
     this.options = {
                 center: {lat: 36.7596737, lng: 3.1365537},
                 zoom: 12,
@@ -76,8 +73,28 @@ export class RealTimeComponent implements OnInit {
 
     this.overlays = [] ;
     this.infoWindow = new google.maps.InfoWindow();
+    this.zoneDelimiter();
 
   }
+
+  zoneDelimiter() {
+     // service pr récupérer bounds
+     this.osmService.getBounds().then( zone => {
+       this.rectangle = new google.maps.Rectangle({
+           editable: true,
+           draggable: true,
+           strokeColor: '#999999', strokeOpacity: 0.8, strokeWeight: 2,
+           fillColor: '#999999', fillOpacity: 0,
+           bounds: {
+             north: zone.top,
+             south: zone.bottom,
+             east:  zone.right,
+             west:  zone.left
+         }
+       });
+       this.overlays.push(this.rectangle);
+     })
+ }
 
   // When map is ready then define variable map
   setMap(event) {
