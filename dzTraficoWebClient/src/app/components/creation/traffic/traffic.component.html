@@ -72,7 +72,7 @@
                  </div>
                  <div *ngIf="arrivalDialog">
                    <div class="ui-grid-row">
-                       <div class="ui-grid-col-5"><label>Poid (%)</label></div>
+                       <div class="ui-grid-col-5"><label>Poids (%)</label></div>
                        <div class="ui-grid-col-7"><p-spinner [(ngModel)]="percentage" [step]="10"></p-spinner></div>
                    </div>
                    <div class="ui-grid-row">
@@ -102,9 +102,8 @@
                 <h4 class="card-title">Liste des points de départ</h4>
                 <p-dataTable [value]="departPoints">
                     <p-column field="id" header="id"></p-column>
-                    <p-column field="position.lat" header="Point de depart"></p-column>
-                    <p-column field="flow" header="Débit"></p-column>
-                    <p-column field="departTime" header="Temps de départ"></p-column>
+                    <p-column field="flow" header="Débit (véh/h)"></p-column>
+                    <p-column field="departTime" header="Temps de départ (s)"></p-column>
                 </p-dataTable>
           </div>
        </div>
@@ -118,10 +117,10 @@
                <i class="material-icons fa fa-flag-checkered"></i>
            </div>
            <div class="card-content">
-                <h4 class="card-title">Liste des points de d'arrivé'</h4>
+                <h4 class="card-title">Liste des points de d'arrivé</h4>
                 <p-dataTable [value]="arrivalPoints">
                     <p-column field="id" header="id"></p-column>
-                    <p-column field="position.lat" header="Point d'arrivé"></p-column>
+                    <p-column field="percentage" header="Poids (%)"></p-column>
                 </p-dataTable>
           </div>
        </div>
@@ -138,9 +137,8 @@
                 <h4 class="card-title">Liste des accidents</h4>
                 <p-dataTable [value]="accidentPoints">
                     <p-column field="id" header="id"></p-column>
-                    <p-column field="position.lat" header="Lieu"></p-column>
-                    <p-column field="accidentTime" header="Temps"></p-column>
-                    <p-column field="accidentDuration" header="Durré"></p-column>
+                    <p-column field="accidentTime" header="Temps (s)"></p-column>
+                    <p-column field="accidentDuration" header="Durré (s)"></p-column>
                 </p-dataTable>
           </div>
        </div>
