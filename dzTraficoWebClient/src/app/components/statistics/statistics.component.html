@@ -10,7 +10,7 @@
                   <p class="category">TPM</p>
                   <ul>
                     <li *ngFor="let item of resultList; let i=index">
-                      <h3 *ngIf="i==2" class="card-title">{{item.meanTravelTime}} %</h3>
+                      <h3 *ngIf="i==2" class="card-title">{{item.meanTravelTime | number:'1.2-2'}} %</h3>
                     </li>
                   </ul>
               </div>
@@ -25,7 +25,7 @@
                   <p class="category">TAM</p>
                   <ul>
                     <li *ngFor="let item of resultList; let i=index">
-                      <h3 *ngIf="i==2" class="card-title">{{item.meanWaintingTime}} %</h3>
+                      <h3 *ngIf="i==2" class="card-title">{{item.meanWaintingTime | number:'1.2-2'}} %</h3>
                     </li>
                   </ul>
               </div>
@@ -40,7 +40,7 @@
                   <p class="category">Carburant</p>
                   <ul>
                     <li *ngFor="let item of resultList; let i=index">
-                      <h3 *ngIf="i==2" class="card-title">{{item.fuelRate}} %</h3>
+                      <h3 *ngIf="i==2" class="card-title">{{item.fuelRate | number:'1.2-2'}} %</h3>
                     </li>
                   </ul>
               </div>
@@ -55,7 +55,7 @@
                   <p class="category">Emission C02</p>
                   <ul>
                     <li *ngFor="let item of resultList; let i=index">
-                      <h3 *ngIf="i==2" class="card-title">{{item.co2Rate}} %</h3>
+                      <h3 *ngIf="i==2" class="card-title">{{item.co2Rate | number:'1.2-2'}} %</h3>
                     </li>
                   </ul>
               </div>

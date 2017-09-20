@@ -121,13 +121,15 @@ class Sink(object):
         for node in self.nodes:
             lanes = []
             if node.LC_is_activated:
-                for r in node.recommendations:
-                    lanes.append(
-                        NodeLanesRcmd(
-                            r.lane,
-                            r.recommendation
-                        )
-                    )
+                for i in range(0,len(node.recommendations)):
+                    for r in node.recommendations:
+                        if r.lane == i:
+                            lanes.append(
+                                NodeLanesRcmd(
+                                    r.lane,
+                                    r.recommendation
+                                )
+                            )
                 lc_recommendations.extend(
                     [
                         NodeLCRcmd(
