@@ -62,7 +62,9 @@ export class TrafficComponent implements OnInit {
           private confirmationService: ConfirmationService
         ){
               osmService.initMapStyle(google, this.mapTypeIds);
-
+              this.departPoints=[];
+              this.arrivalPoints=[];
+              this.accidentPoints=[];
     }
 
     getAllPoints() {
@@ -89,7 +91,6 @@ export class TrafficComponent implements OnInit {
         this.infoWindow = new google.maps.InfoWindow();
 
         this.getAllPoints();
-        console.log("avant appel de zone delimter")
         this.zoneDelimiter();
     }
 
